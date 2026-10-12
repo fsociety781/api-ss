@@ -1,0 +1,68 @@
+services:
+  # ---------------------------------------------
+  # PostgreSQL Database
+  # ---------------------------------------------
+  postgres:
+    image: postgres:16-alpine
+    container_name: shroomsync_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      POSTGRES_DB: ${POSTGRES_DB:-shroomsync_db}
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-shroomsync_db}']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # ---------------------------------------------
+  # MQTT Broker (Eclipse Mosquitto)
+  # ---------------------------------------------
+  mosquitto:
+    image: eclipse-mosquitto:2.0
+    container_name: shroomsync_mqtt
+    restart: unless-stopped
+    ports:
+      - '1883:1883'
+      - '9001:9001' # Websockets
+    volumes:
+      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_log:/mosquitto/log
+
+  # ---------------------------------------------
+  # ShroomSync IoT Backend API
+  # ---------------------------------------------
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: shroomsync_api
+    restart: unless-stopped
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - '3000:3000'
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-shroomsync_db}?schema=public
+      JWT_SECRET: ${JWT_SECRET:-shroomsync-production-jwt-super-secret-key-2026}
+      JWT_EXPIRES_IN: 7d
+      MQTT_BROKER_URL: mqtt://mosquitto:1883
+      MQTT_CLIENT_ID: shroomsync-api-cluster-01
+      CORS_ORIGIN: '*'
+      RATE_LIMIT_MAX_REQUESTS: 500
+      LOG_LEVEL: info
+
+volumes:
+  postgres_data:
+  mosquitto_data:
+  mosquitto_log:
+
