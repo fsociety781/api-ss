@@ -21,14 +21,22 @@ class MqttService {
     }
 
     try {
-      logger.info(`Menghubungkan ke MQTT Broker: ${env.MQTT_BROKER_URL}...`);
-      this.client = mqtt.connect(env.MQTT_BROKER_URL, {
+      logger.info(`Menghubungkan ke MQTT Broker (EMQX): ${env.MQTT_BROKER_URL}...`);
+
+      const connectOptions: mqtt.IClientOptions = {
         clientId: `${env.MQTT_CLIENT_ID}-${Math.random().toString(16).substring(2, 8)}`,
         reconnectPeriod: 5000,
         connectTimeout: 10000,
-        username: env.MQTT_USERNAME,
-        password: env.MQTT_PASSWORD,
-      });
+      };
+
+      if (env.MQTT_USERNAME && env.MQTT_USERNAME.trim() !== '') {
+        connectOptions.username = env.MQTT_USERNAME;
+      }
+      if (env.MQTT_PASSWORD && env.MQTT_PASSWORD.trim() !== '') {
+        connectOptions.password = env.MQTT_PASSWORD;
+      }
+
+      this.client = mqtt.connect(env.MQTT_BROKER_URL, connectOptions);
 
       this.client.on('connect', () => {
         this.isConnected = true;

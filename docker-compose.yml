@@ -21,19 +21,20 @@ services:
       retries: 5
 
   # ---------------------------------------------
-  # MQTT Broker (Eclipse Mosquitto)
+  # MQTT Broker (EMQX v5)
+  # Dashboard: http://localhost:18083 (user: admin, pass: public)
   # ---------------------------------------------
-  mosquitto:
-    image: eclipse-mosquitto:2.0
-    container_name: shroomsync_mqtt
+  emqx:
+    image: emqx/emqx:5.8
+    container_name: shroomsync_emqx
     restart: unless-stopped
     ports:
-      - '1883:1883'
-      - '9001:9001' # Websockets
+      - '1883:1883'     # MQTT TCP
+      - '8083:8083'     # MQTT WebSocket
+      - '18083:18083'   # EMQX Web Dashboard
     volumes:
-      - ./mosquitto/config/mosquitto.conf:/mosquitto/config/mosquitto.conf:ro
-      - mosquitto_data:/mosquitto/data
-      - mosquitto_log:/mosquitto/log
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
 
   # ---------------------------------------------
   # ShroomSync IoT Backend API
@@ -47,6 +48,8 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+      emqx:
+        condition: service_started
     ports:
       - '3000:3000'
     environment:
@@ -55,7 +58,7 @@ services:
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-shroomsync_db}?schema=public
       JWT_SECRET: ${JWT_SECRET:-shroomsync-production-jwt-super-secret-key-2026}
       JWT_EXPIRES_IN: 7d
-      MQTT_BROKER_URL: mqtt://mosquitto:1883
+      MQTT_BROKER_URL: mqtt://emqx:1883
       MQTT_CLIENT_ID: shroomsync-api-cluster-01
       CORS_ORIGIN: '*'
       RATE_LIMIT_MAX_REQUESTS: 500
@@ -63,6 +66,5 @@ services:
 
 volumes:
   postgres_data:
-  mosquitto_data:
-  mosquitto_log:
-
+  emqx_data:
+  emqx_log:
