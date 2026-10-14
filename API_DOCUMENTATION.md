@@ -269,3 +269,78 @@ Tersedia di `/api/v1/farmer/*`:
 - `POST /api/v1/farmer/devices/:deviceId/apply-preset`: Langsung menerapkan parameter preset ke alat ESP32 sekaligus update database dan broadcast via MQTT.
 - `GET /api/v1/farmer/analytics/cycles`: Agregat statistik produksi seluruh siklus aktif dan riwayat pendapatan.
 - `POST /api/v1/farmer/devices/:deviceId/emergency-stop`: Mematikan seluruh aktuator seketika dalam situasi darurat.
+
+---
+
+## 👑 Fitur Administrator (Admin Routes)
+
+Semua rute admin berada di bawah prefix `/api/v1/admin/*` dan membutuhkan header `Authorization: Bearer <token>` dengan akun ber-role `ADMIN` (atau `TECHNICIAN`).
+
+### 1. Dashboard Ringkasan Admin
+- **Method & Route:** `GET /api/v1/admin/dashboard`
+- **Response (200):** Statistik jumlah total petani, total perangkat aktif/offline, dan aktivitas terkini.
+
+### 2. Manajemen Petani (Farmer Management)
+- **Daftar Petani Binaan:** `GET /api/v1/admin/farmers?limit=20&page=1`
+- **Detail Petani:** `GET /api/v1/admin/farmers/:id`
+- **Pendaftaran Petani Baru:** `POST /api/v1/admin/farmers`
+  ```json
+  {
+    "fullName": "Supriadi",
+    "phoneNumber": "081234567899",
+    "email": "supriadi@shroomsync.id",
+    "password": "PasswordAman123!"
+  }
+  ```
+- **Update Petani:** `PUT /api/v1/admin/farmers/:id`
+
+### 3. Penugasan & Pelepasan Perangkat (Device Assignment)
+- **Daftar Seluruh Perangkat:** `GET /api/v1/admin/devices`
+- **Tugaskan Kumbung ke Petani:** `POST /api/v1/admin/devices/assign`
+  ```json
+  {
+    "deviceId": "uuid-device-atau-serial",
+    "farmerId": "uuid-farmer"
+  }
+  ```
+- **Lepaskan Kumbung dari Petani:** `POST /api/v1/admin/devices/:deviceId/unassign`
+
+---
+
+## 🔧 Fitur Teknisi (Technician Routes)
+
+Semua rute teknisi berada di bawah prefix `/api/v1/technician/*` dan membutuhkan header `Authorization: Bearer <token>` dengan akun ber-role `TECHNICIAN`.
+
+### 1. Dashboard Diagnostik Hardware & IoT
+- **Method & Route:** `GET /api/v1/technician/dashboard`
+- **Response (200):** Metrik kesehatan mikrokontroler ESP32, tingkat uptime perangkat, diagnostik sinyal WiFi/RSSI, dan log error sistem.
+
+### 2. Provisioning & Manajemen Perangkat Keras ESP32
+- **Daftar Inventaris Alat:** `GET /api/v1/technician/devices`
+- **Registrasi Perangkat Baru (Generate Serial & Kode Aktivasi):** `POST /api/v1/technician/devices`
+  ```json
+  {
+    "serialNumber": "SS-0526-002",
+    "name": "Kumbung C - Shiitake",
+    "model": "ShroomSync Smart Node v2",
+    "hardwareVersion": "2.0",
+    "firmwareVersion": "2.1.0"
+  }
+  ```
+- **Detail Hardware:** `GET /api/v1/technician/devices/:id`
+- **Update Hardware / Firmware Version:** `PUT /api/v1/technician/devices/:id`
+- **Hapus Perangkat Fisik:** `DELETE /api/v1/technician/devices/:id`
+
+### 3. Manajemen Akun Administrator Sistem
+- **Daftar Seluruh Admin:** `GET /api/v1/technician/admins`
+- **Pembuatan Akun Admin Baru:** `POST /api/v1/technician/admins`
+  ```json
+  {
+    "fullName": "Admin Regional Jawa Barat",
+    "phoneNumber": "081299998888",
+    "email": "admin.jabar@shroomsync.id",
+    "password": "PasswordAdmin123!"
+  }
+  ```
+- **Ubah Status Admin (Aktif / Nonaktif):** `PUT /api/v1/technician/admins/:id/status`
+

@@ -1,25 +1,7 @@
 import { Request, Response } from 'express';
 import { prisma } from '../../bin/prismaConfig';
 import { ApiResponse } from '../../utils/api-response';
-import { NotFoundError } from '../../utils/errors';
-
-async function findDevice(deviceId: string) {
-  const device = await prisma.device.findFirst({
-    where: {
-      OR: [{ id: deviceId }, { serialNumber: deviceId }],
-    },
-    include: {
-      setting: true,
-      actuators: true,
-    },
-  });
-
-  if (!device) {
-    throw new NotFoundError(`Perangkat "${deviceId}" tidak ditemukan`);
-  }
-
-  return device;
-}
+import { findDeviceOrFail } from '../../utils/find-device';
 
 export const TelemetryController = {
   /**
@@ -28,7 +10,10 @@ export const TelemetryController = {
    */
   querySensor: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const limit = Math.min(
       parseInt((req.query.limit as string) || '50', 10),
@@ -78,7 +63,10 @@ export const TelemetryController = {
    */
   getLatestSensor: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const reading = await prisma.sensorReading.findFirst({
       where: { deviceId: device.id },
@@ -105,7 +93,10 @@ export const TelemetryController = {
    */
   queryHistory: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const limit = Math.min(
       parseInt((req.query.limit as string) || '50', 10),
@@ -153,7 +144,10 @@ export const TelemetryController = {
    */
   getLatestHistory: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const reading = await prisma.sensorReading.findFirst({
       where: { deviceId: device.id },

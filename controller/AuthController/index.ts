@@ -10,22 +10,23 @@ import {
   UnauthorizedError,
 } from '../../utils/errors';
 import { signToken } from '../../utils/token';
+import { loginPasswordSchema, passwordSchema } from '../../utils/validation';
 
 const loginSchema = z.object({
   identifier: z.string().min(1, 'Nomor HP atau email wajib diisi'),
-  password: z.string().min(1, 'Password wajib diisi'),
+  password: loginPasswordSchema,
 });
 
 const onboardingSchema = z.object({
   currentPassword: z.string().min(1, 'Password lama/default wajib diisi'),
-  newPassword: z.string().min(8, 'Password baru minimal 8 karakter'),
+  newPassword: passwordSchema,
   fullName: z.string().min(2, 'Nama lengkap wajib diisi').optional(),
   email: z.string().email('Format email tidak valid').optional(),
 });
 
 const changePasswordSchema = z.object({
   oldPassword: z.string().min(1, 'Password lama wajib diisi'),
-  newPassword: z.string().min(8, 'Password baru minimal 8 karakter'),
+  newPassword: passwordSchema,
 });
 
 export const AuthController = {

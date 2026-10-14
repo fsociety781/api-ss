@@ -1,8 +1,12 @@
 import express, { Router } from 'express';
 import { ControlController } from '../controller/ControlController';
+import { authMiddleware } from '../middleware/authMiddleware';
 import { asyncHandler } from '../utils/async-handler';
 
 const router: Router = express.Router();
+
+// All control routes require authentication (SECURITY FIX)
+router.use(authMiddleware);
 
 router.post(
   '/:deviceId/control/mode',

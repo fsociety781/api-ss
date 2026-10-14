@@ -255,6 +255,13 @@ exports.DeviceController = {
         if (!device) {
             throw new errors_1.NotFoundError(`Device "${deviceId}" not found`);
         }
+        // Ownership check if user is a farmer
+        if (req.user &&
+            req.user.role !== 'ADMIN' &&
+            req.user.role !== 'TECHNICIAN' &&
+            device.farmerId !== req.user.id) {
+            throw new errors_1.ForbiddenError('Anda tidak memiliki akses ke perangkat ini');
+        }
         api_response_1.ApiResponse.success(res, formatDevice(device));
     },
     /**
@@ -307,6 +314,12 @@ exports.DeviceController = {
         });
         if (!device) {
             throw new errors_1.NotFoundError('Device tidak ditemukan');
+        }
+        // Only Admin or Technician can delete devices
+        if (req.user &&
+            req.user.role !== 'ADMIN' &&
+            req.user.role !== 'TECHNICIAN') {
+            throw new errors_1.ForbiddenError('Hanya admin atau teknisi yang dapat menghapus perangkat');
         }
         await prismaConfig_1.prisma.device.delete({
             where: { id: device.id },

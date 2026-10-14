@@ -26,12 +26,14 @@ router.post(
   asyncHandler(DeviceController.unpairDevice),
 );
 
-// Device detail, creation, deletion
+// Device detail (requires auth)
 router.get('/:deviceId', optionalAuth, asyncHandler(DeviceController.getDevice));
-router.post('/', asyncHandler(DeviceController.createDevice));
-router.delete('/:deviceId', asyncHandler(DeviceController.deleteDevice));
 
-// IoT ESP32 Telemetry & Heartbeat
+// Device creation & deletion (requires auth — SECURITY FIX)
+router.post('/', authMiddleware, asyncHandler(DeviceController.createDevice));
+router.delete('/:deviceId', authMiddleware, asyncHandler(DeviceController.deleteDevice));
+
+// IoT ESP32 Telemetry & Heartbeat (device-to-server, authenticated via activation code in body)
 router.post('/telemetry', asyncHandler(DeviceController.ingestTelemetry));
 router.post('/heartbeat', asyncHandler(DeviceController.heartbeat));
 

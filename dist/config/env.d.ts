@@ -2,9 +2,9 @@ import 'dotenv/config';
 import { z } from 'zod';
 declare const envSchema: z.ZodObject<{
     NODE_ENV: z.ZodDefault<z.ZodEnum<{
+        production: "production";
         development: "development";
         test: "test";
-        production: "production";
     }>>;
     PORT: z.ZodDefault<z.ZodCoercedNumber<unknown>>;
     DATABASE_URL: z.ZodString;
@@ -12,7 +12,7 @@ declare const envSchema: z.ZodObject<{
     DEFAULT_TECHNICIAN_PHONE: z.ZodDefault<z.ZodString>;
     DEFAULT_TECHNICIAN_EMAIL: z.ZodDefault<z.ZodString>;
     DEFAULT_TECHNICIAN_PASSWORD: z.ZodDefault<z.ZodString>;
-    JWT_SECRET: z.ZodDefault<z.ZodString>;
+    JWT_SECRET: z.ZodString | z.ZodDefault<z.ZodString>;
     JWT_EXPIRES_IN: z.ZodDefault<z.ZodString>;
     MQTT_BROKER_URL: z.ZodDefault<z.ZodString>;
     MQTT_CLIENT_ID: z.ZodDefault<z.ZodString>;
@@ -29,7 +29,7 @@ declare const envSchema: z.ZodObject<{
     }>>;
 }, z.core.$strip>;
 export declare const env: {
-    NODE_ENV: "development" | "test" | "production";
+    NODE_ENV: "production" | "development" | "test";
     PORT: number;
     DATABASE_URL: string;
     DEFAULT_TECHNICIAN_NAME: string;

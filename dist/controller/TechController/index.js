@@ -11,6 +11,7 @@ const prismaConfig_1 = require("../../bin/prismaConfig");
 const api_response_1 = require("../../utils/api-response");
 const errors_1 = require("../../utils/errors");
 const client_1 = require("../../src/generated/prisma/client");
+const validation_1 = require("../../utils/validation");
 const createDeviceSchema = zod_1.z.object({
     serialNumber: zod_1.z.string().min(3, 'Serial number minimal 3 karakter'),
     activationCode: zod_1.z
@@ -44,10 +45,7 @@ const createAdminSchema = zod_1.z.object({
     fullName: zod_1.z.string().min(2, 'Nama lengkap admin wajib diisi'),
     phoneNumber: zod_1.z.string().min(8, 'Nomor HP tidak valid'),
     email: zod_1.z.string().email('Format email tidak valid').optional(),
-    defaultPassword: zod_1.z
-        .string()
-        .min(8, 'Password default minimal 8 karakter')
-        .default('AdminShroomSync123!'),
+    defaultPassword: validation_1.passwordSchema.default('AdminShroomSync123!'),
 });
 const updateAdminStatusSchema = zod_1.z.object({
     status: zod_1.z.enum(['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE']),

@@ -5,8 +5,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ensureDefaultTechnician = ensureDefaultTechnician;
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const env_1 = require("../bin/env");
+const env_1 = require("../config/env");
 const prismaConfig_1 = require("../bin/prismaConfig");
+const logger_1 = require("../utils/logger");
 async function ensureDefaultTechnician() {
     const technicianExists = await prismaConfig_1.prisma.user.findFirst({
         where: {
@@ -55,6 +56,6 @@ async function ensureDefaultTechnician() {
             activatedAt: new Date(),
         },
     });
-    console.info('Akun teknisi awal berhasil dibuat');
+    logger_1.logger.info('Akun teknisi awal berhasil dibuat');
 }
 //# sourceMappingURL=ensure-default-technician.js.map

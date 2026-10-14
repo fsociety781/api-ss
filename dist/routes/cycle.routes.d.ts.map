@@ -1,1 +1,1 @@
-{"version":3,"file":"cycle.routes.d.ts","sourceRoot":"","sources":["../../routes/cycle.routes.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAI1C,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAoDxC,eAAe,MAAM,CAAC"}
+{"version":3,"file":"cycle.routes.d.ts","sourceRoot":"","sources":["../../routes/cycle.routes.ts"],"names":[],"mappings":"AAAA,OAAgB,EAAE,MAAM,EAAE,MAAM,SAAS,CAAC;AAK1C,QAAA,MAAM,MAAM,EAAE,MAAyB,CAAC;AAuDxC,eAAe,MAAM,CAAC"}

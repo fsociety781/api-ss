@@ -5,8 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const CycleController_1 = require("../controller/CycleController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
 const async_handler_1 = require("../utils/async-handler");
 const router = express_1.default.Router();
+// All cycle routes require authentication (SECURITY FIX)
+router.use(authMiddleware_1.authMiddleware);
 router.get('/:deviceId/cycles', (0, async_handler_1.asyncHandler)(CycleController_1.CycleController.listCycles));
 router.post('/:deviceId/cycles', (0, async_handler_1.asyncHandler)(CycleController_1.CycleController.createCycle));
 router.get('/:deviceId/cycles/:cycleId', (0, async_handler_1.asyncHandler)(CycleController_1.CycleController.getCycle));

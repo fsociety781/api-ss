@@ -1,7 +1,8 @@
 import bcrypt from 'bcrypt';
 
-import { env } from '../bin/env';
+import { env } from '../config/env';
 import { prisma } from '../bin/prismaConfig';
+import { logger } from '../utils/logger';
 
 export async function ensureDefaultTechnician(): Promise<void> {
   const technicianExists = await prisma.user.findFirst({
@@ -62,5 +63,5 @@ export async function ensureDefaultTechnician(): Promise<void> {
     },
   });
 
-  console.info('Akun teknisi awal berhasil dibuat');
+  logger.info('Akun teknisi awal berhasil dibuat');
 }

@@ -5,8 +5,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const ControlController_1 = require("../controller/ControlController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
 const async_handler_1 = require("../utils/async-handler");
 const router = express_1.default.Router();
+// All control routes require authentication (SECURITY FIX)
+router.use(authMiddleware_1.authMiddleware);
 router.post('/:deviceId/control/mode', (0, async_handler_1.asyncHandler)(ControlController_1.ControlController.changeControlMode));
 router.post('/:deviceId/setpoint', (0, async_handler_1.asyncHandler)(ControlController_1.ControlController.updateSetpoint));
 router.post('/:deviceId/timer', (0, async_handler_1.asyncHandler)(ControlController_1.ControlController.updateTimer));

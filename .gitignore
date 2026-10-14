@@ -1,5 +1,45 @@
-node_modules
-# Keep environment variables out of version control
-.env
+# Dependencies
+node_modules/
 
-/generated/prisma
+# Build output
+dist/
+
+# Generated Prisma Client
+src/generated/
+
+# Environment variables (keep only example)
+.env
+.env.local
+.env.*.local
+.env.production
+.env.staging
+!.env.example
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+
+# IDE & Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.windsurf/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Docker volumes
+mosquitto/data/
+mosquitto/log/
+
+# Test coverage
+coverage/
+
+# Temporary files
+*.tmp
+*.bak

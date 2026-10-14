@@ -1,8 +1,12 @@
 import express, { Router } from 'express';
 import { TelemetryController } from '../controller/TelemetryController';
+import { authMiddleware } from '../middleware/authMiddleware';
 import { asyncHandler } from '../utils/async-handler';
 
 const router: Router = express.Router();
+
+// All telemetry routes require authentication (SECURITY FIX)
+router.use(authMiddleware);
 
 router.get(
   '/:deviceId/telemetry/sensor',

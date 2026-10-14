@@ -10,19 +10,20 @@ const prismaConfig_1 = require("../../bin/prismaConfig");
 const api_response_1 = require("../../utils/api-response");
 const errors_1 = require("../../utils/errors");
 const token_1 = require("../../utils/token");
+const validation_1 = require("../../utils/validation");
 const loginSchema = zod_1.z.object({
     identifier: zod_1.z.string().min(1, 'Nomor HP atau email wajib diisi'),
-    password: zod_1.z.string().min(1, 'Password wajib diisi'),
+    password: validation_1.loginPasswordSchema,
 });
 const onboardingSchema = zod_1.z.object({
     currentPassword: zod_1.z.string().min(1, 'Password lama/default wajib diisi'),
-    newPassword: zod_1.z.string().min(8, 'Password baru minimal 8 karakter'),
+    newPassword: validation_1.passwordSchema,
     fullName: zod_1.z.string().min(2, 'Nama lengkap wajib diisi').optional(),
     email: zod_1.z.string().email('Format email tidak valid').optional(),
 });
 const changePasswordSchema = zod_1.z.object({
     oldPassword: zod_1.z.string().min(1, 'Password lama wajib diisi'),
-    newPassword: zod_1.z.string().min(8, 'Password baru minimal 8 karakter'),
+    newPassword: validation_1.passwordSchema,
 });
 exports.AuthController = {
     login: async (req, res) => {

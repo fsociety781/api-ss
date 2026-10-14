@@ -9,15 +9,13 @@ import {
   UnauthorizedError,
 } from '../../utils/errors';
 import { DeviceStatus, UserStatus } from '../../src/generated/prisma/client';
+import { passwordSchema } from '../../utils/validation';
 
 const createFarmerSchema = z.object({
   fullName: z.string().min(2, 'Nama lengkap petani wajib diisi'),
   phoneNumber: z.string().min(8, 'Nomor HP tidak valid'),
   email: z.string().email('Format email tidak valid').optional(),
-  defaultPassword: z
-    .string()
-    .min(8, 'Password default minimal 8 karakter')
-    .default('PetaniJamur123!'),
+  defaultPassword: passwordSchema.default('PetaniJamur123!'),
 });
 
 const updateFarmerSchema = z.object({

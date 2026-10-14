@@ -42,7 +42,7 @@ export declare const ControlController: {
     controlPump: (req: Request, res: Response) => Promise<void>;
     /**
      * POST /api/v1/devices/:deviceId/actuator/fan
-     * { on: boolean }
+     * { on: boolean } or { state: "ON"|"OFF" }
      */
     controlFan: (req: Request, res: Response) => Promise<void>;
 };

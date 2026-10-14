@@ -7,6 +7,8 @@ const express_1 = __importDefault(require("express"));
 const prismaConfig_1 = require("../bin/prismaConfig");
 const mqtt_service_1 = require("../services/mqtt.service");
 const env_1 = require("../config/env");
+const app_info_1 = require("../config/app-info");
+const api_response_1 = require("../utils/api-response");
 const router = express_1.default.Router();
 router.get('/', async (_req, res) => {
     const startTime = Date.now();
@@ -18,7 +20,7 @@ router.get('/', async (_req, res) => {
         dbLatencyMs = Date.now() - dbStart;
         dbStatus = 'connected';
     }
-    catch (err) {
+    catch {
         dbStatus = 'error';
     }
     const mqttConnected = mqtt_service_1.mqttService.getConnected();
@@ -26,8 +28,8 @@ router.get('/', async (_req, res) => {
     const memUsage = process.memoryUsage();
     const healthData = {
         status: isHealthy ? 'healthy' : 'degraded',
-        service: 'ShroomSync IoT API',
-        version: '2.0.0',
+        service: app_info_1.APP_INFO.serviceName,
+        version: app_info_1.APP_INFO.version,
         timestamp: new Date().toISOString(),
         uptimeSeconds: Math.floor(process.uptime()),
         environment: env_1.env.NODE_ENV,
@@ -51,7 +53,12 @@ router.get('/', async (_req, res) => {
         },
         totalCheckDurationMs: Date.now() - startTime,
     };
-    res.status(isHealthy ? 200 : 503).json(healthData);
+    if (isHealthy) {
+        api_response_1.ApiResponse.success(res, healthData, 'Health check passed', 200);
+    }
+    else {
+        api_response_1.ApiResponse.error(res, 'Health check degraded', 503, healthData, 'SERVICE_DEGRADED');
+    }
 });
 exports.default = router;
 //# sourceMappingURL=health.routes.js.map

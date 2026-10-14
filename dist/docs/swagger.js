@@ -6,12 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.swaggerRouter = void 0;
 const swagger_ui_express_1 = __importDefault(require("swagger-ui-express"));
 const express_1 = require("express");
+const app_info_1 = require("../config/app-info");
 exports.swaggerRouter = (0, express_1.Router)();
 const openApiSpec = {
     openapi: '3.0.3',
     info: {
         title: '🍄 ShroomSync Backend API',
-        version: '2.0.0',
+        version: app_info_1.APP_INFO.version,
         description: `
 **Dokumentasi Resmi ShroomSync Enterprise IoT API Service**
 
@@ -172,6 +173,8 @@ Mendukung multi-role (*FARMER, TECHNICIAN, ADMIN*), kontrol aktuator terotomatis
         { name: 'Telemetri', description: 'Pembacaan Sensor dan Log Riwayat ESP32' },
         { name: 'Siklus & Panen', description: 'Siklus Budidaya, Catatan Panen, & Analisis Produktivitas' },
         { name: 'Farmer Dashboard', description: 'Preset Varietas Cerdas & Ringkasan Petani' },
+        { name: 'Fitur Admin', description: 'Manajemen Petani & Penugasan Kumbung' },
+        { name: 'Fitur Teknisi', description: 'Provisioning Hardware ESP32 & Manajemen Admin' },
         { name: 'Sistem & Health', description: 'Status Kesehatan Layanan, Database & MQTT' },
     ],
     paths: {
@@ -447,6 +450,139 @@ Mendukung multi-role (*FARMER, TECHNICIAN, ADMIN*), kontrol aktuator terotomatis
                 summary: 'Dashboard terpadu operasional petani',
                 security: [{ BearerAuth: [] }],
                 responses: { 200: { description: 'Ringkasan perangkat, telemetri, dan siklus aktif petani' } },
+            },
+        },
+        '/admin/dashboard': {
+            get: {
+                tags: ['Fitur Admin'],
+                summary: 'Dashboard statistik ekosistem petani & perangkat',
+                security: [{ BearerAuth: [] }],
+                responses: { 200: { description: 'Statistik ekosistem petani berhasil diambil' } },
+            },
+        },
+        '/admin/farmers': {
+            get: {
+                tags: ['Fitur Admin'],
+                summary: 'Daftar semua akun petani binaan',
+                security: [{ BearerAuth: [] }],
+                responses: { 200: { description: 'Daftar petani' } },
+            },
+            post: {
+                tags: ['Fitur Admin'],
+                summary: 'Pendaftaran / Registrasi akun petani baru',
+                security: [{ BearerAuth: [] }],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['fullName', 'phoneNumber', 'password'],
+                                properties: {
+                                    fullName: { type: 'string', example: 'Pak Supriadi' },
+                                    phoneNumber: { type: 'string', example: '081234567899' },
+                                    email: { type: 'string', example: 'supriadi@shroomsync.id' },
+                                    password: { type: 'string', example: 'PetaniAman123!' },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: { 201: { description: 'Akun petani berhasil dibuat' } },
+            },
+        },
+        '/admin/devices/assign': {
+            post: {
+                tags: ['Fitur Admin'],
+                summary: 'Tugaskan / pasangkan perangkat ke akun petani',
+                security: [{ BearerAuth: [] }],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['deviceId', 'farmerId'],
+                                properties: {
+                                    deviceId: { type: 'string', example: 'uuid-device-atau-serial' },
+                                    farmerId: { type: 'string', example: 'uuid-farmer' },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: { 200: { description: 'Perangkat berhasil ditautkan ke petani' } },
+            },
+        },
+        '/technician/dashboard': {
+            get: {
+                tags: ['Fitur Teknisi'],
+                summary: 'Dashboard diagnostik hardware & infrastruktur IoT',
+                security: [{ BearerAuth: [] }],
+                responses: { 200: { description: 'Diagnostik teknisi' } },
+            },
+        },
+        '/technician/devices': {
+            get: {
+                tags: ['Fitur Teknisi'],
+                summary: 'Inventaris seluruh perangkat keras mikrokontroler ESP32',
+                security: [{ BearerAuth: [] }],
+                responses: { 200: { description: 'Daftar seluruh perangkat sistem' } },
+            },
+            post: {
+                tags: ['Fitur Teknisi'],
+                summary: 'Provisioning perangkat keras baru & generate serial/activation code',
+                security: [{ BearerAuth: [] }],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['serialNumber', 'model'],
+                                properties: {
+                                    serialNumber: { type: 'string', example: 'SS-0526-002' },
+                                    name: { type: 'string', example: 'Kumbung Timur - Shiitake' },
+                                    model: { type: 'string', example: 'ShroomSync Smart Node v2' },
+                                    hardwareVersion: { type: 'string', example: '2.0' },
+                                    firmwareVersion: { type: 'string', example: '2.1.0' },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: { 201: { description: 'Hardware baru berhasil didaftarkan' } },
+            },
+        },
+        '/technician/admins': {
+            get: {
+                tags: ['Fitur Teknisi'],
+                summary: 'Daftar akun Administrator sistem',
+                security: [{ BearerAuth: [] }],
+                responses: { 200: { description: 'Daftar admin' } },
+            },
+            post: {
+                tags: ['Fitur Teknisi'],
+                summary: 'Buat akun Administrator baru',
+                security: [{ BearerAuth: [] }],
+                requestBody: {
+                    required: true,
+                    content: {
+                        'application/json': {
+                            schema: {
+                                type: 'object',
+                                required: ['fullName', 'phoneNumber', 'password'],
+                                properties: {
+                                    fullName: { type: 'string', example: 'Admin Regional Jabar' },
+                                    phoneNumber: { type: 'string', example: '081299998888' },
+                                    email: { type: 'string', example: 'admin.jabar@shroomsync.id' },
+                                    password: { type: 'string', example: 'AdminKuat123!' },
+                                },
+                            },
+                        },
+                    },
+                },
+                responses: { 201: { description: 'Akun admin berhasil dibuat' } },
             },
         },
     },

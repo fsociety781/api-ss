@@ -1,0 +1,17 @@
+node_modules
+dist
+logs
+*.log
+npm-debug.log*
+.git
+.github
+.vscode
+.idea
+.env
+.env.*
+!.env.example
+tests
+coverage
+README.md
+API_DOCUMENTATION.md
+FRONTEND_INTEGRATION_GUIDE.md

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.env = void 0;
 require("dotenv/config");
 const zod_1 = require("zod");
+const isProduction = process.env.NODE_ENV === 'production';
 const envSchema = zod_1.z.object({
     NODE_ENV: zod_1.z
         .enum(['development', 'test', 'production'])
@@ -26,11 +27,10 @@ const envSchema = zod_1.z.object({
         .string()
         .min(8, 'Password teknisi minimal 8 karakter')
         .default('Password123!'),
-    // JWT Configuration
-    JWT_SECRET: zod_1.z
-        .string()
-        .min(16, 'JWT_SECRET minimal 16 karakter')
-        .default('shroomsync-dev-super-secret-jwt-key-2026!'),
+    // JWT Configuration — NO default secret in production to prevent token forgery
+    JWT_SECRET: isProduction
+        ? zod_1.z.string().min(32, 'JWT_SECRET di production harus minimal 32 karakter dan WAJIB diset secara eksplisit')
+        : zod_1.z.string().min(16).default('shroomsync-dev-only-secret-not-for-prod'),
     JWT_EXPIRES_IN: zod_1.z
         .string()
         .default('7d'),
@@ -62,6 +62,12 @@ if (!parsedEnv.success) {
     const errors = parsedEnv.error.flatten().fieldErrors;
     console.error('\x1b[31m[CRITICAL] Konfigurasi environment (.env) tidak valid:\x1b[0m', JSON.stringify(errors, null, 2));
     throw new Error('Environment configuration invalid. Please check your .env file.');
+}
+// Additional production safety checks
+if (parsedEnv.data.NODE_ENV === 'production') {
+    if (parsedEnv.data.CORS_ORIGIN === '*') {
+        console.warn('\x1b[33m[WARNING] CORS_ORIGIN diset ke "*" di production. Pertimbangkan untuk membatasi origin.\x1b[0m');
+    }
 }
 exports.env = parsedEnv.data;
 //# sourceMappingURL=env.js.map

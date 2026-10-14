@@ -1,6 +1,7 @@
 declare class MqttService {
     private client;
     private isConnected;
+    private reconnectAttempts;
     getConnected(): boolean;
     initialize(): void;
     private handleMessage;

@@ -6,12 +6,18 @@ import {
   ConflictError,
   NotFoundError,
   UnauthorizedError,
+  ForbiddenError,
 } from '../../utils/errors';
 import {
+  Actuator,
   ActuatorState,
   ActuatorType,
+  Device,
+  DeviceSetting,
   DeviceStatus,
   OwnershipType,
+  Prisma,
+  SensorReading,
 } from '../../src/generated/prisma/client';
 
 const activateDeviceSchema = z.object({
@@ -38,17 +44,23 @@ const telemetryIngestSchema = z.object({
     .optional(),
 });
 
-function formatDevice(device: any) {
+type DevicePayload = Device & {
+  setting?: DeviceSetting | null;
+  actuators?: Actuator[];
+  sensorReadings?: SensorReading[];
+};
+
+function formatDevice(device: DevicePayload) {
   const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
   const isOnline = device.lastSeenAt
     ? new Date(device.lastSeenAt) >= tenMinutesAgo
     : false;
 
   const pumpActuator = device.actuators?.find(
-    (a: any) => a.type === 'PUMP' || a.name?.toLowerCase().includes('pump'),
+    (a) => a.type === 'PUMP' || a.name?.toLowerCase().includes('pump'),
   );
   const fanActuator = device.actuators?.find(
-    (a: any) =>
+    (a) =>
       a.type === 'MISTING' ||
       a.type === 'FLOOR_WATERING' ||
       a.name?.toLowerCase().includes('fan'),
@@ -109,7 +121,7 @@ export const DeviceController = {
     const isAdmin =
       req.user?.role === 'ADMIN' || req.user?.role === 'TECHNICIAN';
 
-    const where: any = {};
+    const where: Prisma.DeviceWhereInput = {};
     if (userId && !isAdmin) {
       where.farmerId = userId;
     }
@@ -314,6 +326,16 @@ export const DeviceController = {
       throw new NotFoundError(`Device "${deviceId}" not found`);
     }
 
+    // Ownership check if user is a farmer
+    if (
+      req.user &&
+      req.user.role !== 'ADMIN' &&
+      req.user.role !== 'TECHNICIAN' &&
+      device.farmerId !== req.user.id
+    ) {
+      throw new ForbiddenError('Anda tidak memiliki akses ke perangkat ini');
+    }
+
     ApiResponse.success(res, formatDevice(device));
   },
 
@@ -380,6 +402,17 @@ export const DeviceController = {
 
     if (!device) {
       throw new NotFoundError('Device tidak ditemukan');
+    }
+
+    // Only Admin or Technician can delete devices
+    if (
+      req.user &&
+      req.user.role !== 'ADMIN' &&
+      req.user.role !== 'TECHNICIAN'
+    ) {
+      throw new ForbiddenError(
+        'Hanya admin atau teknisi yang dapat menghapus perangkat',
+      );
     }
 
     await prisma.device.delete({

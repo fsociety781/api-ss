@@ -2,31 +2,13 @@ import { Request, Response } from 'express';
 import { prisma } from '../../bin/prismaConfig';
 import { mqttService } from '../../services/mqtt.service';
 import { ApiResponse } from '../../utils/api-response';
-import { NotFoundError } from '../../utils/errors';
+import { findDeviceOrFail } from '../../utils/find-device';
 import {
   ActuatorState,
   ControlAction,
   ControlMode,
   ControlSource,
 } from '../../src/generated/prisma/client';
-
-async function findDevice(deviceId: string) {
-  const device = await prisma.device.findFirst({
-    where: {
-      OR: [{ id: deviceId }, { serialNumber: deviceId }],
-    },
-    include: {
-      setting: true,
-      actuators: true,
-    },
-  });
-
-  if (!device) {
-    throw new NotFoundError(`Perangkat "${deviceId}" tidak ditemukan`);
-  }
-
-  return device;
-}
 
 export const ControlController = {
   /**
@@ -35,7 +17,10 @@ export const ControlController = {
    */
   changeControlMode: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const modeRaw = req.body.mode;
     let targetMode: ControlMode = ControlMode.AUTO;
@@ -79,12 +64,19 @@ export const ControlController = {
    */
   updateSetpoint: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
-    const minS = req.body.MinS ?? req.body.minTemperature;
-    const midS = req.body.MidS ?? req.body.maxTemperature;
-    const minK = req.body.MinK ?? req.body.minHumidity;
-    const midK = req.body.MidK ?? req.body.maxHumidity;
+    const minS =
+      req.body.MinS ?? req.body.minTemperature ?? req.body.minSuhu;
+    const midS =
+      req.body.MidS ?? req.body.maxTemperature ?? req.body.midSuhu;
+    const minK =
+      req.body.MinK ?? req.body.minHumidity ?? req.body.minKelembaban;
+    const midK =
+      req.body.MidK ?? req.body.maxHumidity ?? req.body.midKelembaban;
 
     const updatedSetting = await prisma.deviceSetting.upsert({
       where: { deviceId: device.id },
@@ -125,7 +117,10 @@ export const ControlController = {
    */
   updateTimer: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const menit = Number(req.body.Menit ?? req.body.minute ?? 0);
     const detik = Number(req.body.Detik ?? req.body.second ?? 0);
@@ -159,7 +154,10 @@ export const ControlController = {
    */
   updateFloorTimer: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const flrMenit = Number(req.body.FlrMenit ?? req.body.minute ?? 0);
     const flrDetik = Number(req.body.FlrDetik ?? req.body.second ?? 0);
@@ -181,7 +179,10 @@ export const ControlController = {
    */
   updateSchedule: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const topic = `${device.serialNumber}/cmd/schedule/update`;
     const payload = req.body;
@@ -200,7 +201,10 @@ export const ControlController = {
    */
   updateFloorSchedule: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const topic = `${device.serialNumber}/cmd/schedule/floor`;
     const payload = {
@@ -222,7 +226,10 @@ export const ControlController = {
    */
   changeScheduleMode: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
 
     const topic = `${device.serialNumber}/cmd/schedule/mode`;
     const payload = { mode: Number(req.body.mode ?? 1) };
@@ -241,8 +248,14 @@ export const ControlController = {
    */
   controlPump: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
-    const isOn = Boolean(req.body.on);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
+    const isOn =
+      req.body.state !== undefined
+        ? req.body.state === 'ON' || req.body.state === true || req.body.state === 1
+        : Boolean(req.body.on === true || req.body.on === 'true' || req.body.on === 1);
 
     const pumpActuator = device.actuators.find(
       (a) => a.type === 'PUMP' || a.name.toLowerCase().includes('pump'),
@@ -272,7 +285,7 @@ export const ControlController = {
     }
 
     const topic = `${device.serialNumber}/cmd/actuator/pump`;
-    const payload = { pump: isOn ? 1 : 0, on: isOn };
+    const payload = { pump: isOn ? 1 : 0, on: isOn, state: isOn ? 'ON' : 'OFF' };
     const mqttPublished = mqttService.publish(topic, payload);
 
     ApiResponse.success(
@@ -284,12 +297,18 @@ export const ControlController = {
 
   /**
    * POST /api/v1/devices/:deviceId/actuator/fan
-   * { on: boolean }
+   * { on: boolean } or { state: "ON"|"OFF" }
    */
   controlFan: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
-    const device = await findDevice(deviceId);
-    const isOn = Boolean(req.body.on);
+    const device = await findDeviceOrFail(deviceId, {
+      userId: req.user?.id,
+      userRole: req.user?.role,
+    });
+    const isOn =
+      req.body.state !== undefined
+        ? req.body.state === 'ON' || req.body.state === true || req.body.state === 1
+        : Boolean(req.body.on === true || req.body.on === 'true' || req.body.on === 1);
 
     const fanActuator = device.actuators.find(
       (a) =>

@@ -5,6 +5,7 @@ const zod_1 = require("zod");
 const prismaConfig_1 = require("../../bin/prismaConfig");
 const api_response_1 = require("../../utils/api-response");
 const errors_1 = require("../../utils/errors");
+const find_device_1 = require("../../utils/find-device");
 const MS_PER_DAY = 24 * 60 * 60 * 1000;
 const createCycleSchema = zod_1.z.object({
     name: zod_1.z.string().optional(),
@@ -42,24 +43,16 @@ const updateHarvestSchema = zod_1.z.object({
     grade: zod_1.z.string().optional(),
     notes: zod_1.z.string().optional(),
 });
-async function findDevice(deviceId) {
-    const device = await prismaConfig_1.prisma.device.findFirst({
-        where: {
-            OR: [{ id: deviceId }, { serialNumber: deviceId }],
-        },
-    });
-    if (!device) {
-        throw new errors_1.NotFoundError(`Perangkat "${deviceId}" tidak ditemukan`);
-    }
-    return device;
-}
 exports.CycleController = {
     // ==========================================
     // CULTIVATION CYCLES
     // ==========================================
     listCycles: async (req, res) => {
         const { deviceId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const status = req.query.status;
         const limit = Math.min(parseInt(req.query.limit || '50', 10), 100);
         const offset = parseInt(req.query.offset || '0', 10);
@@ -85,7 +78,10 @@ exports.CycleController = {
     },
     createCycle: async (req, res) => {
         const { deviceId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const parsed = createCycleSchema.parse(req.body);
         if (parsed.expectedEndedAt && parsed.expectedEndedAt < parsed.startedAt) {
             throw new errors_1.BadRequestError('Tanggal perkiraan selesai (expectedEndedAt) harus setelah tanggal mulai');
@@ -93,7 +89,8 @@ exports.CycleController = {
         const cycle = await prismaConfig_1.prisma.cultivationCycle.create({
             data: {
                 deviceId: device.id,
-                name: parsed.name ?? `Siklus ${parsed.mushroomType} - ${new Date().toLocaleDateString('id-ID')}`,
+                name: parsed.name ??
+                    `Siklus ${parsed.mushroomType} - ${new Date().toLocaleDateString('id-ID')}`,
                 mushroomType: parsed.mushroomType,
                 strain: parsed.strain ?? null,
                 baglogCount: parsed.baglogCount ?? null,
@@ -107,7 +104,10 @@ exports.CycleController = {
     },
     getCycle: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const cycle = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
             include: {
@@ -123,7 +123,10 @@ exports.CycleController = {
     },
     updateCycle: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const parsed = updateCycleSchema.parse(req.body);
         const existing = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
@@ -153,7 +156,10 @@ exports.CycleController = {
     },
     completeCycle: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const parsed = completeCycleSchema.parse(req.body);
         const existing = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
@@ -177,7 +183,10 @@ exports.CycleController = {
     },
     deleteCycle: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const existing = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
         });
@@ -194,7 +203,10 @@ exports.CycleController = {
     // ==========================================
     getCycleSummary: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const cycle = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
             include: {
@@ -286,7 +298,10 @@ exports.CycleController = {
     // ==========================================
     listHarvests: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const cycle = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
         });
@@ -305,7 +320,10 @@ exports.CycleController = {
     },
     addHarvest: async (req, res) => {
         const { deviceId, cycleId } = req.params;
-        const device = await findDevice(deviceId);
+        const device = await (0, find_device_1.findDeviceOrFail)(deviceId, {
+            userId: req.user?.id,
+            userRole: req.user?.role,
+        });
         const parsed = createHarvestSchema.parse(req.body);
         const cycle = await prismaConfig_1.prisma.cultivationCycle.findFirst({
             where: { id: cycleId, deviceId: device.id },
@@ -332,11 +350,18 @@ exports.CycleController = {
     updateHarvest: async (req, res) => {
         const { cycleId, harvestId } = req.params;
         const parsed = updateHarvestSchema.parse(req.body);
+        // Verify ownership via cycle -> device
         const existing = await prismaConfig_1.prisma.harvestRecord.findFirst({
             where: { id: harvestId, cycleId },
+            include: { cycle: { include: { device: true } } },
         });
         if (!existing) {
             throw new errors_1.NotFoundError('Catatan panen tidak ditemukan');
+        }
+        if (req.user?.role !== 'ADMIN' &&
+            req.user?.role !== 'TECHNICIAN' &&
+            existing.cycle.device.farmerId !== req.user?.id) {
+            throw new errors_1.ForbiddenError('Anda tidak memiliki akses untuk mengubah catatan panen ini');
         }
         const updated = await prismaConfig_1.prisma.harvestRecord.update({
             where: { id: harvestId },
@@ -362,9 +387,15 @@ exports.CycleController = {
         const { cycleId, harvestId } = req.params;
         const existing = await prismaConfig_1.prisma.harvestRecord.findFirst({
             where: { id: harvestId, cycleId },
+            include: { cycle: { include: { device: true } } },
         });
         if (!existing) {
             throw new errors_1.NotFoundError('Catatan panen tidak ditemukan');
+        }
+        if (req.user?.role !== 'ADMIN' &&
+            req.user?.role !== 'TECHNICIAN' &&
+            existing.cycle.device.farmerId !== req.user?.id) {
+            throw new errors_1.ForbiddenError('Anda tidak memiliki akses untuk menghapus catatan panen ini');
         }
         await prismaConfig_1.prisma.harvestRecord.delete({
             where: { id: harvestId },

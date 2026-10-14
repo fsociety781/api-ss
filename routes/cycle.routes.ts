@@ -1,8 +1,12 @@
 import express, { Router } from 'express';
 import { CycleController } from '../controller/CycleController';
+import { authMiddleware } from '../middleware/authMiddleware';
 import { asyncHandler } from '../utils/async-handler';
 
 const router: Router = express.Router();
+
+// All cycle routes require authentication (SECURITY FIX)
+router.use(authMiddleware);
 
 router.get('/:deviceId/cycles', asyncHandler(CycleController.listCycles));
 router.post('/:deviceId/cycles', asyncHandler(CycleController.createCycle));

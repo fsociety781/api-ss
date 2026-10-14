@@ -10,6 +10,7 @@ const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
 const env_1 = require("./config/env");
+const app_info_1 = require("./config/app-info");
 const requestLogger_1 = require("./middleware/requestLogger");
 const rateLimiter_1 = require("./middleware/rateLimiter");
 const errorHandler_1 = require("./middleware/errorHandler");
@@ -58,8 +59,8 @@ app.use('/api/v1/health', health_routes_1.default);
 // ── Root Greeting ─────────────────────────────
 app.get('/', (_req, res) => {
     api_response_1.ApiResponse.success(res, {
-        service: 'ShroomSync Enterprise IoT API',
-        version: '2.0.0',
+        service: app_info_1.APP_INFO.serviceName,
+        version: app_info_1.APP_INFO.version,
         status: 'operational',
         documentation: '/api/docs',
         healthCheck: '/api/health',

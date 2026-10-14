@@ -15,6 +15,7 @@ import {
   OwnershipType,
   UserStatus,
 } from '../../src/generated/prisma/client';
+import { passwordSchema } from '../../utils/validation';
 
 const createDeviceSchema = z.object({
   serialNumber: z.string().min(3, 'Serial number minimal 3 karakter'),
@@ -51,10 +52,7 @@ const createAdminSchema = z.object({
   fullName: z.string().min(2, 'Nama lengkap admin wajib diisi'),
   phoneNumber: z.string().min(8, 'Nomor HP tidak valid'),
   email: z.string().email('Format email tidak valid').optional(),
-  defaultPassword: z
-    .string()
-    .min(8, 'Password default minimal 8 karakter')
-    .default('AdminShroomSync123!'),
+  defaultPassword: passwordSchema.default('AdminShroomSync123!'),
 });
 
 const updateAdminStatusSchema = z.object({

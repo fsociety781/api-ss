@@ -6,6 +6,7 @@ import helmet from 'helmet';
 import morgan from 'morgan';
 
 import { env } from './config/env';
+import { APP_INFO } from './config/app-info';
 import { requestLogger } from './middleware/requestLogger';
 import { apiLimiter, authLimiter, actuatorLimiter } from './middleware/rateLimiter';
 import { errorHandler } from './middleware/errorHandler';
@@ -74,8 +75,8 @@ app.get('/', (_req: Request, res: Response) => {
   ApiResponse.success(
     res,
     {
-      service: 'ShroomSync Enterprise IoT API',
-      version: '2.0.0',
+      service: APP_INFO.serviceName,
+      version: APP_INFO.version,
       status: 'operational',
       documentation: '/api/docs',
       healthCheck: '/api/health',
