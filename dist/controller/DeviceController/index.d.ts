@@ -20,6 +20,8 @@ export declare const DeviceController: {
      * POST /api/v1/devices
      */
     createDevice: (req: Request, res: Response) => Promise<void>;
+    getDeviceIdentity: (req: Request, res: Response) => Promise<void>;
+    getNextSerial: (_req: Request, res: Response) => Promise<void>;
     /**
      * DELETE /api/v1/devices/:deviceId
      */

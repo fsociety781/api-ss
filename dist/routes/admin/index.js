@@ -19,6 +19,7 @@ router.post('/farmers', (0, async_handler_1.asyncHandler)(AdminController_1.Admi
 router.get('/farmers', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.listFarmers));
 router.get('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.getFarmerById));
 router.put('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.updateFarmer));
+router.delete('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.deleteFarmer));
 // Device assignment
 router.get('/devices', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.listDevices));
 router.post('/devices/assign', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.assignDevice));

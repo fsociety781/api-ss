@@ -270,6 +270,7 @@ export const AuthController = {
     const updateProfileSchema = z.object({
       fullName: z.string().min(2, 'Nama lengkap minimal 2 karakter').optional(),
       email: z.string().email('Format email tidak valid').optional(),
+      phoneNumber: z.string().min(8, 'Nomor HP minimal 8 digit').optional(),
     });
 
     const parsed = updateProfileSchema.parse(req.body);
@@ -283,11 +284,21 @@ export const AuthController = {
       }
     }
 
+    if (parsed.phoneNumber && parsed.phoneNumber !== req.user.phoneNumber) {
+      const phoneExists = await prisma.user.findUnique({
+        where: { phoneNumber: parsed.phoneNumber },
+      });
+      if (phoneExists && phoneExists.id !== req.user.id) {
+        throw new ConflictError('Nomor HP sudah terdaftar pada akun lain');
+      }
+    }
+
     const updated = await prisma.user.update({
       where: { id: req.user.id },
       data: {
         ...(parsed.fullName !== undefined && { fullName: parsed.fullName }),
         ...(parsed.email !== undefined && { email: parsed.email }),
+        ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber }),
       },
       select: {
         id: true,
@@ -301,5 +312,28 @@ export const AuthController = {
     });
 
     ApiResponse.success(res, updated, 'Profil berhasil diperbarui');
+  },
+
+  updateFcmToken: async (req: Request, res: Response): Promise<void> => {
+    if (!req.user) {
+      throw new UnauthorizedError('Otentikasi diperlukan');
+    }
+
+    const { fcmToken, token } = req.body;
+    const finalToken = (fcmToken || token)?.trim();
+
+    if (!finalToken) {
+      throw new BadRequestError('Token FCM wajib disertakan');
+    }
+
+    await prisma.user.update({
+      where: { id: req.user.id },
+      data: {
+        fcmToken: finalToken,
+        lastFcmTokenAt: new Date(),
+      },
+    });
+
+    ApiResponse.success(res, { success: true }, 'FCM token berhasil didaftarkan');
   },
 };

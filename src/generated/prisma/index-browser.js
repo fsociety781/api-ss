@@ -133,6 +133,8 @@ exports.Prisma.UserScalarFieldEnum = {
   createdById: 'createdById',
   activatedAt: 'activatedAt',
   lastLoginAt: 'lastLoginAt',
+  fcmToken: 'fcmToken',
+  lastFcmTokenAt: 'lastFcmTokenAt',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -145,6 +147,7 @@ exports.Prisma.DeviceScalarFieldEnum = {
   model: 'model',
   hardwareVersion: 'hardwareVersion',
   firmwareVersion: 'firmwareVersion',
+  macAddress: 'macAddress',
   status: 'status',
   ownershipType: 'ownershipType',
   controlMode: 'controlMode',
@@ -152,6 +155,8 @@ exports.Prisma.DeviceScalarFieldEnum = {
   createdById: 'createdById',
   activatedAt: 'activatedAt',
   lastSeenAt: 'lastSeenAt',
+  rssiDbm: 'rssiDbm',
+  uptimeMs: 'uptimeMs',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -247,6 +252,37 @@ exports.Prisma.HarvestRecordScalarFieldEnum = {
   updatedAt: 'updatedAt'
 };
 
+exports.Prisma.FirmwareScalarFieldEnum = {
+  id: 'id',
+  version: 'version',
+  filename: 'filename',
+  originalName: 'originalName',
+  filePath: 'filePath',
+  fileSize: 'fileSize',
+  checksumSha256: 'checksumSha256',
+  hardwareVersion: 'hardwareVersion',
+  changelog: 'changelog',
+  isLatest: 'isLatest',
+  createdById: 'createdById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.OtaLogScalarFieldEnum = {
+  id: 'id',
+  deviceId: 'deviceId',
+  deviceSerialNumber: 'deviceSerialNumber',
+  firmwareId: 'firmwareId',
+  firmwareVersion: 'firmwareVersion',
+  firmwareUrl: 'firmwareUrl',
+  checksumSha256: 'checksumSha256',
+  isBroadcast: 'isBroadcast',
+  status: 'status',
+  triggeredById: 'triggeredById',
+  notes: 'notes',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -333,7 +369,9 @@ exports.Prisma.ModelName = {
   ControlLog: 'ControlLog',
   Schedule: 'Schedule',
   CultivationCycle: 'CultivationCycle',
-  HarvestRecord: 'HarvestRecord'
+  HarvestRecord: 'HarvestRecord',
+  Firmware: 'Firmware',
+  OtaLog: 'OtaLog'
 };
 
 /**

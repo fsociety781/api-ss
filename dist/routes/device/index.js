@@ -13,8 +13,11 @@ router.get('/', authMiddleware_1.optionalAuth, (0, async_handler_1.asyncHandler)
 router.post('/activate', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.activateDevice));
 router.post('/unpair/:deviceId', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.unpairDevice));
 router.post('/:deviceId/unpair', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.unpairDevice));
+// Meaningful serial number recommendation
+router.get('/next-serial', authMiddleware_1.optionalAuth, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.getNextSerial));
 // Device detail (requires auth)
 router.get('/:deviceId', authMiddleware_1.optionalAuth, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.getDevice));
+router.get('/:deviceId/identity', authMiddleware_1.optionalAuth, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.getDeviceIdentity));
 // Device creation & deletion (requires auth — SECURITY FIX)
 router.post('/', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.createDevice));
 router.delete('/:deviceId', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(DeviceController_1.DeviceController.deleteDevice));

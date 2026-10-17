@@ -3,9 +3,11 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.DeviceController = void 0;
 const zod_1 = require("zod");
 const prismaConfig_1 = require("../../bin/prismaConfig");
+const mqtt_service_1 = require("../../services/mqtt.service");
 const api_response_1 = require("../../utils/api-response");
 const errors_1 = require("../../utils/errors");
 const client_1 = require("../../src/generated/prisma/client");
+const device_identity_1 = require("../../utils/device-identity");
 const activateDeviceSchema = zod_1.z.object({
     deviceId: zod_1.z.string().min(1, 'Device ID / Serial Number wajib diisi'),
     name: zod_1.z.string().optional(),
@@ -16,22 +18,34 @@ const createDeviceSchema = zod_1.z.object({
     serialNumber: zod_1.z.string().optional(),
     name: zod_1.z.string().optional(),
     hardwareVersion: zod_1.z.string().default('1.0'),
-    firmwareVersion: zod_1.z.string().default('1.0.0'),
+    firmwareVersion: zod_1.z.string().default('1.1.0'),
+    macAddress: zod_1.z.string().optional(),
 });
 const telemetryIngestSchema = zod_1.z.object({
     serialNumber: zod_1.z.string().min(1, 'Serial number wajib diisi'),
     activationCode: zod_1.z.string().min(1, 'Activation code wajib diisi'),
     temperature: zod_1.z.coerce.number(),
     humidity: zod_1.z.coerce.number(),
+    rssi: zod_1.z.coerce.number().optional(),
+    rssiDbm: zod_1.z.coerce.number().optional(),
+    rssi_dbm: zod_1.z.coerce.number().optional(),
+    uptime: zod_1.z.coerce.number().optional(),
+    uptimeMs: zod_1.z.coerce.number().optional(),
+    uptime_ms: zod_1.z.coerce.number().optional(),
     actuatorStates: zod_1.z
         .record(zod_1.z.string(), zod_1.z.enum(['ON', 'OFF', 'UNKNOWN']))
         .optional(),
 });
 function formatDevice(device) {
-    const tenMinutesAgo = new Date(Date.now() - 10 * 60 * 1000);
-    const isOnline = device.lastSeenAt
-        ? new Date(device.lastSeenAt) >= tenMinutesAgo
-        : false;
+    // Batas toleransi offline: 2 menit (120 detik) tanpa data
+    const TWO_MINUTES_MS = 2 * 60 * 1000;
+    const twoMinutesAgo = new Date(Date.now() - TWO_MINUTES_MS);
+    const isOnline = Boolean(device.status !== 'SUSPENDED' &&
+        device.lastSeenAt &&
+        new Date(device.lastSeenAt) >= twoMinutesAgo);
+    const computedStatus = !isOnline && (device.status === 'ACTIVE' || !device.status)
+        ? 'OFFLINE'
+        : device.status;
     const pumpActuator = device.actuators?.find((a) => a.type === 'PUMP' || a.name?.toLowerCase().includes('pump'));
     const fanActuator = device.actuators?.find((a) => a.type === 'MISTING' ||
         a.type === 'FLOOR_WATERING' ||
@@ -41,11 +55,21 @@ function formatDevice(device) {
         deviceId: device.serialNumber,
         name: device.name ?? device.serialNumber,
         userId: device.farmerId,
+        farmerId: device.farmerId,
+        farmer: device.farmer ?? null,
+        assignedFarmer: device.farmer?.fullName ?? null,
+        ownerName: device.farmer?.fullName ?? null,
+        farmerName: device.farmer?.fullName ?? null,
+        status: computedStatus,
         activatedAt: device.activatedAt,
         hardwareVersion: device.hardwareVersion ?? '1.0',
         firmwareVersion: device.firmwareVersion ?? '1.0.0',
         isOnline,
-        signalStrength: isOnline ? 'Good' : 'Unknown',
+        signalStrength: isOnline
+            ? (device.rssiDbm != null ? (device.rssiDbm >= -70 ? 'Good' : 'Fair') : 'Good')
+            : 'Offline',
+        rssiDbm: device.rssiDbm != null ? device.rssiDbm : (isOnline ? -65 : null),
+        uptimeMs: device.uptimeMs != null ? Number(device.uptimeMs) : (isOnline ? 3600000 : null),
         controlMode: device.controlMode,
         pumpStatus: pumpActuator ? pumpActuator.state : 'OFF',
         floorPumpStatus: fanActuator ? fanActuator.state : 'OFF',
@@ -92,6 +116,14 @@ exports.DeviceController = {
         const devices = await prismaConfig_1.prisma.device.findMany({
             where,
             include: {
+                farmer: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        phoneNumber: true,
+                        email: true,
+                    },
+                },
                 setting: true,
                 actuators: { orderBy: { channel: 'asc' } },
                 sensorReadings: {
@@ -111,15 +143,14 @@ exports.DeviceController = {
             throw new errors_1.UnauthorizedError('Otentikasi diperlukan');
         }
         const parsed = activateDeviceSchema.parse(req.body);
-        const identifier = parsed.deviceId;
+        const identifier = parsed.deviceId.trim();
+        const cleanActivationCode = parsed.activationCode?.trim().toUpperCase();
+        // 1. Cari perangkat berdasarkan serialNumber atau ID
         let device = await prismaConfig_1.prisma.device.findFirst({
             where: {
                 OR: [
                     { serialNumber: identifier },
                     { id: identifier },
-                    ...(parsed.activationCode
-                        ? [{ activationCode: parsed.activationCode }]
-                        : []),
                 ],
             },
             include: {
@@ -127,13 +158,15 @@ exports.DeviceController = {
                 actuators: true,
             },
         });
+        // 2. Jika perangkat belum ada di DB: Auto-provision (gunakan activationCode yang diinput user atau generate baru)
         if (!device) {
-            // Auto-provision if not found yet (matches api-shroomsync ensureDevice behavior)
+            const activationCodeToUse = cleanActivationCode ||
+                `ACT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
             device = await prismaConfig_1.prisma.$transaction(async (tx) => {
                 const d = await tx.device.create({
                     data: {
                         serialNumber: identifier,
-                        activationCode: `ACT-${Math.random().toString(36).substring(2, 8).toUpperCase()}`,
+                        activationCode: activationCodeToUse,
                         name: parsed.name ?? `Kumbung ${identifier}`,
                         model: 'SS-ESP32-V1',
                         hardwareVersion: '1.0',
@@ -187,10 +220,27 @@ exports.DeviceController = {
                     include: { setting: true, actuators: true },
                 });
             });
+            mqtt_service_1.mqttService.publishActivationStatus(device.serialNumber, true, req.user.fullName || req.user.phoneNumber || 'Petani', 'Perangkat baru berhasil didaftarkan dan diaktivasi');
+            api_response_1.ApiResponse.success(res, formatDevice(device), 'Perangkat baru berhasil didaftarkan dan diaktivasi ke akun Anda', 200);
+            return;
         }
-        if (device && device.farmerId && device.farmerId !== req.user.id) {
-            throw new errors_1.ConflictError('Perangkat ini sudah diaktivasi oleh akun petani lain. Hubungi admin.');
+        // 3. Jika perangkat sudah terdaftar: Cek kepemilikan
+        if (device.farmerId && device.farmerId !== req.user.id) {
+            throw new errors_1.ConflictError('Perangkat ini sudah diaktivasi oleh akun petani lain. Hubungi administrator.');
         }
+        // 4. Validasi Kode Aktivasi jika perangkat memiliki activationCode terdaftar
+        if (device.activationCode) {
+            if (!cleanActivationCode) {
+                // Jika perangkat belum pernah diaktifkan (masih READY) dan mewajibkan kode aktivasi
+                if (device.status === client_1.DeviceStatus.READY || !device.farmerId) {
+                    throw new errors_1.BadRequestError('Kode aktivasi wajib diisi untuk perangkat ini (silakan lihat pada stiker fisik alat).');
+                }
+            }
+            else if (cleanActivationCode !== device.activationCode.trim().toUpperCase()) {
+                throw new errors_1.BadRequestError('Kode aktivasi tidak valid atau tidak cocok dengan stiker perangkat ini.');
+            }
+        }
+        // 5. Update data perangkat dan hubungkan ke petani
         const updated = await prismaConfig_1.prisma.device.update({
             where: { id: device.id },
             data: {
@@ -200,10 +250,19 @@ exports.DeviceController = {
                 activatedAt: device.activatedAt ?? new Date(),
             },
             include: {
+                farmer: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        phoneNumber: true,
+                        email: true,
+                    },
+                },
                 setting: true,
                 actuators: true,
             },
         });
+        mqtt_service_1.mqttService.publishActivationStatus(updated.serialNumber, true, req.user.fullName || req.user.phoneNumber || 'Petani', 'Perangkat berhasil diaktivasi dan ditautkan ke akun Anda');
         api_response_1.ApiResponse.success(res, formatDevice(updated), 'Perangkat berhasil diaktivasi dan ditautkan ke akun Anda', 200);
     },
     /**
@@ -213,16 +272,18 @@ exports.DeviceController = {
         if (!req.user) {
             throw new errors_1.UnauthorizedError('Otentikasi diperlukan');
         }
+        // Hanya Admin atau Teknisi yang diizinkan melepas tautan (unpair) dari petani
+        if (req.user.role !== 'ADMIN' && req.user.role !== 'TECHNICIAN') {
+            throw new errors_1.ForbiddenError('Hanya Administrator yang memiliki wewenang untuk melepas tautan (unpair) perangkat dari petani');
+        }
         const { deviceId } = req.params;
-        const isAdmin = req.user.role === 'ADMIN' || req.user.role === 'TECHNICIAN';
         const device = await prismaConfig_1.prisma.device.findFirst({
             where: {
                 OR: [{ id: deviceId }, { serialNumber: deviceId }],
-                ...(isAdmin ? {} : { farmerId: req.user.id }),
             },
         });
         if (!device) {
-            throw new errors_1.NotFoundError('Perangkat tidak ditemukan atau Anda tidak memiliki akses');
+            throw new errors_1.NotFoundError('Perangkat tidak ditemukan');
         }
         const updated = await prismaConfig_1.prisma.device.update({
             where: { id: device.id },
@@ -232,7 +293,8 @@ exports.DeviceController = {
             },
             include: { setting: true, actuators: true },
         });
-        api_response_1.ApiResponse.success(res, formatDevice(updated), 'Perangkat berhasil dilepas dari akun Anda');
+        mqtt_service_1.mqttService.publishActivationStatus(updated.serialNumber, false, '', 'Perangkat berhasil dilepas dari penugasan petani');
+        api_response_1.ApiResponse.success(res, formatDevice(updated), 'Perangkat berhasil dilepas dari penugasan petani');
     },
     /**
      * GET /api/v1/devices/:deviceId
@@ -244,6 +306,14 @@ exports.DeviceController = {
                 OR: [{ id: deviceId }, { serialNumber: deviceId }],
             },
             include: {
+                farmer: {
+                    select: {
+                        id: true,
+                        fullName: true,
+                        phoneNumber: true,
+                        email: true,
+                    },
+                },
                 setting: true,
                 actuators: true,
                 sensorReadings: {
@@ -271,13 +341,14 @@ exports.DeviceController = {
         const parsed = createDeviceSchema.parse(req.body);
         const sn = parsed.serialNumber ||
             parsed.deviceId ||
-            `SS-${Math.random().toString(36).substring(2, 8).toUpperCase()}`;
+            (await (0, device_identity_1.getNextSerialNumber)());
         const existing = await prismaConfig_1.prisma.device.findUnique({
             where: { serialNumber: sn },
         });
         if (existing) {
             throw new errors_1.ConflictError(`Device "${sn}" already exists`);
         }
+        const macAddress = parsed.macAddress?.trim() || null;
         const device = await prismaConfig_1.prisma.device.create({
             data: {
                 serialNumber: sn,
@@ -286,6 +357,7 @@ exports.DeviceController = {
                 model: 'SS-ESP32-V1',
                 hardwareVersion: parsed.hardwareVersion,
                 firmwareVersion: parsed.firmwareVersion,
+                macAddress,
                 status: client_1.DeviceStatus.READY,
                 setting: {
                     create: {
@@ -300,7 +372,57 @@ exports.DeviceController = {
             },
             include: { setting: true, actuators: true },
         });
-        api_response_1.ApiResponse.success(res, formatDevice(device), 'Device created successfully', 201);
+        // Generate identity JSON for firmware injection
+        const deviceIdentity = (0, device_identity_1.buildDeviceIdentity)({
+            serialNumber: device.serialNumber,
+            hardwareVersion: device.hardwareVersion,
+            firmwareVersion: device.firmwareVersion,
+            macAddress: device.macAddress,
+            createdAt: device.createdAt,
+        });
+        (0, device_identity_1.saveDeviceIdentityFile)(deviceIdentity);
+        api_response_1.ApiResponse.success(res, {
+            ...formatDevice(device),
+            deviceIdentity,
+            identityFile: `${device.serialNumber}.json`,
+        }, 'Device created successfully', 201);
+    },
+    getDeviceIdentity: async (req, res) => {
+        const { deviceId } = req.params;
+        const device = await prismaConfig_1.prisma.device.findFirst({
+            where: {
+                OR: [{ id: deviceId }, { serialNumber: deviceId }],
+            },
+        });
+        if (!device) {
+            throw new errors_1.NotFoundError(`Device "${deviceId}" not found`);
+        }
+        const identity = (0, device_identity_1.buildDeviceIdentity)({
+            serialNumber: device.serialNumber,
+            hardwareVersion: device.hardwareVersion,
+            firmwareVersion: device.firmwareVersion,
+            macAddress: device.macAddress,
+            createdAt: device.createdAt,
+        });
+        (0, device_identity_1.saveDeviceIdentityFile)(identity);
+        const shouldDownload = req.query.download === 'true' || req.query.download === '1';
+        if (shouldDownload) {
+            res.setHeader('Content-Type', 'application/json');
+            res.setHeader('Content-Disposition', `attachment; filename="${device.serialNumber}.json"`);
+            res.send(JSON.stringify(identity, null, 2));
+            return;
+        }
+        api_response_1.ApiResponse.success(res, identity, 'Identitas perangkat berhasil dimuat');
+    },
+    getNextSerial: async (_req, res) => {
+        const nextSerialNumber = await (0, device_identity_1.getNextSerialNumber)();
+        const info = (0, device_identity_1.parseSerialNumber)(nextSerialNumber);
+        api_response_1.ApiResponse.success(res, {
+            nextSerialNumber,
+            format: 'SS-MMYY-NNN',
+            description: info?.description ?? 'Format serial number produksi bermakna',
+            batch: info?.batch,
+        }, 'Rekomendasi serial number berhasil dimuat');
     },
     /**
      * DELETE /api/v1/devices/:deviceId
@@ -353,7 +475,11 @@ exports.DeviceController = {
                 recordedAt: now,
             },
         });
-        const nextStatus = device.status === client_1.DeviceStatus.OFFLINE && device.farmerId
+        const rawRssi = parsed.rssi ?? parsed.rssiDbm ?? parsed.rssi_dbm;
+        const rawUptime = parsed.uptime ?? parsed.uptimeMs ?? parsed.uptime_ms;
+        const rssi = rawRssi != null && !isNaN(Number(rawRssi)) ? Math.round(Number(rawRssi)) : null;
+        const uptime = rawUptime != null && !isNaN(Number(rawUptime)) ? BigInt(Math.round(Number(rawUptime))) : null;
+        const nextStatus = (device.status === client_1.DeviceStatus.OFFLINE || device.status === client_1.DeviceStatus.READY) && device.farmerId
             ? client_1.DeviceStatus.ACTIVE
             : device.status;
         await prismaConfig_1.prisma.device.update({
@@ -361,6 +487,8 @@ exports.DeviceController = {
             data: {
                 lastSeenAt: now,
                 status: nextStatus,
+                ...(rssi != null ? { rssiDbm: rssi } : {}),
+                ...(uptime != null ? { uptimeMs: uptime } : {}),
             },
         });
         if (parsed.actuatorStates) {
@@ -401,11 +529,28 @@ exports.DeviceController = {
         if (!device) {
             throw new errors_1.NotFoundError('Perangkat tidak ditemukan');
         }
+        const now = new Date();
+        const rawRssi = req.body.rssi ?? req.body.rssi_dbm ?? req.body.rssiDbm;
+        const rawUptime = req.body.uptime ?? req.body.uptime_ms ?? req.body.uptimeMs;
+        const rssi = rawRssi != null && !isNaN(Number(rawRssi)) ? Math.round(Number(rawRssi)) : null;
+        const uptime = rawUptime != null && !isNaN(Number(rawUptime)) ? BigInt(Math.round(Number(rawUptime))) : null;
+        const fw = req.body.firmwareVersion ?? req.body.firmware_version;
+        const hw = req.body.hardwareVersion ?? req.body.hardware_version;
+        const nextStatus = (device.status === client_1.DeviceStatus.OFFLINE || device.status === client_1.DeviceStatus.READY) && device.farmerId
+            ? client_1.DeviceStatus.ACTIVE
+            : device.status;
         await prismaConfig_1.prisma.device.update({
             where: { id: device.id },
-            data: { lastSeenAt: new Date() },
+            data: {
+                lastSeenAt: now,
+                status: nextStatus,
+                ...(rssi != null ? { rssiDbm: rssi } : {}),
+                ...(uptime != null ? { uptimeMs: uptime } : {}),
+                ...(fw ? { firmwareVersion: String(fw) } : {}),
+                ...(hw ? { hardwareVersion: String(hw) } : {}),
+            },
         });
-        api_response_1.ApiResponse.success(res, { online: true, serverTime: new Date() });
+        api_response_1.ApiResponse.success(res, { online: true, serverTime: now });
     },
 };
 //# sourceMappingURL=index.js.map

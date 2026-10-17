@@ -9,6 +9,7 @@ export class ApiResponse {
   ): Response {
     return res.status(statusCode).json({
       success: true,
+      status: 'success',
       message,
       data,
       timestamp: new Date().toISOString(),
@@ -39,6 +40,7 @@ export class ApiResponse {
 
     return res.status(statusCode).json({
       success: false,
+      status: 'error',
       code: code ?? defaultCode,
       message,
       errors: errors ?? undefined,

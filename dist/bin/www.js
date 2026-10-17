@@ -14,8 +14,9 @@ async function startServer() {
     try {
         await (0, bootstrap_app_1.bootstrapApp)();
         const server = http_1.default.createServer(app_1.default);
-        server.listen(env_1.env.PORT, () => {
+        server.listen(env_1.env.PORT, '0.0.0.0', () => {
             logger_1.logger.info(`🍄 ShroomSync API Server is running on port ${env_1.env.PORT}`, {
+                host: '0.0.0.0',
                 port: env_1.env.PORT,
                 environment: env_1.env.NODE_ENV,
                 docsUrl: `http://localhost:${env_1.env.PORT}/api/docs`,

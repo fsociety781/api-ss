@@ -61,7 +61,7 @@ const envSchema = z.object({
     .number()
     .int()
     .positive()
-    .default(300),
+    .default(5000),
 
   // Log level
   LOG_LEVEL: z

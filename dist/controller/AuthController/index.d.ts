@@ -5,5 +5,6 @@ export declare const AuthController: {
     changePassword: (req: Request, res: Response) => Promise<void>;
     getMe: (req: Request, res: Response) => Promise<void>;
     updateProfile: (req: Request, res: Response) => Promise<void>;
+    updateFcmToken: (req: Request, res: Response) => Promise<void>;
 };
 //# sourceMappingURL=index.d.ts.map

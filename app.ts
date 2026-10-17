@@ -24,6 +24,9 @@ import deviceRouter from './routes/device/index';
 import controlRouter from './routes/control.routes';
 import telemetryRouter from './routes/telemetry.routes';
 import cycleRouter from './routes/cycle.routes';
+import otaRouter from './routes/ota.routes';
+import { FirmwareController } from './controller/FirmwareController';
+import { asyncHandler } from './utils/async-handler';
 
 const app: Express = express();
 
@@ -104,6 +107,12 @@ app.use('/api/v1/devices', deviceRouter);
 app.use('/api/v1/devices', controlRouter);
 app.use('/api/v1/devices', telemetryRouter);
 app.use('/api/v1/devices', cycleRouter);
+
+// OTA Operations (Direct compatibility route)
+app.use('/api/v1/ota', otaRouter);
+
+// Firmware Binary Download endpoint for ESP32 and browser
+app.get('/api/v1/firmwares/download/:filename', asyncHandler(FirmwareController.downloadFirmware));
 
 // ── Catch 404 for undefined routes ────────────
 app.use((req: Request, res: Response) => {

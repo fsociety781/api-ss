@@ -55,16 +55,22 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
+      PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-shroomsync_db}?schema=public
       JWT_SECRET: ${JWT_SECRET:-shroomsync-production-jwt-super-secret-key-2026}
       JWT_EXPIRES_IN: 7d
-      MQTT_BROKER_URL: mqtt://emqx:1883
+      MQTT_BROKER_URL: ${MQTT_BROKER_URL:-mqtt://emqx:1883}
       MQTT_CLIENT_ID: shroomsync-api-cluster-01
       CORS_ORIGIN: '*'
-      RATE_LIMIT_MAX_REQUESTS: 500
-      LOG_LEVEL: info
+      RATE_LIMIT_MAX_REQUESTS: 5000
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      DEFAULT_TECHNICIAN_EMAIL: ${DEFAULT_TECHNICIAN_EMAIL:-teknisi@shroomsync.local}
+      DEFAULT_TECHNICIAN_PASSWORD: ${DEFAULT_TECHNICIAN_PASSWORD:-ShroomSyncDev123!}
+    volumes:
+      - api_storage:/app/storage
 
 volumes:
   postgres_data:
   emqx_data:
   emqx_log:
+  api_storage:

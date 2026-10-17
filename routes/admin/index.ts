@@ -18,6 +18,7 @@ router.post('/farmers', asyncHandler(AdminController.createFarmer));
 router.get('/farmers', asyncHandler(AdminController.listFarmers));
 router.get('/farmers/:id', asyncHandler(AdminController.getFarmerById));
 router.put('/farmers/:id', asyncHandler(AdminController.updateFarmer));
+router.delete('/farmers/:id', asyncHandler(AdminController.deleteFarmer));
 
 // Device assignment
 router.get('/devices', asyncHandler(AdminController.listDevices));

@@ -58,6 +58,16 @@ export type CultivationCycle = $Result.DefaultSelection<Prisma.$CultivationCycle
  * 
  */
 export type HarvestRecord = $Result.DefaultSelection<Prisma.$HarvestRecordPayload>
+/**
+ * Model Firmware
+ * 
+ */
+export type Firmware = $Result.DefaultSelection<Prisma.$FirmwarePayload>
+/**
+ * Model OtaLog
+ * 
+ */
+export type OtaLog = $Result.DefaultSelection<Prisma.$OtaLogPayload>
 
 /**
  * Enums
@@ -400,6 +410,26 @@ export class PrismaClient<
     * ```
     */
   get harvestRecord(): Prisma.HarvestRecordDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.firmware`: Exposes CRUD operations for the **Firmware** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Firmware
+    * const firmware = await prisma.firmware.findMany()
+    * ```
+    */
+  get firmware(): Prisma.FirmwareDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.otaLog`: Exposes CRUD operations for the **OtaLog** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more OtaLogs
+    * const otaLogs = await prisma.otaLog.findMany()
+    * ```
+    */
+  get otaLog(): Prisma.OtaLogDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -855,7 +885,9 @@ export namespace Prisma {
     ControlLog: 'ControlLog',
     Schedule: 'Schedule',
     CultivationCycle: 'CultivationCycle',
-    HarvestRecord: 'HarvestRecord'
+    HarvestRecord: 'HarvestRecord',
+    Firmware: 'Firmware',
+    OtaLog: 'OtaLog'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -871,7 +903,7 @@ export namespace Prisma {
       omit: GlobalOmitOptions
     }
     meta: {
-      modelProps: "user" | "device" | "deviceSetting" | "sensorReading" | "actuator" | "controlLog" | "schedule" | "cultivationCycle" | "harvestRecord"
+      modelProps: "user" | "device" | "deviceSetting" | "sensorReading" | "actuator" | "controlLog" | "schedule" | "cultivationCycle" | "harvestRecord" | "firmware" | "otaLog"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -1541,6 +1573,154 @@ export namespace Prisma {
           }
         }
       }
+      Firmware: {
+        payload: Prisma.$FirmwarePayload<ExtArgs>
+        fields: Prisma.FirmwareFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.FirmwareFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.FirmwareFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          findFirst: {
+            args: Prisma.FirmwareFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.FirmwareFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          findMany: {
+            args: Prisma.FirmwareFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>[]
+          }
+          create: {
+            args: Prisma.FirmwareCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          createMany: {
+            args: Prisma.FirmwareCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.FirmwareCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>[]
+          }
+          delete: {
+            args: Prisma.FirmwareDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          update: {
+            args: Prisma.FirmwareUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          deleteMany: {
+            args: Prisma.FirmwareDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.FirmwareUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.FirmwareUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>[]
+          }
+          upsert: {
+            args: Prisma.FirmwareUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$FirmwarePayload>
+          }
+          aggregate: {
+            args: Prisma.FirmwareAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateFirmware>
+          }
+          groupBy: {
+            args: Prisma.FirmwareGroupByArgs<ExtArgs>
+            result: $Utils.Optional<FirmwareGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.FirmwareCountArgs<ExtArgs>
+            result: $Utils.Optional<FirmwareCountAggregateOutputType> | number
+          }
+        }
+      }
+      OtaLog: {
+        payload: Prisma.$OtaLogPayload<ExtArgs>
+        fields: Prisma.OtaLogFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.OtaLogFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.OtaLogFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          findFirst: {
+            args: Prisma.OtaLogFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.OtaLogFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          findMany: {
+            args: Prisma.OtaLogFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>[]
+          }
+          create: {
+            args: Prisma.OtaLogCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          createMany: {
+            args: Prisma.OtaLogCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.OtaLogCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>[]
+          }
+          delete: {
+            args: Prisma.OtaLogDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          update: {
+            args: Prisma.OtaLogUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          deleteMany: {
+            args: Prisma.OtaLogDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.OtaLogUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.OtaLogUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>[]
+          }
+          upsert: {
+            args: Prisma.OtaLogUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$OtaLogPayload>
+          }
+          aggregate: {
+            args: Prisma.OtaLogAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateOtaLog>
+          }
+          groupBy: {
+            args: Prisma.OtaLogGroupByArgs<ExtArgs>
+            result: $Utils.Optional<OtaLogGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.OtaLogCountArgs<ExtArgs>
+            result: $Utils.Optional<OtaLogCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -1673,6 +1853,8 @@ export namespace Prisma {
     schedule?: ScheduleOmit
     cultivationCycle?: CultivationCycleOmit
     harvestRecord?: HarvestRecordOmit
+    firmware?: FirmwareOmit
+    otaLog?: OtaLogOmit
   }
 
   /* Types for Logging */
@@ -1756,6 +1938,7 @@ export namespace Prisma {
     createdUsers: number
     devices: number
     createdDevices: number
+    firmwares: number
     controlLogs: number
     schedules: number
   }
@@ -1764,6 +1947,7 @@ export namespace Prisma {
     createdUsers?: boolean | UserCountOutputTypeCountCreatedUsersArgs
     devices?: boolean | UserCountOutputTypeCountDevicesArgs
     createdDevices?: boolean | UserCountOutputTypeCountCreatedDevicesArgs
+    firmwares?: boolean | UserCountOutputTypeCountFirmwaresArgs
     controlLogs?: boolean | UserCountOutputTypeCountControlLogsArgs
     schedules?: boolean | UserCountOutputTypeCountSchedulesArgs
   }
@@ -1803,6 +1987,13 @@ export namespace Prisma {
   /**
    * UserCountOutputType without action
    */
+  export type UserCountOutputTypeCountFirmwaresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FirmwareWhereInput
+  }
+
+  /**
+   * UserCountOutputType without action
+   */
   export type UserCountOutputTypeCountControlLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: ControlLogWhereInput
   }
@@ -1825,6 +2016,7 @@ export namespace Prisma {
     controlLogs: number
     schedules: number
     cultivationCycles: number
+    otaLogs: number
   }
 
   export type DeviceCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -1833,6 +2025,7 @@ export namespace Prisma {
     controlLogs?: boolean | DeviceCountOutputTypeCountControlLogsArgs
     schedules?: boolean | DeviceCountOutputTypeCountSchedulesArgs
     cultivationCycles?: boolean | DeviceCountOutputTypeCountCultivationCyclesArgs
+    otaLogs?: boolean | DeviceCountOutputTypeCountOtaLogsArgs
   }
 
   // Custom InputTypes
@@ -1879,6 +2072,13 @@ export namespace Prisma {
    */
   export type DeviceCountOutputTypeCountCultivationCyclesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: CultivationCycleWhereInput
+  }
+
+  /**
+   * DeviceCountOutputType without action
+   */
+  export type DeviceCountOutputTypeCountOtaLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtaLogWhereInput
   }
 
 
@@ -1954,6 +2154,37 @@ export namespace Prisma {
 
 
   /**
+   * Count Type FirmwareCountOutputType
+   */
+
+  export type FirmwareCountOutputType = {
+    otaLogs: number
+  }
+
+  export type FirmwareCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    otaLogs?: boolean | FirmwareCountOutputTypeCountOtaLogsArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * FirmwareCountOutputType without action
+   */
+  export type FirmwareCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the FirmwareCountOutputType
+     */
+    select?: FirmwareCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * FirmwareCountOutputType without action
+   */
+  export type FirmwareCountOutputTypeCountOtaLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtaLogWhereInput
+  }
+
+
+  /**
    * Models
    */
 
@@ -1980,6 +2211,8 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastLoginAt: Date | null
+    fcmToken: string | null
+    lastFcmTokenAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -1997,6 +2230,8 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastLoginAt: Date | null
+    fcmToken: string | null
+    lastFcmTokenAt: Date | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -2014,6 +2249,8 @@ export namespace Prisma {
     createdById: number
     activatedAt: number
     lastLoginAt: number
+    fcmToken: number
+    lastFcmTokenAt: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -2033,6 +2270,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastLoginAt?: true
+    fcmToken?: true
+    lastFcmTokenAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2050,6 +2289,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastLoginAt?: true
+    fcmToken?: true
+    lastFcmTokenAt?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -2067,6 +2308,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastLoginAt?: true
+    fcmToken?: true
+    lastFcmTokenAt?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -2157,6 +2400,8 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastLoginAt: Date | null
+    fcmToken: string | null
+    lastFcmTokenAt: Date | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -2191,12 +2436,15 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastLoginAt?: boolean
+    fcmToken?: boolean
+    lastFcmTokenAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | User$createdByArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
     devices?: boolean | User$devicesArgs<ExtArgs>
     createdDevices?: boolean | User$createdDevicesArgs<ExtArgs>
+    firmwares?: boolean | User$firmwaresArgs<ExtArgs>
     controlLogs?: boolean | User$controlLogsArgs<ExtArgs>
     schedules?: boolean | User$schedulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2215,6 +2463,8 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastLoginAt?: boolean
+    fcmToken?: boolean
+    lastFcmTokenAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | User$createdByArgs<ExtArgs>
@@ -2233,6 +2483,8 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastLoginAt?: boolean
+    fcmToken?: boolean
+    lastFcmTokenAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     createdBy?: boolean | User$createdByArgs<ExtArgs>
@@ -2251,16 +2503,19 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastLoginAt?: boolean
+    fcmToken?: boolean
+    lastFcmTokenAt?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "phoneNumber" | "email" | "passwordHash" | "role" | "status" | "profileCompleted" | "mustChangePassword" | "createdById" | "activatedAt" | "lastLoginAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "fullName" | "phoneNumber" | "email" | "passwordHash" | "role" | "status" | "profileCompleted" | "mustChangePassword" | "createdById" | "activatedAt" | "lastLoginAt" | "fcmToken" | "lastFcmTokenAt" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     createdBy?: boolean | User$createdByArgs<ExtArgs>
     createdUsers?: boolean | User$createdUsersArgs<ExtArgs>
     devices?: boolean | User$devicesArgs<ExtArgs>
     createdDevices?: boolean | User$createdDevicesArgs<ExtArgs>
+    firmwares?: boolean | User$firmwaresArgs<ExtArgs>
     controlLogs?: boolean | User$controlLogsArgs<ExtArgs>
     schedules?: boolean | User$schedulesArgs<ExtArgs>
     _count?: boolean | UserCountOutputTypeDefaultArgs<ExtArgs>
@@ -2279,6 +2534,7 @@ export namespace Prisma {
       createdUsers: Prisma.$UserPayload<ExtArgs>[]
       devices: Prisma.$DevicePayload<ExtArgs>[]
       createdDevices: Prisma.$DevicePayload<ExtArgs>[]
+      firmwares: Prisma.$FirmwarePayload<ExtArgs>[]
       controlLogs: Prisma.$ControlLogPayload<ExtArgs>[]
       schedules: Prisma.$SchedulePayload<ExtArgs>[]
     }
@@ -2295,6 +2551,8 @@ export namespace Prisma {
       createdById: string | null
       activatedAt: Date | null
       lastLoginAt: Date | null
+      fcmToken: string | null
+      lastFcmTokenAt: Date | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -2695,6 +2953,7 @@ export namespace Prisma {
     createdUsers<T extends User$createdUsersArgs<ExtArgs> = {}>(args?: Subset<T, User$createdUsersArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     devices<T extends User$devicesArgs<ExtArgs> = {}>(args?: Subset<T, User$devicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     createdDevices<T extends User$createdDevicesArgs<ExtArgs> = {}>(args?: Subset<T, User$createdDevicesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DevicePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    firmwares<T extends User$firmwaresArgs<ExtArgs> = {}>(args?: Subset<T, User$firmwaresArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     controlLogs<T extends User$controlLogsArgs<ExtArgs> = {}>(args?: Subset<T, User$controlLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ControlLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends User$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, User$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
@@ -2738,6 +2997,8 @@ export namespace Prisma {
     readonly createdById: FieldRef<"User", 'String'>
     readonly activatedAt: FieldRef<"User", 'DateTime'>
     readonly lastLoginAt: FieldRef<"User", 'DateTime'>
+    readonly fcmToken: FieldRef<"User", 'String'>
+    readonly lastFcmTokenAt: FieldRef<"User", 'DateTime'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -3232,6 +3493,30 @@ export namespace Prisma {
   }
 
   /**
+   * User.firmwares
+   */
+  export type User$firmwaresArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    where?: FirmwareWhereInput
+    orderBy?: FirmwareOrderByWithRelationInput | FirmwareOrderByWithRelationInput[]
+    cursor?: FirmwareWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: FirmwareScalarFieldEnum | FirmwareScalarFieldEnum[]
+  }
+
+  /**
    * User.controlLogs
    */
   export type User$controlLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3304,8 +3589,20 @@ export namespace Prisma {
 
   export type AggregateDevice = {
     _count: DeviceCountAggregateOutputType | null
+    _avg: DeviceAvgAggregateOutputType | null
+    _sum: DeviceSumAggregateOutputType | null
     _min: DeviceMinAggregateOutputType | null
     _max: DeviceMaxAggregateOutputType | null
+  }
+
+  export type DeviceAvgAggregateOutputType = {
+    rssiDbm: number | null
+    uptimeMs: number | null
+  }
+
+  export type DeviceSumAggregateOutputType = {
+    rssiDbm: number | null
+    uptimeMs: bigint | null
   }
 
   export type DeviceMinAggregateOutputType = {
@@ -3316,6 +3613,7 @@ export namespace Prisma {
     model: string | null
     hardwareVersion: string | null
     firmwareVersion: string | null
+    macAddress: string | null
     status: $Enums.DeviceStatus | null
     ownershipType: $Enums.OwnershipType | null
     controlMode: $Enums.ControlMode | null
@@ -3323,6 +3621,8 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastSeenAt: Date | null
+    rssiDbm: number | null
+    uptimeMs: bigint | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3335,6 +3635,7 @@ export namespace Prisma {
     model: string | null
     hardwareVersion: string | null
     firmwareVersion: string | null
+    macAddress: string | null
     status: $Enums.DeviceStatus | null
     ownershipType: $Enums.OwnershipType | null
     controlMode: $Enums.ControlMode | null
@@ -3342,6 +3643,8 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastSeenAt: Date | null
+    rssiDbm: number | null
+    uptimeMs: bigint | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3354,6 +3657,7 @@ export namespace Prisma {
     model: number
     hardwareVersion: number
     firmwareVersion: number
+    macAddress: number
     status: number
     ownershipType: number
     controlMode: number
@@ -3361,11 +3665,23 @@ export namespace Prisma {
     createdById: number
     activatedAt: number
     lastSeenAt: number
+    rssiDbm: number
+    uptimeMs: number
     createdAt: number
     updatedAt: number
     _all: number
   }
 
+
+  export type DeviceAvgAggregateInputType = {
+    rssiDbm?: true
+    uptimeMs?: true
+  }
+
+  export type DeviceSumAggregateInputType = {
+    rssiDbm?: true
+    uptimeMs?: true
+  }
 
   export type DeviceMinAggregateInputType = {
     id?: true
@@ -3375,6 +3691,7 @@ export namespace Prisma {
     model?: true
     hardwareVersion?: true
     firmwareVersion?: true
+    macAddress?: true
     status?: true
     ownershipType?: true
     controlMode?: true
@@ -3382,6 +3699,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastSeenAt?: true
+    rssiDbm?: true
+    uptimeMs?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3394,6 +3713,7 @@ export namespace Prisma {
     model?: true
     hardwareVersion?: true
     firmwareVersion?: true
+    macAddress?: true
     status?: true
     ownershipType?: true
     controlMode?: true
@@ -3401,6 +3721,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastSeenAt?: true
+    rssiDbm?: true
+    uptimeMs?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3413,6 +3735,7 @@ export namespace Prisma {
     model?: true
     hardwareVersion?: true
     firmwareVersion?: true
+    macAddress?: true
     status?: true
     ownershipType?: true
     controlMode?: true
@@ -3420,6 +3743,8 @@ export namespace Prisma {
     createdById?: true
     activatedAt?: true
     lastSeenAt?: true
+    rssiDbm?: true
+    uptimeMs?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3463,6 +3788,18 @@ export namespace Prisma {
     /**
      * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
      * 
+     * Select which fields to average
+    **/
+    _avg?: DeviceAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: DeviceSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
      * Select which fields to find the minimum value
     **/
     _min?: DeviceMinAggregateInputType
@@ -3493,6 +3830,8 @@ export namespace Prisma {
     take?: number
     skip?: number
     _count?: DeviceCountAggregateInputType | true
+    _avg?: DeviceAvgAggregateInputType
+    _sum?: DeviceSumAggregateInputType
     _min?: DeviceMinAggregateInputType
     _max?: DeviceMaxAggregateInputType
   }
@@ -3505,6 +3844,7 @@ export namespace Prisma {
     model: string
     hardwareVersion: string | null
     firmwareVersion: string | null
+    macAddress: string | null
     status: $Enums.DeviceStatus
     ownershipType: $Enums.OwnershipType
     controlMode: $Enums.ControlMode
@@ -3512,9 +3852,13 @@ export namespace Prisma {
     createdById: string | null
     activatedAt: Date | null
     lastSeenAt: Date | null
+    rssiDbm: number | null
+    uptimeMs: bigint | null
     createdAt: Date
     updatedAt: Date
     _count: DeviceCountAggregateOutputType | null
+    _avg: DeviceAvgAggregateOutputType | null
+    _sum: DeviceSumAggregateOutputType | null
     _min: DeviceMinAggregateOutputType | null
     _max: DeviceMaxAggregateOutputType | null
   }
@@ -3541,6 +3885,7 @@ export namespace Prisma {
     model?: boolean
     hardwareVersion?: boolean
     firmwareVersion?: boolean
+    macAddress?: boolean
     status?: boolean
     ownershipType?: boolean
     controlMode?: boolean
@@ -3548,6 +3893,8 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastSeenAt?: boolean
+    rssiDbm?: boolean
+    uptimeMs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     farmer?: boolean | Device$farmerArgs<ExtArgs>
@@ -3558,6 +3905,7 @@ export namespace Prisma {
     controlLogs?: boolean | Device$controlLogsArgs<ExtArgs>
     schedules?: boolean | Device$schedulesArgs<ExtArgs>
     cultivationCycles?: boolean | Device$cultivationCyclesArgs<ExtArgs>
+    otaLogs?: boolean | Device$otaLogsArgs<ExtArgs>
     _count?: boolean | DeviceCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["device"]>
 
@@ -3569,6 +3917,7 @@ export namespace Prisma {
     model?: boolean
     hardwareVersion?: boolean
     firmwareVersion?: boolean
+    macAddress?: boolean
     status?: boolean
     ownershipType?: boolean
     controlMode?: boolean
@@ -3576,6 +3925,8 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastSeenAt?: boolean
+    rssiDbm?: boolean
+    uptimeMs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     farmer?: boolean | Device$farmerArgs<ExtArgs>
@@ -3590,6 +3941,7 @@ export namespace Prisma {
     model?: boolean
     hardwareVersion?: boolean
     firmwareVersion?: boolean
+    macAddress?: boolean
     status?: boolean
     ownershipType?: boolean
     controlMode?: boolean
@@ -3597,6 +3949,8 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastSeenAt?: boolean
+    rssiDbm?: boolean
+    uptimeMs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     farmer?: boolean | Device$farmerArgs<ExtArgs>
@@ -3611,6 +3965,7 @@ export namespace Prisma {
     model?: boolean
     hardwareVersion?: boolean
     firmwareVersion?: boolean
+    macAddress?: boolean
     status?: boolean
     ownershipType?: boolean
     controlMode?: boolean
@@ -3618,11 +3973,13 @@ export namespace Prisma {
     createdById?: boolean
     activatedAt?: boolean
     lastSeenAt?: boolean
+    rssiDbm?: boolean
+    uptimeMs?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type DeviceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serialNumber" | "activationCode" | "name" | "model" | "hardwareVersion" | "firmwareVersion" | "status" | "ownershipType" | "controlMode" | "farmerId" | "createdById" | "activatedAt" | "lastSeenAt" | "createdAt" | "updatedAt", ExtArgs["result"]["device"]>
+  export type DeviceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "serialNumber" | "activationCode" | "name" | "model" | "hardwareVersion" | "firmwareVersion" | "macAddress" | "status" | "ownershipType" | "controlMode" | "farmerId" | "createdById" | "activatedAt" | "lastSeenAt" | "rssiDbm" | "uptimeMs" | "createdAt" | "updatedAt", ExtArgs["result"]["device"]>
   export type DeviceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     farmer?: boolean | Device$farmerArgs<ExtArgs>
     createdBy?: boolean | Device$createdByArgs<ExtArgs>
@@ -3632,6 +3989,7 @@ export namespace Prisma {
     controlLogs?: boolean | Device$controlLogsArgs<ExtArgs>
     schedules?: boolean | Device$schedulesArgs<ExtArgs>
     cultivationCycles?: boolean | Device$cultivationCyclesArgs<ExtArgs>
+    otaLogs?: boolean | Device$otaLogsArgs<ExtArgs>
     _count?: boolean | DeviceCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DeviceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -3654,6 +4012,7 @@ export namespace Prisma {
       controlLogs: Prisma.$ControlLogPayload<ExtArgs>[]
       schedules: Prisma.$SchedulePayload<ExtArgs>[]
       cultivationCycles: Prisma.$CultivationCyclePayload<ExtArgs>[]
+      otaLogs: Prisma.$OtaLogPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -3663,6 +4022,7 @@ export namespace Prisma {
       model: string
       hardwareVersion: string | null
       firmwareVersion: string | null
+      macAddress: string | null
       status: $Enums.DeviceStatus
       ownershipType: $Enums.OwnershipType
       controlMode: $Enums.ControlMode
@@ -3670,6 +4030,8 @@ export namespace Prisma {
       createdById: string | null
       activatedAt: Date | null
       lastSeenAt: Date | null
+      rssiDbm: number | null
+      uptimeMs: bigint | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["device"]>
@@ -4074,6 +4436,7 @@ export namespace Prisma {
     controlLogs<T extends Device$controlLogsArgs<ExtArgs> = {}>(args?: Subset<T, Device$controlLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$ControlLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     schedules<T extends Device$schedulesArgs<ExtArgs> = {}>(args?: Subset<T, Device$schedulesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$SchedulePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     cultivationCycles<T extends Device$cultivationCyclesArgs<ExtArgs> = {}>(args?: Subset<T, Device$cultivationCyclesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$CultivationCyclePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    otaLogs<T extends Device$otaLogsArgs<ExtArgs> = {}>(args?: Subset<T, Device$otaLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4110,6 +4473,7 @@ export namespace Prisma {
     readonly model: FieldRef<"Device", 'String'>
     readonly hardwareVersion: FieldRef<"Device", 'String'>
     readonly firmwareVersion: FieldRef<"Device", 'String'>
+    readonly macAddress: FieldRef<"Device", 'String'>
     readonly status: FieldRef<"Device", 'DeviceStatus'>
     readonly ownershipType: FieldRef<"Device", 'OwnershipType'>
     readonly controlMode: FieldRef<"Device", 'ControlMode'>
@@ -4117,6 +4481,8 @@ export namespace Prisma {
     readonly createdById: FieldRef<"Device", 'String'>
     readonly activatedAt: FieldRef<"Device", 'DateTime'>
     readonly lastSeenAt: FieldRef<"Device", 'DateTime'>
+    readonly rssiDbm: FieldRef<"Device", 'Int'>
+    readonly uptimeMs: FieldRef<"Device", 'BigInt'>
     readonly createdAt: FieldRef<"Device", 'DateTime'>
     readonly updatedAt: FieldRef<"Device", 'DateTime'>
   }
@@ -4694,6 +5060,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: CultivationCycleScalarFieldEnum | CultivationCycleScalarFieldEnum[]
+  }
+
+  /**
+   * Device.otaLogs
+   */
+  export type Device$otaLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    where?: OtaLogWhereInput
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    cursor?: OtaLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OtaLogScalarFieldEnum | OtaLogScalarFieldEnum[]
   }
 
   /**
@@ -13044,6 +13434,2456 @@ export namespace Prisma {
 
 
   /**
+   * Model Firmware
+   */
+
+  export type AggregateFirmware = {
+    _count: FirmwareCountAggregateOutputType | null
+    _avg: FirmwareAvgAggregateOutputType | null
+    _sum: FirmwareSumAggregateOutputType | null
+    _min: FirmwareMinAggregateOutputType | null
+    _max: FirmwareMaxAggregateOutputType | null
+  }
+
+  export type FirmwareAvgAggregateOutputType = {
+    fileSize: number | null
+  }
+
+  export type FirmwareSumAggregateOutputType = {
+    fileSize: number | null
+  }
+
+  export type FirmwareMinAggregateOutputType = {
+    id: string | null
+    version: string | null
+    filename: string | null
+    originalName: string | null
+    filePath: string | null
+    fileSize: number | null
+    checksumSha256: string | null
+    hardwareVersion: string | null
+    changelog: string | null
+    isLatest: boolean | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FirmwareMaxAggregateOutputType = {
+    id: string | null
+    version: string | null
+    filename: string | null
+    originalName: string | null
+    filePath: string | null
+    fileSize: number | null
+    checksumSha256: string | null
+    hardwareVersion: string | null
+    changelog: string | null
+    isLatest: boolean | null
+    createdById: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type FirmwareCountAggregateOutputType = {
+    id: number
+    version: number
+    filename: number
+    originalName: number
+    filePath: number
+    fileSize: number
+    checksumSha256: number
+    hardwareVersion: number
+    changelog: number
+    isLatest: number
+    createdById: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type FirmwareAvgAggregateInputType = {
+    fileSize?: true
+  }
+
+  export type FirmwareSumAggregateInputType = {
+    fileSize?: true
+  }
+
+  export type FirmwareMinAggregateInputType = {
+    id?: true
+    version?: true
+    filename?: true
+    originalName?: true
+    filePath?: true
+    fileSize?: true
+    checksumSha256?: true
+    hardwareVersion?: true
+    changelog?: true
+    isLatest?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FirmwareMaxAggregateInputType = {
+    id?: true
+    version?: true
+    filename?: true
+    originalName?: true
+    filePath?: true
+    fileSize?: true
+    checksumSha256?: true
+    hardwareVersion?: true
+    changelog?: true
+    isLatest?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type FirmwareCountAggregateInputType = {
+    id?: true
+    version?: true
+    filename?: true
+    originalName?: true
+    filePath?: true
+    fileSize?: true
+    checksumSha256?: true
+    hardwareVersion?: true
+    changelog?: true
+    isLatest?: true
+    createdById?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type FirmwareAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Firmware to aggregate.
+     */
+    where?: FirmwareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Firmware to fetch.
+     */
+    orderBy?: FirmwareOrderByWithRelationInput | FirmwareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: FirmwareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Firmware from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Firmware.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Firmware
+    **/
+    _count?: true | FirmwareCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: FirmwareAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: FirmwareSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: FirmwareMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: FirmwareMaxAggregateInputType
+  }
+
+  export type GetFirmwareAggregateType<T extends FirmwareAggregateArgs> = {
+        [P in keyof T & keyof AggregateFirmware]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateFirmware[P]>
+      : GetScalarType<T[P], AggregateFirmware[P]>
+  }
+
+
+
+
+  export type FirmwareGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: FirmwareWhereInput
+    orderBy?: FirmwareOrderByWithAggregationInput | FirmwareOrderByWithAggregationInput[]
+    by: FirmwareScalarFieldEnum[] | FirmwareScalarFieldEnum
+    having?: FirmwareScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: FirmwareCountAggregateInputType | true
+    _avg?: FirmwareAvgAggregateInputType
+    _sum?: FirmwareSumAggregateInputType
+    _min?: FirmwareMinAggregateInputType
+    _max?: FirmwareMaxAggregateInputType
+  }
+
+  export type FirmwareGroupByOutputType = {
+    id: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion: string
+    changelog: string | null
+    isLatest: boolean
+    createdById: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: FirmwareCountAggregateOutputType | null
+    _avg: FirmwareAvgAggregateOutputType | null
+    _sum: FirmwareSumAggregateOutputType | null
+    _min: FirmwareMinAggregateOutputType | null
+    _max: FirmwareMaxAggregateOutputType | null
+  }
+
+  type GetFirmwareGroupByPayload<T extends FirmwareGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<FirmwareGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof FirmwareGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], FirmwareGroupByOutputType[P]>
+            : GetScalarType<T[P], FirmwareGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type FirmwareSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    version?: boolean
+    filename?: boolean
+    originalName?: boolean
+    filePath?: boolean
+    fileSize?: boolean
+    checksumSha256?: boolean
+    hardwareVersion?: boolean
+    changelog?: boolean
+    isLatest?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+    otaLogs?: boolean | Firmware$otaLogsArgs<ExtArgs>
+    _count?: boolean | FirmwareCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["firmware"]>
+
+  export type FirmwareSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    version?: boolean
+    filename?: boolean
+    originalName?: boolean
+    filePath?: boolean
+    fileSize?: boolean
+    checksumSha256?: boolean
+    hardwareVersion?: boolean
+    changelog?: boolean
+    isLatest?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["firmware"]>
+
+  export type FirmwareSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    version?: boolean
+    filename?: boolean
+    originalName?: boolean
+    filePath?: boolean
+    fileSize?: boolean
+    checksumSha256?: boolean
+    hardwareVersion?: boolean
+    changelog?: boolean
+    isLatest?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+  }, ExtArgs["result"]["firmware"]>
+
+  export type FirmwareSelectScalar = {
+    id?: boolean
+    version?: boolean
+    filename?: boolean
+    originalName?: boolean
+    filePath?: boolean
+    fileSize?: boolean
+    checksumSha256?: boolean
+    hardwareVersion?: boolean
+    changelog?: boolean
+    isLatest?: boolean
+    createdById?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type FirmwareOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "version" | "filename" | "originalName" | "filePath" | "fileSize" | "checksumSha256" | "hardwareVersion" | "changelog" | "isLatest" | "createdById" | "createdAt" | "updatedAt", ExtArgs["result"]["firmware"]>
+  export type FirmwareInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+    otaLogs?: boolean | Firmware$otaLogsArgs<ExtArgs>
+    _count?: boolean | FirmwareCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type FirmwareIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+  }
+  export type FirmwareIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    createdBy?: boolean | Firmware$createdByArgs<ExtArgs>
+  }
+
+  export type $FirmwarePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "Firmware"
+    objects: {
+      createdBy: Prisma.$UserPayload<ExtArgs> | null
+      otaLogs: Prisma.$OtaLogPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      version: string
+      filename: string
+      originalName: string
+      filePath: string
+      fileSize: number
+      checksumSha256: string
+      hardwareVersion: string
+      changelog: string | null
+      isLatest: boolean
+      createdById: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["firmware"]>
+    composites: {}
+  }
+
+  type FirmwareGetPayload<S extends boolean | null | undefined | FirmwareDefaultArgs> = $Result.GetResult<Prisma.$FirmwarePayload, S>
+
+  type FirmwareCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<FirmwareFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: FirmwareCountAggregateInputType | true
+    }
+
+  export interface FirmwareDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['Firmware'], meta: { name: 'Firmware' } }
+    /**
+     * Find zero or one Firmware that matches the filter.
+     * @param {FirmwareFindUniqueArgs} args - Arguments to find a Firmware
+     * @example
+     * // Get one Firmware
+     * const firmware = await prisma.firmware.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends FirmwareFindUniqueArgs>(args: SelectSubset<T, FirmwareFindUniqueArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one Firmware that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {FirmwareFindUniqueOrThrowArgs} args - Arguments to find a Firmware
+     * @example
+     * // Get one Firmware
+     * const firmware = await prisma.firmware.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends FirmwareFindUniqueOrThrowArgs>(args: SelectSubset<T, FirmwareFindUniqueOrThrowArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Firmware that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareFindFirstArgs} args - Arguments to find a Firmware
+     * @example
+     * // Get one Firmware
+     * const firmware = await prisma.firmware.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends FirmwareFindFirstArgs>(args?: SelectSubset<T, FirmwareFindFirstArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first Firmware that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareFindFirstOrThrowArgs} args - Arguments to find a Firmware
+     * @example
+     * // Get one Firmware
+     * const firmware = await prisma.firmware.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends FirmwareFindFirstOrThrowArgs>(args?: SelectSubset<T, FirmwareFindFirstOrThrowArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more Firmware that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Firmware
+     * const firmware = await prisma.firmware.findMany()
+     * 
+     * // Get first 10 Firmware
+     * const firmware = await prisma.firmware.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const firmwareWithIdOnly = await prisma.firmware.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends FirmwareFindManyArgs>(args?: SelectSubset<T, FirmwareFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a Firmware.
+     * @param {FirmwareCreateArgs} args - Arguments to create a Firmware.
+     * @example
+     * // Create one Firmware
+     * const Firmware = await prisma.firmware.create({
+     *   data: {
+     *     // ... data to create a Firmware
+     *   }
+     * })
+     * 
+     */
+    create<T extends FirmwareCreateArgs>(args: SelectSubset<T, FirmwareCreateArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many Firmware.
+     * @param {FirmwareCreateManyArgs} args - Arguments to create many Firmware.
+     * @example
+     * // Create many Firmware
+     * const firmware = await prisma.firmware.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends FirmwareCreateManyArgs>(args?: SelectSubset<T, FirmwareCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many Firmware and returns the data saved in the database.
+     * @param {FirmwareCreateManyAndReturnArgs} args - Arguments to create many Firmware.
+     * @example
+     * // Create many Firmware
+     * const firmware = await prisma.firmware.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many Firmware and only return the `id`
+     * const firmwareWithIdOnly = await prisma.firmware.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends FirmwareCreateManyAndReturnArgs>(args?: SelectSubset<T, FirmwareCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a Firmware.
+     * @param {FirmwareDeleteArgs} args - Arguments to delete one Firmware.
+     * @example
+     * // Delete one Firmware
+     * const Firmware = await prisma.firmware.delete({
+     *   where: {
+     *     // ... filter to delete one Firmware
+     *   }
+     * })
+     * 
+     */
+    delete<T extends FirmwareDeleteArgs>(args: SelectSubset<T, FirmwareDeleteArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one Firmware.
+     * @param {FirmwareUpdateArgs} args - Arguments to update one Firmware.
+     * @example
+     * // Update one Firmware
+     * const firmware = await prisma.firmware.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends FirmwareUpdateArgs>(args: SelectSubset<T, FirmwareUpdateArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more Firmware.
+     * @param {FirmwareDeleteManyArgs} args - Arguments to filter Firmware to delete.
+     * @example
+     * // Delete a few Firmware
+     * const { count } = await prisma.firmware.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends FirmwareDeleteManyArgs>(args?: SelectSubset<T, FirmwareDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Firmware.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Firmware
+     * const firmware = await prisma.firmware.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends FirmwareUpdateManyArgs>(args: SelectSubset<T, FirmwareUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Firmware and returns the data updated in the database.
+     * @param {FirmwareUpdateManyAndReturnArgs} args - Arguments to update many Firmware.
+     * @example
+     * // Update many Firmware
+     * const firmware = await prisma.firmware.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more Firmware and only return the `id`
+     * const firmwareWithIdOnly = await prisma.firmware.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends FirmwareUpdateManyAndReturnArgs>(args: SelectSubset<T, FirmwareUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one Firmware.
+     * @param {FirmwareUpsertArgs} args - Arguments to update or create a Firmware.
+     * @example
+     * // Update or create a Firmware
+     * const firmware = await prisma.firmware.upsert({
+     *   create: {
+     *     // ... data to create a Firmware
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the Firmware we want to update
+     *   }
+     * })
+     */
+    upsert<T extends FirmwareUpsertArgs>(args: SelectSubset<T, FirmwareUpsertArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of Firmware.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareCountArgs} args - Arguments to filter Firmware to count.
+     * @example
+     * // Count the number of Firmware
+     * const count = await prisma.firmware.count({
+     *   where: {
+     *     // ... the filter for the Firmware we want to count
+     *   }
+     * })
+    **/
+    count<T extends FirmwareCountArgs>(
+      args?: Subset<T, FirmwareCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], FirmwareCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a Firmware.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends FirmwareAggregateArgs>(args: Subset<T, FirmwareAggregateArgs>): Prisma.PrismaPromise<GetFirmwareAggregateType<T>>
+
+    /**
+     * Group by Firmware.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {FirmwareGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends FirmwareGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: FirmwareGroupByArgs['orderBy'] }
+        : { orderBy?: FirmwareGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, FirmwareGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetFirmwareGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the Firmware model
+   */
+  readonly fields: FirmwareFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for Firmware.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__FirmwareClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    createdBy<T extends Firmware$createdByArgs<ExtArgs> = {}>(args?: Subset<T, Firmware$createdByArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    otaLogs<T extends Firmware$otaLogsArgs<ExtArgs> = {}>(args?: Subset<T, Firmware$otaLogsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the Firmware model
+   */
+  interface FirmwareFieldRefs {
+    readonly id: FieldRef<"Firmware", 'String'>
+    readonly version: FieldRef<"Firmware", 'String'>
+    readonly filename: FieldRef<"Firmware", 'String'>
+    readonly originalName: FieldRef<"Firmware", 'String'>
+    readonly filePath: FieldRef<"Firmware", 'String'>
+    readonly fileSize: FieldRef<"Firmware", 'Int'>
+    readonly checksumSha256: FieldRef<"Firmware", 'String'>
+    readonly hardwareVersion: FieldRef<"Firmware", 'String'>
+    readonly changelog: FieldRef<"Firmware", 'String'>
+    readonly isLatest: FieldRef<"Firmware", 'Boolean'>
+    readonly createdById: FieldRef<"Firmware", 'String'>
+    readonly createdAt: FieldRef<"Firmware", 'DateTime'>
+    readonly updatedAt: FieldRef<"Firmware", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * Firmware findUnique
+   */
+  export type FirmwareFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter, which Firmware to fetch.
+     */
+    where: FirmwareWhereUniqueInput
+  }
+
+  /**
+   * Firmware findUniqueOrThrow
+   */
+  export type FirmwareFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter, which Firmware to fetch.
+     */
+    where: FirmwareWhereUniqueInput
+  }
+
+  /**
+   * Firmware findFirst
+   */
+  export type FirmwareFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter, which Firmware to fetch.
+     */
+    where?: FirmwareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Firmware to fetch.
+     */
+    orderBy?: FirmwareOrderByWithRelationInput | FirmwareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Firmware.
+     */
+    cursor?: FirmwareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Firmware from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Firmware.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Firmware.
+     */
+    distinct?: FirmwareScalarFieldEnum | FirmwareScalarFieldEnum[]
+  }
+
+  /**
+   * Firmware findFirstOrThrow
+   */
+  export type FirmwareFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter, which Firmware to fetch.
+     */
+    where?: FirmwareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Firmware to fetch.
+     */
+    orderBy?: FirmwareOrderByWithRelationInput | FirmwareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Firmware.
+     */
+    cursor?: FirmwareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Firmware from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Firmware.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Firmware.
+     */
+    distinct?: FirmwareScalarFieldEnum | FirmwareScalarFieldEnum[]
+  }
+
+  /**
+   * Firmware findMany
+   */
+  export type FirmwareFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter, which Firmware to fetch.
+     */
+    where?: FirmwareWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Firmware to fetch.
+     */
+    orderBy?: FirmwareOrderByWithRelationInput | FirmwareOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Firmware.
+     */
+    cursor?: FirmwareWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Firmware from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Firmware.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Firmware.
+     */
+    distinct?: FirmwareScalarFieldEnum | FirmwareScalarFieldEnum[]
+  }
+
+  /**
+   * Firmware create
+   */
+  export type FirmwareCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * The data needed to create a Firmware.
+     */
+    data: XOR<FirmwareCreateInput, FirmwareUncheckedCreateInput>
+  }
+
+  /**
+   * Firmware createMany
+   */
+  export type FirmwareCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many Firmware.
+     */
+    data: FirmwareCreateManyInput | FirmwareCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * Firmware createManyAndReturn
+   */
+  export type FirmwareCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * The data used to create many Firmware.
+     */
+    data: FirmwareCreateManyInput | FirmwareCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Firmware update
+   */
+  export type FirmwareUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * The data needed to update a Firmware.
+     */
+    data: XOR<FirmwareUpdateInput, FirmwareUncheckedUpdateInput>
+    /**
+     * Choose, which Firmware to update.
+     */
+    where: FirmwareWhereUniqueInput
+  }
+
+  /**
+   * Firmware updateMany
+   */
+  export type FirmwareUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update Firmware.
+     */
+    data: XOR<FirmwareUpdateManyMutationInput, FirmwareUncheckedUpdateManyInput>
+    /**
+     * Filter which Firmware to update
+     */
+    where?: FirmwareWhereInput
+    /**
+     * Limit how many Firmware to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * Firmware updateManyAndReturn
+   */
+  export type FirmwareUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * The data used to update Firmware.
+     */
+    data: XOR<FirmwareUpdateManyMutationInput, FirmwareUncheckedUpdateManyInput>
+    /**
+     * Filter which Firmware to update
+     */
+    where?: FirmwareWhereInput
+    /**
+     * Limit how many Firmware to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * Firmware upsert
+   */
+  export type FirmwareUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * The filter to search for the Firmware to update in case it exists.
+     */
+    where: FirmwareWhereUniqueInput
+    /**
+     * In case the Firmware found by the `where` argument doesn't exist, create a new Firmware with this data.
+     */
+    create: XOR<FirmwareCreateInput, FirmwareUncheckedCreateInput>
+    /**
+     * In case the Firmware was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<FirmwareUpdateInput, FirmwareUncheckedUpdateInput>
+  }
+
+  /**
+   * Firmware delete
+   */
+  export type FirmwareDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    /**
+     * Filter which Firmware to delete.
+     */
+    where: FirmwareWhereUniqueInput
+  }
+
+  /**
+   * Firmware deleteMany
+   */
+  export type FirmwareDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which Firmware to delete
+     */
+    where?: FirmwareWhereInput
+    /**
+     * Limit how many Firmware to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * Firmware.createdBy
+   */
+  export type Firmware$createdByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the User
+     */
+    omit?: UserOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: UserInclude<ExtArgs> | null
+    where?: UserWhereInput
+  }
+
+  /**
+   * Firmware.otaLogs
+   */
+  export type Firmware$otaLogsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    where?: OtaLogWhereInput
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    cursor?: OtaLogWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: OtaLogScalarFieldEnum | OtaLogScalarFieldEnum[]
+  }
+
+  /**
+   * Firmware without action
+   */
+  export type FirmwareDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model OtaLog
+   */
+
+  export type AggregateOtaLog = {
+    _count: OtaLogCountAggregateOutputType | null
+    _min: OtaLogMinAggregateOutputType | null
+    _max: OtaLogMaxAggregateOutputType | null
+  }
+
+  export type OtaLogMinAggregateOutputType = {
+    id: string | null
+    deviceId: string | null
+    deviceSerialNumber: string | null
+    firmwareId: string | null
+    firmwareVersion: string | null
+    firmwareUrl: string | null
+    checksumSha256: string | null
+    isBroadcast: boolean | null
+    status: string | null
+    triggeredById: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type OtaLogMaxAggregateOutputType = {
+    id: string | null
+    deviceId: string | null
+    deviceSerialNumber: string | null
+    firmwareId: string | null
+    firmwareVersion: string | null
+    firmwareUrl: string | null
+    checksumSha256: string | null
+    isBroadcast: boolean | null
+    status: string | null
+    triggeredById: string | null
+    notes: string | null
+    createdAt: Date | null
+  }
+
+  export type OtaLogCountAggregateOutputType = {
+    id: number
+    deviceId: number
+    deviceSerialNumber: number
+    firmwareId: number
+    firmwareVersion: number
+    firmwareUrl: number
+    checksumSha256: number
+    isBroadcast: number
+    status: number
+    triggeredById: number
+    notes: number
+    createdAt: number
+    _all: number
+  }
+
+
+  export type OtaLogMinAggregateInputType = {
+    id?: true
+    deviceId?: true
+    deviceSerialNumber?: true
+    firmwareId?: true
+    firmwareVersion?: true
+    firmwareUrl?: true
+    checksumSha256?: true
+    isBroadcast?: true
+    status?: true
+    triggeredById?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type OtaLogMaxAggregateInputType = {
+    id?: true
+    deviceId?: true
+    deviceSerialNumber?: true
+    firmwareId?: true
+    firmwareVersion?: true
+    firmwareUrl?: true
+    checksumSha256?: true
+    isBroadcast?: true
+    status?: true
+    triggeredById?: true
+    notes?: true
+    createdAt?: true
+  }
+
+  export type OtaLogCountAggregateInputType = {
+    id?: true
+    deviceId?: true
+    deviceSerialNumber?: true
+    firmwareId?: true
+    firmwareVersion?: true
+    firmwareUrl?: true
+    checksumSha256?: true
+    isBroadcast?: true
+    status?: true
+    triggeredById?: true
+    notes?: true
+    createdAt?: true
+    _all?: true
+  }
+
+  export type OtaLogAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OtaLog to aggregate.
+     */
+    where?: OtaLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtaLogs to fetch.
+     */
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: OtaLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtaLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtaLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned OtaLogs
+    **/
+    _count?: true | OtaLogCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: OtaLogMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: OtaLogMaxAggregateInputType
+  }
+
+  export type GetOtaLogAggregateType<T extends OtaLogAggregateArgs> = {
+        [P in keyof T & keyof AggregateOtaLog]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateOtaLog[P]>
+      : GetScalarType<T[P], AggregateOtaLog[P]>
+  }
+
+
+
+
+  export type OtaLogGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: OtaLogWhereInput
+    orderBy?: OtaLogOrderByWithAggregationInput | OtaLogOrderByWithAggregationInput[]
+    by: OtaLogScalarFieldEnum[] | OtaLogScalarFieldEnum
+    having?: OtaLogScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: OtaLogCountAggregateInputType | true
+    _min?: OtaLogMinAggregateInputType
+    _max?: OtaLogMaxAggregateInputType
+  }
+
+  export type OtaLogGroupByOutputType = {
+    id: string
+    deviceId: string | null
+    deviceSerialNumber: string | null
+    firmwareId: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256: string | null
+    isBroadcast: boolean
+    status: string
+    triggeredById: string | null
+    notes: string | null
+    createdAt: Date
+    _count: OtaLogCountAggregateOutputType | null
+    _min: OtaLogMinAggregateOutputType | null
+    _max: OtaLogMaxAggregateOutputType | null
+  }
+
+  type GetOtaLogGroupByPayload<T extends OtaLogGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<OtaLogGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof OtaLogGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], OtaLogGroupByOutputType[P]>
+            : GetScalarType<T[P], OtaLogGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type OtaLogSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deviceId?: boolean
+    deviceSerialNumber?: boolean
+    firmwareId?: boolean
+    firmwareVersion?: boolean
+    firmwareUrl?: boolean
+    checksumSha256?: boolean
+    isBroadcast?: boolean
+    status?: boolean
+    triggeredById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }, ExtArgs["result"]["otaLog"]>
+
+  export type OtaLogSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deviceId?: boolean
+    deviceSerialNumber?: boolean
+    firmwareId?: boolean
+    firmwareVersion?: boolean
+    firmwareUrl?: boolean
+    checksumSha256?: boolean
+    isBroadcast?: boolean
+    status?: boolean
+    triggeredById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }, ExtArgs["result"]["otaLog"]>
+
+  export type OtaLogSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    deviceId?: boolean
+    deviceSerialNumber?: boolean
+    firmwareId?: boolean
+    firmwareVersion?: boolean
+    firmwareUrl?: boolean
+    checksumSha256?: boolean
+    isBroadcast?: boolean
+    status?: boolean
+    triggeredById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }, ExtArgs["result"]["otaLog"]>
+
+  export type OtaLogSelectScalar = {
+    id?: boolean
+    deviceId?: boolean
+    deviceSerialNumber?: boolean
+    firmwareId?: boolean
+    firmwareVersion?: boolean
+    firmwareUrl?: boolean
+    checksumSha256?: boolean
+    isBroadcast?: boolean
+    status?: boolean
+    triggeredById?: boolean
+    notes?: boolean
+    createdAt?: boolean
+  }
+
+  export type OtaLogOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "deviceId" | "deviceSerialNumber" | "firmwareId" | "firmwareVersion" | "firmwareUrl" | "checksumSha256" | "isBroadcast" | "status" | "triggeredById" | "notes" | "createdAt", ExtArgs["result"]["otaLog"]>
+  export type OtaLogInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }
+  export type OtaLogIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }
+  export type OtaLogIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    device?: boolean | OtaLog$deviceArgs<ExtArgs>
+    firmware?: boolean | OtaLog$firmwareArgs<ExtArgs>
+  }
+
+  export type $OtaLogPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "OtaLog"
+    objects: {
+      device: Prisma.$DevicePayload<ExtArgs> | null
+      firmware: Prisma.$FirmwarePayload<ExtArgs> | null
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      deviceId: string | null
+      deviceSerialNumber: string | null
+      firmwareId: string | null
+      firmwareVersion: string
+      firmwareUrl: string
+      checksumSha256: string | null
+      isBroadcast: boolean
+      status: string
+      triggeredById: string | null
+      notes: string | null
+      createdAt: Date
+    }, ExtArgs["result"]["otaLog"]>
+    composites: {}
+  }
+
+  type OtaLogGetPayload<S extends boolean | null | undefined | OtaLogDefaultArgs> = $Result.GetResult<Prisma.$OtaLogPayload, S>
+
+  type OtaLogCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<OtaLogFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: OtaLogCountAggregateInputType | true
+    }
+
+  export interface OtaLogDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['OtaLog'], meta: { name: 'OtaLog' } }
+    /**
+     * Find zero or one OtaLog that matches the filter.
+     * @param {OtaLogFindUniqueArgs} args - Arguments to find a OtaLog
+     * @example
+     * // Get one OtaLog
+     * const otaLog = await prisma.otaLog.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends OtaLogFindUniqueArgs>(args: SelectSubset<T, OtaLogFindUniqueArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findUnique", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find one OtaLog that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {OtaLogFindUniqueOrThrowArgs} args - Arguments to find a OtaLog
+     * @example
+     * // Get one OtaLog
+     * const otaLog = await prisma.otaLog.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends OtaLogFindUniqueOrThrowArgs>(args: SelectSubset<T, OtaLogFindUniqueOrThrowArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OtaLog that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogFindFirstArgs} args - Arguments to find a OtaLog
+     * @example
+     * // Get one OtaLog
+     * const otaLog = await prisma.otaLog.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends OtaLogFindFirstArgs>(args?: SelectSubset<T, OtaLogFindFirstArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findFirst", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find the first OtaLog that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogFindFirstOrThrowArgs} args - Arguments to find a OtaLog
+     * @example
+     * // Get one OtaLog
+     * const otaLog = await prisma.otaLog.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends OtaLogFindFirstOrThrowArgs>(args?: SelectSubset<T, OtaLogFindFirstOrThrowArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findFirstOrThrow", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Find zero or more OtaLogs that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all OtaLogs
+     * const otaLogs = await prisma.otaLog.findMany()
+     * 
+     * // Get first 10 OtaLogs
+     * const otaLogs = await prisma.otaLog.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const otaLogWithIdOnly = await prisma.otaLog.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends OtaLogFindManyArgs>(args?: SelectSubset<T, OtaLogFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions>>
+
+    /**
+     * Create a OtaLog.
+     * @param {OtaLogCreateArgs} args - Arguments to create a OtaLog.
+     * @example
+     * // Create one OtaLog
+     * const OtaLog = await prisma.otaLog.create({
+     *   data: {
+     *     // ... data to create a OtaLog
+     *   }
+     * })
+     * 
+     */
+    create<T extends OtaLogCreateArgs>(args: SelectSubset<T, OtaLogCreateArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "create", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Create many OtaLogs.
+     * @param {OtaLogCreateManyArgs} args - Arguments to create many OtaLogs.
+     * @example
+     * // Create many OtaLogs
+     * const otaLog = await prisma.otaLog.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends OtaLogCreateManyArgs>(args?: SelectSubset<T, OtaLogCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many OtaLogs and returns the data saved in the database.
+     * @param {OtaLogCreateManyAndReturnArgs} args - Arguments to create many OtaLogs.
+     * @example
+     * // Create many OtaLogs
+     * const otaLog = await prisma.otaLog.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many OtaLogs and only return the `id`
+     * const otaLogWithIdOnly = await prisma.otaLog.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends OtaLogCreateManyAndReturnArgs>(args?: SelectSubset<T, OtaLogCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "createManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Delete a OtaLog.
+     * @param {OtaLogDeleteArgs} args - Arguments to delete one OtaLog.
+     * @example
+     * // Delete one OtaLog
+     * const OtaLog = await prisma.otaLog.delete({
+     *   where: {
+     *     // ... filter to delete one OtaLog
+     *   }
+     * })
+     * 
+     */
+    delete<T extends OtaLogDeleteArgs>(args: SelectSubset<T, OtaLogDeleteArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "delete", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Update one OtaLog.
+     * @param {OtaLogUpdateArgs} args - Arguments to update one OtaLog.
+     * @example
+     * // Update one OtaLog
+     * const otaLog = await prisma.otaLog.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends OtaLogUpdateArgs>(args: SelectSubset<T, OtaLogUpdateArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "update", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+    /**
+     * Delete zero or more OtaLogs.
+     * @param {OtaLogDeleteManyArgs} args - Arguments to filter OtaLogs to delete.
+     * @example
+     * // Delete a few OtaLogs
+     * const { count } = await prisma.otaLog.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends OtaLogDeleteManyArgs>(args?: SelectSubset<T, OtaLogDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OtaLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many OtaLogs
+     * const otaLog = await prisma.otaLog.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends OtaLogUpdateManyArgs>(args: SelectSubset<T, OtaLogUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more OtaLogs and returns the data updated in the database.
+     * @param {OtaLogUpdateManyAndReturnArgs} args - Arguments to update many OtaLogs.
+     * @example
+     * // Update many OtaLogs
+     * const otaLog = await prisma.otaLog.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more OtaLogs and only return the `id`
+     * const otaLogWithIdOnly = await prisma.otaLog.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends OtaLogUpdateManyAndReturnArgs>(args: SelectSubset<T, OtaLogUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "updateManyAndReturn", GlobalOmitOptions>>
+
+    /**
+     * Create or update one OtaLog.
+     * @param {OtaLogUpsertArgs} args - Arguments to update or create a OtaLog.
+     * @example
+     * // Update or create a OtaLog
+     * const otaLog = await prisma.otaLog.upsert({
+     *   create: {
+     *     // ... data to create a OtaLog
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the OtaLog we want to update
+     *   }
+     * })
+     */
+    upsert<T extends OtaLogUpsertArgs>(args: SelectSubset<T, OtaLogUpsertArgs<ExtArgs>>): Prisma__OtaLogClient<$Result.GetResult<Prisma.$OtaLogPayload<ExtArgs>, T, "upsert", GlobalOmitOptions>, never, ExtArgs, GlobalOmitOptions>
+
+
+    /**
+     * Count the number of OtaLogs.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogCountArgs} args - Arguments to filter OtaLogs to count.
+     * @example
+     * // Count the number of OtaLogs
+     * const count = await prisma.otaLog.count({
+     *   where: {
+     *     // ... the filter for the OtaLogs we want to count
+     *   }
+     * })
+    **/
+    count<T extends OtaLogCountArgs>(
+      args?: Subset<T, OtaLogCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], OtaLogCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a OtaLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends OtaLogAggregateArgs>(args: Subset<T, OtaLogAggregateArgs>): Prisma.PrismaPromise<GetOtaLogAggregateType<T>>
+
+    /**
+     * Group by OtaLog.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {OtaLogGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends OtaLogGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: OtaLogGroupByArgs['orderBy'] }
+        : { orderBy?: OtaLogGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, OtaLogGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetOtaLogGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the OtaLog model
+   */
+  readonly fields: OtaLogFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for OtaLog.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__OtaLogClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    device<T extends OtaLog$deviceArgs<ExtArgs> = {}>(args?: Subset<T, OtaLog$deviceArgs<ExtArgs>>): Prisma__DeviceClient<$Result.GetResult<Prisma.$DevicePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    firmware<T extends OtaLog$firmwareArgs<ExtArgs> = {}>(args?: Subset<T, OtaLog$firmwareArgs<ExtArgs>>): Prisma__FirmwareClient<$Result.GetResult<Prisma.$FirmwarePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the OtaLog model
+   */
+  interface OtaLogFieldRefs {
+    readonly id: FieldRef<"OtaLog", 'String'>
+    readonly deviceId: FieldRef<"OtaLog", 'String'>
+    readonly deviceSerialNumber: FieldRef<"OtaLog", 'String'>
+    readonly firmwareId: FieldRef<"OtaLog", 'String'>
+    readonly firmwareVersion: FieldRef<"OtaLog", 'String'>
+    readonly firmwareUrl: FieldRef<"OtaLog", 'String'>
+    readonly checksumSha256: FieldRef<"OtaLog", 'String'>
+    readonly isBroadcast: FieldRef<"OtaLog", 'Boolean'>
+    readonly status: FieldRef<"OtaLog", 'String'>
+    readonly triggeredById: FieldRef<"OtaLog", 'String'>
+    readonly notes: FieldRef<"OtaLog", 'String'>
+    readonly createdAt: FieldRef<"OtaLog", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * OtaLog findUnique
+   */
+  export type OtaLogFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter, which OtaLog to fetch.
+     */
+    where: OtaLogWhereUniqueInput
+  }
+
+  /**
+   * OtaLog findUniqueOrThrow
+   */
+  export type OtaLogFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter, which OtaLog to fetch.
+     */
+    where: OtaLogWhereUniqueInput
+  }
+
+  /**
+   * OtaLog findFirst
+   */
+  export type OtaLogFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter, which OtaLog to fetch.
+     */
+    where?: OtaLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtaLogs to fetch.
+     */
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OtaLogs.
+     */
+    cursor?: OtaLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtaLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtaLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OtaLogs.
+     */
+    distinct?: OtaLogScalarFieldEnum | OtaLogScalarFieldEnum[]
+  }
+
+  /**
+   * OtaLog findFirstOrThrow
+   */
+  export type OtaLogFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter, which OtaLog to fetch.
+     */
+    where?: OtaLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtaLogs to fetch.
+     */
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for OtaLogs.
+     */
+    cursor?: OtaLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtaLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtaLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OtaLogs.
+     */
+    distinct?: OtaLogScalarFieldEnum | OtaLogScalarFieldEnum[]
+  }
+
+  /**
+   * OtaLog findMany
+   */
+  export type OtaLogFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter, which OtaLogs to fetch.
+     */
+    where?: OtaLogWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of OtaLogs to fetch.
+     */
+    orderBy?: OtaLogOrderByWithRelationInput | OtaLogOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing OtaLogs.
+     */
+    cursor?: OtaLogWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` OtaLogs from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` OtaLogs.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of OtaLogs.
+     */
+    distinct?: OtaLogScalarFieldEnum | OtaLogScalarFieldEnum[]
+  }
+
+  /**
+   * OtaLog create
+   */
+  export type OtaLogCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * The data needed to create a OtaLog.
+     */
+    data: XOR<OtaLogCreateInput, OtaLogUncheckedCreateInput>
+  }
+
+  /**
+   * OtaLog createMany
+   */
+  export type OtaLogCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many OtaLogs.
+     */
+    data: OtaLogCreateManyInput | OtaLogCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * OtaLog createManyAndReturn
+   */
+  export type OtaLogCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * The data used to create many OtaLogs.
+     */
+    data: OtaLogCreateManyInput | OtaLogCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OtaLog update
+   */
+  export type OtaLogUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * The data needed to update a OtaLog.
+     */
+    data: XOR<OtaLogUpdateInput, OtaLogUncheckedUpdateInput>
+    /**
+     * Choose, which OtaLog to update.
+     */
+    where: OtaLogWhereUniqueInput
+  }
+
+  /**
+   * OtaLog updateMany
+   */
+  export type OtaLogUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update OtaLogs.
+     */
+    data: XOR<OtaLogUpdateManyMutationInput, OtaLogUncheckedUpdateManyInput>
+    /**
+     * Filter which OtaLogs to update
+     */
+    where?: OtaLogWhereInput
+    /**
+     * Limit how many OtaLogs to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * OtaLog updateManyAndReturn
+   */
+  export type OtaLogUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * The data used to update OtaLogs.
+     */
+    data: XOR<OtaLogUpdateManyMutationInput, OtaLogUncheckedUpdateManyInput>
+    /**
+     * Filter which OtaLogs to update
+     */
+    where?: OtaLogWhereInput
+    /**
+     * Limit how many OtaLogs to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * OtaLog upsert
+   */
+  export type OtaLogUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * The filter to search for the OtaLog to update in case it exists.
+     */
+    where: OtaLogWhereUniqueInput
+    /**
+     * In case the OtaLog found by the `where` argument doesn't exist, create a new OtaLog with this data.
+     */
+    create: XOR<OtaLogCreateInput, OtaLogUncheckedCreateInput>
+    /**
+     * In case the OtaLog was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<OtaLogUpdateInput, OtaLogUncheckedUpdateInput>
+  }
+
+  /**
+   * OtaLog delete
+   */
+  export type OtaLogDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+    /**
+     * Filter which OtaLog to delete.
+     */
+    where: OtaLogWhereUniqueInput
+  }
+
+  /**
+   * OtaLog deleteMany
+   */
+  export type OtaLogDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which OtaLogs to delete
+     */
+    where?: OtaLogWhereInput
+    /**
+     * Limit how many OtaLogs to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * OtaLog.device
+   */
+  export type OtaLog$deviceArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Device
+     */
+    select?: DeviceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Device
+     */
+    omit?: DeviceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DeviceInclude<ExtArgs> | null
+    where?: DeviceWhereInput
+  }
+
+  /**
+   * OtaLog.firmware
+   */
+  export type OtaLog$firmwareArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Firmware
+     */
+    select?: FirmwareSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Firmware
+     */
+    omit?: FirmwareOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: FirmwareInclude<ExtArgs> | null
+    where?: FirmwareWhereInput
+  }
+
+  /**
+   * OtaLog without action
+   */
+  export type OtaLogDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the OtaLog
+     */
+    select?: OtaLogSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the OtaLog
+     */
+    omit?: OtaLogOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: OtaLogInclude<ExtArgs> | null
+  }
+
+
+  /**
    * Enums
    */
 
@@ -13070,6 +15910,8 @@ export namespace Prisma {
     createdById: 'createdById',
     activatedAt: 'activatedAt',
     lastLoginAt: 'lastLoginAt',
+    fcmToken: 'fcmToken',
+    lastFcmTokenAt: 'lastFcmTokenAt',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13085,6 +15927,7 @@ export namespace Prisma {
     model: 'model',
     hardwareVersion: 'hardwareVersion',
     firmwareVersion: 'firmwareVersion',
+    macAddress: 'macAddress',
     status: 'status',
     ownershipType: 'ownershipType',
     controlMode: 'controlMode',
@@ -13092,6 +15935,8 @@ export namespace Prisma {
     createdById: 'createdById',
     activatedAt: 'activatedAt',
     lastSeenAt: 'lastSeenAt',
+    rssiDbm: 'rssiDbm',
+    uptimeMs: 'uptimeMs',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -13209,6 +16054,43 @@ export namespace Prisma {
   };
 
   export type HarvestRecordScalarFieldEnum = (typeof HarvestRecordScalarFieldEnum)[keyof typeof HarvestRecordScalarFieldEnum]
+
+
+  export const FirmwareScalarFieldEnum: {
+    id: 'id',
+    version: 'version',
+    filename: 'filename',
+    originalName: 'originalName',
+    filePath: 'filePath',
+    fileSize: 'fileSize',
+    checksumSha256: 'checksumSha256',
+    hardwareVersion: 'hardwareVersion',
+    changelog: 'changelog',
+    isLatest: 'isLatest',
+    createdById: 'createdById',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type FirmwareScalarFieldEnum = (typeof FirmwareScalarFieldEnum)[keyof typeof FirmwareScalarFieldEnum]
+
+
+  export const OtaLogScalarFieldEnum: {
+    id: 'id',
+    deviceId: 'deviceId',
+    deviceSerialNumber: 'deviceSerialNumber',
+    firmwareId: 'firmwareId',
+    firmwareVersion: 'firmwareVersion',
+    firmwareUrl: 'firmwareUrl',
+    checksumSha256: 'checksumSha256',
+    isBroadcast: 'isBroadcast',
+    status: 'status',
+    triggeredById: 'triggeredById',
+    notes: 'notes',
+    createdAt: 'createdAt'
+  };
+
+  export type OtaLogScalarFieldEnum = (typeof OtaLogScalarFieldEnum)[keyof typeof OtaLogScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -13346,20 +16228,6 @@ export namespace Prisma {
 
 
   /**
-   * Reference to a field of type 'Decimal'
-   */
-  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
-    
-
-
-  /**
-   * Reference to a field of type 'Decimal[]'
-   */
-  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
-    
-
-
-  /**
    * Reference to a field of type 'Int'
    */
   export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -13384,6 +16252,20 @@ export namespace Prisma {
    * Reference to a field of type 'BigInt[]'
    */
   export type ListBigIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'BigInt[]'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal'
+   */
+  export type DecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal'>
+    
+
+
+  /**
+   * Reference to a field of type 'Decimal[]'
+   */
+  export type ListDecimalFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Decimal[]'>
     
 
 
@@ -13476,12 +16358,15 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"User"> | string | null
     activatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    fcmToken?: StringNullableFilter<"User"> | string | null
+    lastFcmTokenAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
     devices?: DeviceListRelationFilter
     createdDevices?: DeviceListRelationFilter
+    firmwares?: FirmwareListRelationFilter
     controlLogs?: ControlLogListRelationFilter
     schedules?: ScheduleListRelationFilter
   }
@@ -13499,12 +16384,15 @@ export namespace Prisma {
     createdById?: SortOrderInput | SortOrder
     activatedAt?: SortOrderInput | SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
+    fcmToken?: SortOrderInput | SortOrder
+    lastFcmTokenAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     createdBy?: UserOrderByWithRelationInput
     createdUsers?: UserOrderByRelationAggregateInput
     devices?: DeviceOrderByRelationAggregateInput
     createdDevices?: DeviceOrderByRelationAggregateInput
+    firmwares?: FirmwareOrderByRelationAggregateInput
     controlLogs?: ControlLogOrderByRelationAggregateInput
     schedules?: ScheduleOrderByRelationAggregateInput
   }
@@ -13525,12 +16413,15 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"User"> | string | null
     activatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    fcmToken?: StringNullableFilter<"User"> | string | null
+    lastFcmTokenAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
     createdUsers?: UserListRelationFilter
     devices?: DeviceListRelationFilter
     createdDevices?: DeviceListRelationFilter
+    firmwares?: FirmwareListRelationFilter
     controlLogs?: ControlLogListRelationFilter
     schedules?: ScheduleListRelationFilter
   }, "id" | "phoneNumber" | "email">
@@ -13548,6 +16439,8 @@ export namespace Prisma {
     createdById?: SortOrderInput | SortOrder
     activatedAt?: SortOrderInput | SortOrder
     lastLoginAt?: SortOrderInput | SortOrder
+    fcmToken?: SortOrderInput | SortOrder
+    lastFcmTokenAt?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -13571,6 +16464,8 @@ export namespace Prisma {
     createdById?: StringNullableWithAggregatesFilter<"User"> | string | null
     activatedAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     lastLoginAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
+    fcmToken?: StringNullableWithAggregatesFilter<"User"> | string | null
+    lastFcmTokenAt?: DateTimeNullableWithAggregatesFilter<"User"> | Date | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -13586,6 +16481,7 @@ export namespace Prisma {
     model?: StringFilter<"Device"> | string
     hardwareVersion?: StringNullableFilter<"Device"> | string | null
     firmwareVersion?: StringNullableFilter<"Device"> | string | null
+    macAddress?: StringNullableFilter<"Device"> | string | null
     status?: EnumDeviceStatusFilter<"Device"> | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFilter<"Device"> | $Enums.OwnershipType
     controlMode?: EnumControlModeFilter<"Device"> | $Enums.ControlMode
@@ -13593,6 +16489,8 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"Device"> | string | null
     activatedAt?: DateTimeNullableFilter<"Device"> | Date | string | null
     lastSeenAt?: DateTimeNullableFilter<"Device"> | Date | string | null
+    rssiDbm?: IntNullableFilter<"Device"> | number | null
+    uptimeMs?: BigIntNullableFilter<"Device"> | bigint | number | null
     createdAt?: DateTimeFilter<"Device"> | Date | string
     updatedAt?: DateTimeFilter<"Device"> | Date | string
     farmer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -13603,6 +16501,7 @@ export namespace Prisma {
     controlLogs?: ControlLogListRelationFilter
     schedules?: ScheduleListRelationFilter
     cultivationCycles?: CultivationCycleListRelationFilter
+    otaLogs?: OtaLogListRelationFilter
   }
 
   export type DeviceOrderByWithRelationInput = {
@@ -13613,6 +16512,7 @@ export namespace Prisma {
     model?: SortOrder
     hardwareVersion?: SortOrderInput | SortOrder
     firmwareVersion?: SortOrderInput | SortOrder
+    macAddress?: SortOrderInput | SortOrder
     status?: SortOrder
     ownershipType?: SortOrder
     controlMode?: SortOrder
@@ -13620,6 +16520,8 @@ export namespace Prisma {
     createdById?: SortOrderInput | SortOrder
     activatedAt?: SortOrderInput | SortOrder
     lastSeenAt?: SortOrderInput | SortOrder
+    rssiDbm?: SortOrderInput | SortOrder
+    uptimeMs?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     farmer?: UserOrderByWithRelationInput
@@ -13630,6 +16532,7 @@ export namespace Prisma {
     controlLogs?: ControlLogOrderByRelationAggregateInput
     schedules?: ScheduleOrderByRelationAggregateInput
     cultivationCycles?: CultivationCycleOrderByRelationAggregateInput
+    otaLogs?: OtaLogOrderByRelationAggregateInput
   }
 
   export type DeviceWhereUniqueInput = Prisma.AtLeast<{
@@ -13643,6 +16546,7 @@ export namespace Prisma {
     model?: StringFilter<"Device"> | string
     hardwareVersion?: StringNullableFilter<"Device"> | string | null
     firmwareVersion?: StringNullableFilter<"Device"> | string | null
+    macAddress?: StringNullableFilter<"Device"> | string | null
     status?: EnumDeviceStatusFilter<"Device"> | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFilter<"Device"> | $Enums.OwnershipType
     controlMode?: EnumControlModeFilter<"Device"> | $Enums.ControlMode
@@ -13650,6 +16554,8 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"Device"> | string | null
     activatedAt?: DateTimeNullableFilter<"Device"> | Date | string | null
     lastSeenAt?: DateTimeNullableFilter<"Device"> | Date | string | null
+    rssiDbm?: IntNullableFilter<"Device"> | number | null
+    uptimeMs?: BigIntNullableFilter<"Device"> | bigint | number | null
     createdAt?: DateTimeFilter<"Device"> | Date | string
     updatedAt?: DateTimeFilter<"Device"> | Date | string
     farmer?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
@@ -13660,6 +16566,7 @@ export namespace Prisma {
     controlLogs?: ControlLogListRelationFilter
     schedules?: ScheduleListRelationFilter
     cultivationCycles?: CultivationCycleListRelationFilter
+    otaLogs?: OtaLogListRelationFilter
   }, "id" | "serialNumber" | "activationCode">
 
   export type DeviceOrderByWithAggregationInput = {
@@ -13670,6 +16577,7 @@ export namespace Prisma {
     model?: SortOrder
     hardwareVersion?: SortOrderInput | SortOrder
     firmwareVersion?: SortOrderInput | SortOrder
+    macAddress?: SortOrderInput | SortOrder
     status?: SortOrder
     ownershipType?: SortOrder
     controlMode?: SortOrder
@@ -13677,11 +16585,15 @@ export namespace Prisma {
     createdById?: SortOrderInput | SortOrder
     activatedAt?: SortOrderInput | SortOrder
     lastSeenAt?: SortOrderInput | SortOrder
+    rssiDbm?: SortOrderInput | SortOrder
+    uptimeMs?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: DeviceCountOrderByAggregateInput
+    _avg?: DeviceAvgOrderByAggregateInput
     _max?: DeviceMaxOrderByAggregateInput
     _min?: DeviceMinOrderByAggregateInput
+    _sum?: DeviceSumOrderByAggregateInput
   }
 
   export type DeviceScalarWhereWithAggregatesInput = {
@@ -13695,6 +16607,7 @@ export namespace Prisma {
     model?: StringWithAggregatesFilter<"Device"> | string
     hardwareVersion?: StringNullableWithAggregatesFilter<"Device"> | string | null
     firmwareVersion?: StringNullableWithAggregatesFilter<"Device"> | string | null
+    macAddress?: StringNullableWithAggregatesFilter<"Device"> | string | null
     status?: EnumDeviceStatusWithAggregatesFilter<"Device"> | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeWithAggregatesFilter<"Device"> | $Enums.OwnershipType
     controlMode?: EnumControlModeWithAggregatesFilter<"Device"> | $Enums.ControlMode
@@ -13702,6 +16615,8 @@ export namespace Prisma {
     createdById?: StringNullableWithAggregatesFilter<"Device"> | string | null
     activatedAt?: DateTimeNullableWithAggregatesFilter<"Device"> | Date | string | null
     lastSeenAt?: DateTimeNullableWithAggregatesFilter<"Device"> | Date | string | null
+    rssiDbm?: IntNullableWithAggregatesFilter<"Device"> | number | null
+    uptimeMs?: BigIntNullableWithAggregatesFilter<"Device"> | bigint | number | null
     createdAt?: DateTimeWithAggregatesFilter<"Device"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Device"> | Date | string
   }
@@ -14302,6 +17217,199 @@ export namespace Prisma {
     updatedAt?: DateTimeWithAggregatesFilter<"HarvestRecord"> | Date | string
   }
 
+  export type FirmwareWhereInput = {
+    AND?: FirmwareWhereInput | FirmwareWhereInput[]
+    OR?: FirmwareWhereInput[]
+    NOT?: FirmwareWhereInput | FirmwareWhereInput[]
+    id?: StringFilter<"Firmware"> | string
+    version?: StringFilter<"Firmware"> | string
+    filename?: StringFilter<"Firmware"> | string
+    originalName?: StringFilter<"Firmware"> | string
+    filePath?: StringFilter<"Firmware"> | string
+    fileSize?: IntFilter<"Firmware"> | number
+    checksumSha256?: StringFilter<"Firmware"> | string
+    hardwareVersion?: StringFilter<"Firmware"> | string
+    changelog?: StringNullableFilter<"Firmware"> | string | null
+    isLatest?: BoolFilter<"Firmware"> | boolean
+    createdById?: StringNullableFilter<"Firmware"> | string | null
+    createdAt?: DateTimeFilter<"Firmware"> | Date | string
+    updatedAt?: DateTimeFilter<"Firmware"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    otaLogs?: OtaLogListRelationFilter
+  }
+
+  export type FirmwareOrderByWithRelationInput = {
+    id?: SortOrder
+    version?: SortOrder
+    filename?: SortOrder
+    originalName?: SortOrder
+    filePath?: SortOrder
+    fileSize?: SortOrder
+    checksumSha256?: SortOrder
+    hardwareVersion?: SortOrder
+    changelog?: SortOrderInput | SortOrder
+    isLatest?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    createdBy?: UserOrderByWithRelationInput
+    otaLogs?: OtaLogOrderByRelationAggregateInput
+  }
+
+  export type FirmwareWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    version?: string
+    AND?: FirmwareWhereInput | FirmwareWhereInput[]
+    OR?: FirmwareWhereInput[]
+    NOT?: FirmwareWhereInput | FirmwareWhereInput[]
+    filename?: StringFilter<"Firmware"> | string
+    originalName?: StringFilter<"Firmware"> | string
+    filePath?: StringFilter<"Firmware"> | string
+    fileSize?: IntFilter<"Firmware"> | number
+    checksumSha256?: StringFilter<"Firmware"> | string
+    hardwareVersion?: StringFilter<"Firmware"> | string
+    changelog?: StringNullableFilter<"Firmware"> | string | null
+    isLatest?: BoolFilter<"Firmware"> | boolean
+    createdById?: StringNullableFilter<"Firmware"> | string | null
+    createdAt?: DateTimeFilter<"Firmware"> | Date | string
+    updatedAt?: DateTimeFilter<"Firmware"> | Date | string
+    createdBy?: XOR<UserNullableScalarRelationFilter, UserWhereInput> | null
+    otaLogs?: OtaLogListRelationFilter
+  }, "id" | "version">
+
+  export type FirmwareOrderByWithAggregationInput = {
+    id?: SortOrder
+    version?: SortOrder
+    filename?: SortOrder
+    originalName?: SortOrder
+    filePath?: SortOrder
+    fileSize?: SortOrder
+    checksumSha256?: SortOrder
+    hardwareVersion?: SortOrder
+    changelog?: SortOrderInput | SortOrder
+    isLatest?: SortOrder
+    createdById?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: FirmwareCountOrderByAggregateInput
+    _avg?: FirmwareAvgOrderByAggregateInput
+    _max?: FirmwareMaxOrderByAggregateInput
+    _min?: FirmwareMinOrderByAggregateInput
+    _sum?: FirmwareSumOrderByAggregateInput
+  }
+
+  export type FirmwareScalarWhereWithAggregatesInput = {
+    AND?: FirmwareScalarWhereWithAggregatesInput | FirmwareScalarWhereWithAggregatesInput[]
+    OR?: FirmwareScalarWhereWithAggregatesInput[]
+    NOT?: FirmwareScalarWhereWithAggregatesInput | FirmwareScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"Firmware"> | string
+    version?: StringWithAggregatesFilter<"Firmware"> | string
+    filename?: StringWithAggregatesFilter<"Firmware"> | string
+    originalName?: StringWithAggregatesFilter<"Firmware"> | string
+    filePath?: StringWithAggregatesFilter<"Firmware"> | string
+    fileSize?: IntWithAggregatesFilter<"Firmware"> | number
+    checksumSha256?: StringWithAggregatesFilter<"Firmware"> | string
+    hardwareVersion?: StringWithAggregatesFilter<"Firmware"> | string
+    changelog?: StringNullableWithAggregatesFilter<"Firmware"> | string | null
+    isLatest?: BoolWithAggregatesFilter<"Firmware"> | boolean
+    createdById?: StringNullableWithAggregatesFilter<"Firmware"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"Firmware"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"Firmware"> | Date | string
+  }
+
+  export type OtaLogWhereInput = {
+    AND?: OtaLogWhereInput | OtaLogWhereInput[]
+    OR?: OtaLogWhereInput[]
+    NOT?: OtaLogWhereInput | OtaLogWhereInput[]
+    id?: StringFilter<"OtaLog"> | string
+    deviceId?: StringNullableFilter<"OtaLog"> | string | null
+    deviceSerialNumber?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareId?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareVersion?: StringFilter<"OtaLog"> | string
+    firmwareUrl?: StringFilter<"OtaLog"> | string
+    checksumSha256?: StringNullableFilter<"OtaLog"> | string | null
+    isBroadcast?: BoolFilter<"OtaLog"> | boolean
+    status?: StringFilter<"OtaLog"> | string
+    triggeredById?: StringNullableFilter<"OtaLog"> | string | null
+    notes?: StringNullableFilter<"OtaLog"> | string | null
+    createdAt?: DateTimeFilter<"OtaLog"> | Date | string
+    device?: XOR<DeviceNullableScalarRelationFilter, DeviceWhereInput> | null
+    firmware?: XOR<FirmwareNullableScalarRelationFilter, FirmwareWhereInput> | null
+  }
+
+  export type OtaLogOrderByWithRelationInput = {
+    id?: SortOrder
+    deviceId?: SortOrderInput | SortOrder
+    deviceSerialNumber?: SortOrderInput | SortOrder
+    firmwareId?: SortOrderInput | SortOrder
+    firmwareVersion?: SortOrder
+    firmwareUrl?: SortOrder
+    checksumSha256?: SortOrderInput | SortOrder
+    isBroadcast?: SortOrder
+    status?: SortOrder
+    triggeredById?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    device?: DeviceOrderByWithRelationInput
+    firmware?: FirmwareOrderByWithRelationInput
+  }
+
+  export type OtaLogWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: OtaLogWhereInput | OtaLogWhereInput[]
+    OR?: OtaLogWhereInput[]
+    NOT?: OtaLogWhereInput | OtaLogWhereInput[]
+    deviceId?: StringNullableFilter<"OtaLog"> | string | null
+    deviceSerialNumber?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareId?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareVersion?: StringFilter<"OtaLog"> | string
+    firmwareUrl?: StringFilter<"OtaLog"> | string
+    checksumSha256?: StringNullableFilter<"OtaLog"> | string | null
+    isBroadcast?: BoolFilter<"OtaLog"> | boolean
+    status?: StringFilter<"OtaLog"> | string
+    triggeredById?: StringNullableFilter<"OtaLog"> | string | null
+    notes?: StringNullableFilter<"OtaLog"> | string | null
+    createdAt?: DateTimeFilter<"OtaLog"> | Date | string
+    device?: XOR<DeviceNullableScalarRelationFilter, DeviceWhereInput> | null
+    firmware?: XOR<FirmwareNullableScalarRelationFilter, FirmwareWhereInput> | null
+  }, "id">
+
+  export type OtaLogOrderByWithAggregationInput = {
+    id?: SortOrder
+    deviceId?: SortOrderInput | SortOrder
+    deviceSerialNumber?: SortOrderInput | SortOrder
+    firmwareId?: SortOrderInput | SortOrder
+    firmwareVersion?: SortOrder
+    firmwareUrl?: SortOrder
+    checksumSha256?: SortOrderInput | SortOrder
+    isBroadcast?: SortOrder
+    status?: SortOrder
+    triggeredById?: SortOrderInput | SortOrder
+    notes?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    _count?: OtaLogCountOrderByAggregateInput
+    _max?: OtaLogMaxOrderByAggregateInput
+    _min?: OtaLogMinOrderByAggregateInput
+  }
+
+  export type OtaLogScalarWhereWithAggregatesInput = {
+    AND?: OtaLogScalarWhereWithAggregatesInput | OtaLogScalarWhereWithAggregatesInput[]
+    OR?: OtaLogScalarWhereWithAggregatesInput[]
+    NOT?: OtaLogScalarWhereWithAggregatesInput | OtaLogScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"OtaLog"> | string
+    deviceId?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    deviceSerialNumber?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    firmwareId?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    firmwareVersion?: StringWithAggregatesFilter<"OtaLog"> | string
+    firmwareUrl?: StringWithAggregatesFilter<"OtaLog"> | string
+    checksumSha256?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    isBroadcast?: BoolWithAggregatesFilter<"OtaLog"> | boolean
+    status?: StringWithAggregatesFilter<"OtaLog"> | string
+    triggeredById?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    notes?: StringNullableWithAggregatesFilter<"OtaLog"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"OtaLog"> | Date | string
+  }
+
   export type UserCreateInput = {
     id?: string
     fullName?: string | null
@@ -14314,12 +17422,15 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
@@ -14337,11 +17448,14 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -14358,12 +17472,15 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
@@ -14381,11 +17498,14 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -14403,6 +17523,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14419,6 +17541,8 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14436,6 +17560,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14448,11 +17574,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -14463,6 +17592,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateInput = {
@@ -14473,6 +17603,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -14480,6 +17611,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -14488,6 +17621,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUpdateInput = {
@@ -14498,11 +17632,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -14513,6 +17650,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateInput = {
@@ -14523,6 +17661,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -14530,6 +17669,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -14538,6 +17679,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceCreateManyInput = {
@@ -14548,6 +17690,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -14555,6 +17698,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -14567,11 +17712,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -14584,6 +17732,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -14591,6 +17740,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -15233,6 +18384,224 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type FirmwareCreateInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutFirmwaresInput
+    otaLogs?: OtaLogCreateNestedManyWithoutFirmwareInput
+  }
+
+  export type FirmwareUncheckedCreateInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutFirmwareInput
+  }
+
+  export type FirmwareUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutFirmwaresNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutFirmwareNestedInput
+  }
+
+  export type FirmwareUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutFirmwareNestedInput
+  }
+
+  export type FirmwareCreateManyInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FirmwareUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FirmwareUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogCreateInput = {
+    id?: string
+    deviceSerialNumber?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    device?: DeviceCreateNestedOneWithoutOtaLogsInput
+    firmware?: FirmwareCreateNestedOneWithoutOtaLogsInput
+  }
+
+  export type OtaLogUncheckedCreateInput = {
+    id?: string
+    deviceId?: string | null
+    deviceSerialNumber?: string | null
+    firmwareId?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type OtaLogUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    device?: DeviceUpdateOneWithoutOtaLogsNestedInput
+    firmware?: FirmwareUpdateOneWithoutOtaLogsNestedInput
+  }
+
+  export type OtaLogUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareId?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogCreateManyInput = {
+    id?: string
+    deviceId?: string | null
+    deviceSerialNumber?: string | null
+    firmwareId?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type OtaLogUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareId?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type StringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -15321,6 +18690,12 @@ export namespace Prisma {
     none?: DeviceWhereInput
   }
 
+  export type FirmwareListRelationFilter = {
+    every?: FirmwareWhereInput
+    some?: FirmwareWhereInput
+    none?: FirmwareWhereInput
+  }
+
   export type ControlLogListRelationFilter = {
     every?: ControlLogWhereInput
     some?: ControlLogWhereInput
@@ -15346,6 +18721,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type FirmwareOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type ControlLogOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -15367,6 +18746,8 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastLoginAt?: SortOrder
+    fcmToken?: SortOrder
+    lastFcmTokenAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15384,6 +18765,8 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastLoginAt?: SortOrder
+    fcmToken?: SortOrder
+    lastFcmTokenAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15401,6 +18784,8 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastLoginAt?: SortOrder
+    fcmToken?: SortOrder
+    lastFcmTokenAt?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15518,6 +18903,28 @@ export namespace Prisma {
     not?: NestedEnumControlModeFilter<$PrismaModel> | $Enums.ControlMode
   }
 
+  export type IntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type BigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  }
+
   export type DeviceSettingNullableScalarRelationFilter = {
     is?: DeviceSettingWhereInput | null
     isNot?: DeviceSettingWhereInput | null
@@ -15541,6 +18948,12 @@ export namespace Prisma {
     none?: CultivationCycleWhereInput
   }
 
+  export type OtaLogListRelationFilter = {
+    every?: OtaLogWhereInput
+    some?: OtaLogWhereInput
+    none?: OtaLogWhereInput
+  }
+
   export type SensorReadingOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
@@ -15553,6 +18966,10 @@ export namespace Prisma {
     _count?: SortOrder
   }
 
+  export type OtaLogOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
   export type DeviceCountOrderByAggregateInput = {
     id?: SortOrder
     serialNumber?: SortOrder
@@ -15561,6 +18978,7 @@ export namespace Prisma {
     model?: SortOrder
     hardwareVersion?: SortOrder
     firmwareVersion?: SortOrder
+    macAddress?: SortOrder
     status?: SortOrder
     ownershipType?: SortOrder
     controlMode?: SortOrder
@@ -15568,8 +18986,15 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastSeenAt?: SortOrder
+    rssiDbm?: SortOrder
+    uptimeMs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type DeviceAvgOrderByAggregateInput = {
+    rssiDbm?: SortOrder
+    uptimeMs?: SortOrder
   }
 
   export type DeviceMaxOrderByAggregateInput = {
@@ -15580,6 +19005,7 @@ export namespace Prisma {
     model?: SortOrder
     hardwareVersion?: SortOrder
     firmwareVersion?: SortOrder
+    macAddress?: SortOrder
     status?: SortOrder
     ownershipType?: SortOrder
     controlMode?: SortOrder
@@ -15587,6 +19013,8 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastSeenAt?: SortOrder
+    rssiDbm?: SortOrder
+    uptimeMs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -15599,6 +19027,7 @@ export namespace Prisma {
     model?: SortOrder
     hardwareVersion?: SortOrder
     firmwareVersion?: SortOrder
+    macAddress?: SortOrder
     status?: SortOrder
     ownershipType?: SortOrder
     controlMode?: SortOrder
@@ -15606,8 +19035,15 @@ export namespace Prisma {
     createdById?: SortOrder
     activatedAt?: SortOrder
     lastSeenAt?: SortOrder
+    rssiDbm?: SortOrder
+    uptimeMs?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
+  }
+
+  export type DeviceSumOrderByAggregateInput = {
+    rssiDbm?: SortOrder
+    uptimeMs?: SortOrder
   }
 
   export type EnumDeviceStatusWithAggregatesFilter<$PrismaModel = never> = {
@@ -15640,6 +19076,38 @@ export namespace Prisma {
     _max?: NestedEnumControlModeFilter<$PrismaModel>
   }
 
+  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedIntNullableFilter<$PrismaModel>
+    _max?: NestedIntNullableFilter<$PrismaModel>
+  }
+
+  export type BigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedBigIntNullableFilter<$PrismaModel>
+    _max?: NestedBigIntNullableFilter<$PrismaModel>
+  }
+
   export type DecimalNullableFilter<$PrismaModel = never> = {
     equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
     in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
@@ -15649,17 +19117,6 @@ export namespace Prisma {
     gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
     not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type IntNullableFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type IntFilter<$PrismaModel = never> = {
@@ -15749,22 +19206,6 @@ export namespace Prisma {
     _sum?: NestedDecimalNullableFilter<$PrismaModel>
     _min?: NestedDecimalNullableFilter<$PrismaModel>
     _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
-  export type IntNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: number | IntFieldRefInput<$PrismaModel> | null
-    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
-    lt?: number | IntFieldRefInput<$PrismaModel>
-    lte?: number | IntFieldRefInput<$PrismaModel>
-    gt?: number | IntFieldRefInput<$PrismaModel>
-    gte?: number | IntFieldRefInput<$PrismaModel>
-    not?: NestedIntNullableWithAggregatesFilter<$PrismaModel> | number | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedFloatNullableFilter<$PrismaModel>
-    _sum?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedIntNullableFilter<$PrismaModel>
-    _max?: NestedIntNullableFilter<$PrismaModel>
   }
 
   export type IntWithAggregatesFilter<$PrismaModel = never> = {
@@ -16238,6 +19679,117 @@ export namespace Prisma {
     pricePerKg?: SortOrder
   }
 
+  export type FirmwareCountOrderByAggregateInput = {
+    id?: SortOrder
+    version?: SortOrder
+    filename?: SortOrder
+    originalName?: SortOrder
+    filePath?: SortOrder
+    fileSize?: SortOrder
+    checksumSha256?: SortOrder
+    hardwareVersion?: SortOrder
+    changelog?: SortOrder
+    isLatest?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FirmwareAvgOrderByAggregateInput = {
+    fileSize?: SortOrder
+  }
+
+  export type FirmwareMaxOrderByAggregateInput = {
+    id?: SortOrder
+    version?: SortOrder
+    filename?: SortOrder
+    originalName?: SortOrder
+    filePath?: SortOrder
+    fileSize?: SortOrder
+    checksumSha256?: SortOrder
+    hardwareVersion?: SortOrder
+    changelog?: SortOrder
+    isLatest?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FirmwareMinOrderByAggregateInput = {
+    id?: SortOrder
+    version?: SortOrder
+    filename?: SortOrder
+    originalName?: SortOrder
+    filePath?: SortOrder
+    fileSize?: SortOrder
+    checksumSha256?: SortOrder
+    hardwareVersion?: SortOrder
+    changelog?: SortOrder
+    isLatest?: SortOrder
+    createdById?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type FirmwareSumOrderByAggregateInput = {
+    fileSize?: SortOrder
+  }
+
+  export type DeviceNullableScalarRelationFilter = {
+    is?: DeviceWhereInput | null
+    isNot?: DeviceWhereInput | null
+  }
+
+  export type FirmwareNullableScalarRelationFilter = {
+    is?: FirmwareWhereInput | null
+    isNot?: FirmwareWhereInput | null
+  }
+
+  export type OtaLogCountOrderByAggregateInput = {
+    id?: SortOrder
+    deviceId?: SortOrder
+    deviceSerialNumber?: SortOrder
+    firmwareId?: SortOrder
+    firmwareVersion?: SortOrder
+    firmwareUrl?: SortOrder
+    checksumSha256?: SortOrder
+    isBroadcast?: SortOrder
+    status?: SortOrder
+    triggeredById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OtaLogMaxOrderByAggregateInput = {
+    id?: SortOrder
+    deviceId?: SortOrder
+    deviceSerialNumber?: SortOrder
+    firmwareId?: SortOrder
+    firmwareVersion?: SortOrder
+    firmwareUrl?: SortOrder
+    checksumSha256?: SortOrder
+    isBroadcast?: SortOrder
+    status?: SortOrder
+    triggeredById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
+  export type OtaLogMinOrderByAggregateInput = {
+    id?: SortOrder
+    deviceId?: SortOrder
+    deviceSerialNumber?: SortOrder
+    firmwareId?: SortOrder
+    firmwareVersion?: SortOrder
+    firmwareUrl?: SortOrder
+    checksumSha256?: SortOrder
+    isBroadcast?: SortOrder
+    status?: SortOrder
+    triggeredById?: SortOrder
+    notes?: SortOrder
+    createdAt?: SortOrder
+  }
+
   export type UserCreateNestedOneWithoutCreatedUsersInput = {
     create?: XOR<UserCreateWithoutCreatedUsersInput, UserUncheckedCreateWithoutCreatedUsersInput>
     connectOrCreate?: UserCreateOrConnectWithoutCreatedUsersInput
@@ -16263,6 +19815,13 @@ export namespace Prisma {
     connectOrCreate?: DeviceCreateOrConnectWithoutCreatedByInput | DeviceCreateOrConnectWithoutCreatedByInput[]
     createMany?: DeviceCreateManyCreatedByInputEnvelope
     connect?: DeviceWhereUniqueInput | DeviceWhereUniqueInput[]
+  }
+
+  export type FirmwareCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput> | FirmwareCreateWithoutCreatedByInput[] | FirmwareUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: FirmwareCreateOrConnectWithoutCreatedByInput | FirmwareCreateOrConnectWithoutCreatedByInput[]
+    createMany?: FirmwareCreateManyCreatedByInputEnvelope
+    connect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
   }
 
   export type ControlLogCreateNestedManyWithoutUserInput = {
@@ -16298,6 +19857,13 @@ export namespace Prisma {
     connectOrCreate?: DeviceCreateOrConnectWithoutCreatedByInput | DeviceCreateOrConnectWithoutCreatedByInput[]
     createMany?: DeviceCreateManyCreatedByInputEnvelope
     connect?: DeviceWhereUniqueInput | DeviceWhereUniqueInput[]
+  }
+
+  export type FirmwareUncheckedCreateNestedManyWithoutCreatedByInput = {
+    create?: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput> | FirmwareCreateWithoutCreatedByInput[] | FirmwareUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: FirmwareCreateOrConnectWithoutCreatedByInput | FirmwareCreateOrConnectWithoutCreatedByInput[]
+    createMany?: FirmwareCreateManyCreatedByInputEnvelope
+    connect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
   }
 
   export type ControlLogUncheckedCreateNestedManyWithoutUserInput = {
@@ -16394,6 +19960,20 @@ export namespace Prisma {
     deleteMany?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
   }
 
+  export type FirmwareUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput> | FirmwareCreateWithoutCreatedByInput[] | FirmwareUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: FirmwareCreateOrConnectWithoutCreatedByInput | FirmwareCreateOrConnectWithoutCreatedByInput[]
+    upsert?: FirmwareUpsertWithWhereUniqueWithoutCreatedByInput | FirmwareUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: FirmwareCreateManyCreatedByInputEnvelope
+    set?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    disconnect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    delete?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    connect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    update?: FirmwareUpdateWithWhereUniqueWithoutCreatedByInput | FirmwareUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: FirmwareUpdateManyWithWhereWithoutCreatedByInput | FirmwareUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: FirmwareScalarWhereInput | FirmwareScalarWhereInput[]
+  }
+
   export type ControlLogUpdateManyWithoutUserNestedInput = {
     create?: XOR<ControlLogCreateWithoutUserInput, ControlLogUncheckedCreateWithoutUserInput> | ControlLogCreateWithoutUserInput[] | ControlLogUncheckedCreateWithoutUserInput[]
     connectOrCreate?: ControlLogCreateOrConnectWithoutUserInput | ControlLogCreateOrConnectWithoutUserInput[]
@@ -16462,6 +20042,20 @@ export namespace Prisma {
     update?: DeviceUpdateWithWhereUniqueWithoutCreatedByInput | DeviceUpdateWithWhereUniqueWithoutCreatedByInput[]
     updateMany?: DeviceUpdateManyWithWhereWithoutCreatedByInput | DeviceUpdateManyWithWhereWithoutCreatedByInput[]
     deleteMany?: DeviceScalarWhereInput | DeviceScalarWhereInput[]
+  }
+
+  export type FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput = {
+    create?: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput> | FirmwareCreateWithoutCreatedByInput[] | FirmwareUncheckedCreateWithoutCreatedByInput[]
+    connectOrCreate?: FirmwareCreateOrConnectWithoutCreatedByInput | FirmwareCreateOrConnectWithoutCreatedByInput[]
+    upsert?: FirmwareUpsertWithWhereUniqueWithoutCreatedByInput | FirmwareUpsertWithWhereUniqueWithoutCreatedByInput[]
+    createMany?: FirmwareCreateManyCreatedByInputEnvelope
+    set?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    disconnect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    delete?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    connect?: FirmwareWhereUniqueInput | FirmwareWhereUniqueInput[]
+    update?: FirmwareUpdateWithWhereUniqueWithoutCreatedByInput | FirmwareUpdateWithWhereUniqueWithoutCreatedByInput[]
+    updateMany?: FirmwareUpdateManyWithWhereWithoutCreatedByInput | FirmwareUpdateManyWithWhereWithoutCreatedByInput[]
+    deleteMany?: FirmwareScalarWhereInput | FirmwareScalarWhereInput[]
   }
 
   export type ControlLogUncheckedUpdateManyWithoutUserNestedInput = {
@@ -16545,6 +20139,13 @@ export namespace Prisma {
     connect?: CultivationCycleWhereUniqueInput | CultivationCycleWhereUniqueInput[]
   }
 
+  export type OtaLogCreateNestedManyWithoutDeviceInput = {
+    create?: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput> | OtaLogCreateWithoutDeviceInput[] | OtaLogUncheckedCreateWithoutDeviceInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutDeviceInput | OtaLogCreateOrConnectWithoutDeviceInput[]
+    createMany?: OtaLogCreateManyDeviceInputEnvelope
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+  }
+
   export type DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput = {
     create?: XOR<DeviceSettingCreateWithoutDeviceInput, DeviceSettingUncheckedCreateWithoutDeviceInput>
     connectOrCreate?: DeviceSettingCreateOrConnectWithoutDeviceInput
@@ -16586,6 +20187,13 @@ export namespace Prisma {
     connect?: CultivationCycleWhereUniqueInput | CultivationCycleWhereUniqueInput[]
   }
 
+  export type OtaLogUncheckedCreateNestedManyWithoutDeviceInput = {
+    create?: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput> | OtaLogCreateWithoutDeviceInput[] | OtaLogUncheckedCreateWithoutDeviceInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutDeviceInput | OtaLogCreateOrConnectWithoutDeviceInput[]
+    createMany?: OtaLogCreateManyDeviceInputEnvelope
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+  }
+
   export type EnumDeviceStatusFieldUpdateOperationsInput = {
     set?: $Enums.DeviceStatus
   }
@@ -16596,6 +20204,22 @@ export namespace Prisma {
 
   export type EnumControlModeFieldUpdateOperationsInput = {
     set?: $Enums.ControlMode
+  }
+
+  export type NullableIntFieldUpdateOperationsInput = {
+    set?: number | null
+    increment?: number
+    decrement?: number
+    multiply?: number
+    divide?: number
+  }
+
+  export type NullableBigIntFieldUpdateOperationsInput = {
+    set?: bigint | number | null
+    increment?: bigint | number
+    decrement?: bigint | number
+    multiply?: bigint | number
+    divide?: bigint | number
   }
 
   export type UserUpdateOneWithoutDevicesNestedInput = {
@@ -16698,6 +20322,20 @@ export namespace Prisma {
     deleteMany?: CultivationCycleScalarWhereInput | CultivationCycleScalarWhereInput[]
   }
 
+  export type OtaLogUpdateManyWithoutDeviceNestedInput = {
+    create?: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput> | OtaLogCreateWithoutDeviceInput[] | OtaLogUncheckedCreateWithoutDeviceInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutDeviceInput | OtaLogCreateOrConnectWithoutDeviceInput[]
+    upsert?: OtaLogUpsertWithWhereUniqueWithoutDeviceInput | OtaLogUpsertWithWhereUniqueWithoutDeviceInput[]
+    createMany?: OtaLogCreateManyDeviceInputEnvelope
+    set?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    disconnect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    delete?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    update?: OtaLogUpdateWithWhereUniqueWithoutDeviceInput | OtaLogUpdateWithWhereUniqueWithoutDeviceInput[]
+    updateMany?: OtaLogUpdateManyWithWhereWithoutDeviceInput | OtaLogUpdateManyWithWhereWithoutDeviceInput[]
+    deleteMany?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+  }
+
   export type DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput = {
     create?: XOR<DeviceSettingCreateWithoutDeviceInput, DeviceSettingUncheckedCreateWithoutDeviceInput>
     connectOrCreate?: DeviceSettingCreateOrConnectWithoutDeviceInput
@@ -16778,6 +20416,20 @@ export namespace Prisma {
     deleteMany?: CultivationCycleScalarWhereInput | CultivationCycleScalarWhereInput[]
   }
 
+  export type OtaLogUncheckedUpdateManyWithoutDeviceNestedInput = {
+    create?: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput> | OtaLogCreateWithoutDeviceInput[] | OtaLogUncheckedCreateWithoutDeviceInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutDeviceInput | OtaLogCreateOrConnectWithoutDeviceInput[]
+    upsert?: OtaLogUpsertWithWhereUniqueWithoutDeviceInput | OtaLogUpsertWithWhereUniqueWithoutDeviceInput[]
+    createMany?: OtaLogCreateManyDeviceInputEnvelope
+    set?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    disconnect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    delete?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    update?: OtaLogUpdateWithWhereUniqueWithoutDeviceInput | OtaLogUpdateWithWhereUniqueWithoutDeviceInput[]
+    updateMany?: OtaLogUpdateManyWithWhereWithoutDeviceInput | OtaLogUpdateManyWithWhereWithoutDeviceInput[]
+    deleteMany?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+  }
+
   export type DeviceCreateNestedOneWithoutSettingInput = {
     create?: XOR<DeviceCreateWithoutSettingInput, DeviceUncheckedCreateWithoutSettingInput>
     connectOrCreate?: DeviceCreateOrConnectWithoutSettingInput
@@ -16790,14 +20442,6 @@ export namespace Prisma {
     decrement?: Decimal | DecimalJsLike | number | string
     multiply?: Decimal | DecimalJsLike | number | string
     divide?: Decimal | DecimalJsLike | number | string
-  }
-
-  export type NullableIntFieldUpdateOperationsInput = {
-    set?: number | null
-    increment?: number
-    decrement?: number
-    multiply?: number
-    divide?: number
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -17127,6 +20771,96 @@ export namespace Prisma {
     update?: XOR<XOR<CultivationCycleUpdateToOneWithWhereWithoutHarvestsInput, CultivationCycleUpdateWithoutHarvestsInput>, CultivationCycleUncheckedUpdateWithoutHarvestsInput>
   }
 
+  export type UserCreateNestedOneWithoutFirmwaresInput = {
+    create?: XOR<UserCreateWithoutFirmwaresInput, UserUncheckedCreateWithoutFirmwaresInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFirmwaresInput
+    connect?: UserWhereUniqueInput
+  }
+
+  export type OtaLogCreateNestedManyWithoutFirmwareInput = {
+    create?: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput> | OtaLogCreateWithoutFirmwareInput[] | OtaLogUncheckedCreateWithoutFirmwareInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutFirmwareInput | OtaLogCreateOrConnectWithoutFirmwareInput[]
+    createMany?: OtaLogCreateManyFirmwareInputEnvelope
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+  }
+
+  export type OtaLogUncheckedCreateNestedManyWithoutFirmwareInput = {
+    create?: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput> | OtaLogCreateWithoutFirmwareInput[] | OtaLogUncheckedCreateWithoutFirmwareInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutFirmwareInput | OtaLogCreateOrConnectWithoutFirmwareInput[]
+    createMany?: OtaLogCreateManyFirmwareInputEnvelope
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+  }
+
+  export type UserUpdateOneWithoutFirmwaresNestedInput = {
+    create?: XOR<UserCreateWithoutFirmwaresInput, UserUncheckedCreateWithoutFirmwaresInput>
+    connectOrCreate?: UserCreateOrConnectWithoutFirmwaresInput
+    upsert?: UserUpsertWithoutFirmwaresInput
+    disconnect?: UserWhereInput | boolean
+    delete?: UserWhereInput | boolean
+    connect?: UserWhereUniqueInput
+    update?: XOR<XOR<UserUpdateToOneWithWhereWithoutFirmwaresInput, UserUpdateWithoutFirmwaresInput>, UserUncheckedUpdateWithoutFirmwaresInput>
+  }
+
+  export type OtaLogUpdateManyWithoutFirmwareNestedInput = {
+    create?: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput> | OtaLogCreateWithoutFirmwareInput[] | OtaLogUncheckedCreateWithoutFirmwareInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutFirmwareInput | OtaLogCreateOrConnectWithoutFirmwareInput[]
+    upsert?: OtaLogUpsertWithWhereUniqueWithoutFirmwareInput | OtaLogUpsertWithWhereUniqueWithoutFirmwareInput[]
+    createMany?: OtaLogCreateManyFirmwareInputEnvelope
+    set?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    disconnect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    delete?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    update?: OtaLogUpdateWithWhereUniqueWithoutFirmwareInput | OtaLogUpdateWithWhereUniqueWithoutFirmwareInput[]
+    updateMany?: OtaLogUpdateManyWithWhereWithoutFirmwareInput | OtaLogUpdateManyWithWhereWithoutFirmwareInput[]
+    deleteMany?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+  }
+
+  export type OtaLogUncheckedUpdateManyWithoutFirmwareNestedInput = {
+    create?: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput> | OtaLogCreateWithoutFirmwareInput[] | OtaLogUncheckedCreateWithoutFirmwareInput[]
+    connectOrCreate?: OtaLogCreateOrConnectWithoutFirmwareInput | OtaLogCreateOrConnectWithoutFirmwareInput[]
+    upsert?: OtaLogUpsertWithWhereUniqueWithoutFirmwareInput | OtaLogUpsertWithWhereUniqueWithoutFirmwareInput[]
+    createMany?: OtaLogCreateManyFirmwareInputEnvelope
+    set?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    disconnect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    delete?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    connect?: OtaLogWhereUniqueInput | OtaLogWhereUniqueInput[]
+    update?: OtaLogUpdateWithWhereUniqueWithoutFirmwareInput | OtaLogUpdateWithWhereUniqueWithoutFirmwareInput[]
+    updateMany?: OtaLogUpdateManyWithWhereWithoutFirmwareInput | OtaLogUpdateManyWithWhereWithoutFirmwareInput[]
+    deleteMany?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+  }
+
+  export type DeviceCreateNestedOneWithoutOtaLogsInput = {
+    create?: XOR<DeviceCreateWithoutOtaLogsInput, DeviceUncheckedCreateWithoutOtaLogsInput>
+    connectOrCreate?: DeviceCreateOrConnectWithoutOtaLogsInput
+    connect?: DeviceWhereUniqueInput
+  }
+
+  export type FirmwareCreateNestedOneWithoutOtaLogsInput = {
+    create?: XOR<FirmwareCreateWithoutOtaLogsInput, FirmwareUncheckedCreateWithoutOtaLogsInput>
+    connectOrCreate?: FirmwareCreateOrConnectWithoutOtaLogsInput
+    connect?: FirmwareWhereUniqueInput
+  }
+
+  export type DeviceUpdateOneWithoutOtaLogsNestedInput = {
+    create?: XOR<DeviceCreateWithoutOtaLogsInput, DeviceUncheckedCreateWithoutOtaLogsInput>
+    connectOrCreate?: DeviceCreateOrConnectWithoutOtaLogsInput
+    upsert?: DeviceUpsertWithoutOtaLogsInput
+    disconnect?: DeviceWhereInput | boolean
+    delete?: DeviceWhereInput | boolean
+    connect?: DeviceWhereUniqueInput
+    update?: XOR<XOR<DeviceUpdateToOneWithWhereWithoutOtaLogsInput, DeviceUpdateWithoutOtaLogsInput>, DeviceUncheckedUpdateWithoutOtaLogsInput>
+  }
+
+  export type FirmwareUpdateOneWithoutOtaLogsNestedInput = {
+    create?: XOR<FirmwareCreateWithoutOtaLogsInput, FirmwareUncheckedCreateWithoutOtaLogsInput>
+    connectOrCreate?: FirmwareCreateOrConnectWithoutOtaLogsInput
+    upsert?: FirmwareUpsertWithoutOtaLogsInput
+    disconnect?: FirmwareWhereInput | boolean
+    delete?: FirmwareWhereInput | boolean
+    connect?: FirmwareWhereUniqueInput
+    update?: XOR<XOR<FirmwareUpdateToOneWithWhereWithoutOtaLogsInput, FirmwareUpdateWithoutOtaLogsInput>, FirmwareUncheckedUpdateWithoutOtaLogsInput>
+  }
+
   export type NestedStringFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel>
     in?: string[] | ListStringFieldRefInput<$PrismaModel>
@@ -17329,6 +21063,17 @@ export namespace Prisma {
     not?: NestedEnumControlModeFilter<$PrismaModel> | $Enums.ControlMode
   }
 
+  export type NestedBigIntNullableFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableFilter<$PrismaModel> | bigint | number | null
+  }
+
   export type NestedEnumDeviceStatusWithAggregatesFilter<$PrismaModel = never> = {
     equals?: $Enums.DeviceStatus | EnumDeviceStatusFieldRefInput<$PrismaModel>
     in?: $Enums.DeviceStatus[] | ListEnumDeviceStatusFieldRefInput<$PrismaModel>
@@ -17359,33 +21104,6 @@ export namespace Prisma {
     _max?: NestedEnumControlModeFilter<$PrismaModel>
   }
 
-  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-  }
-
-  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
-    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
-    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
-    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _avg?: NestedDecimalNullableFilter<$PrismaModel>
-    _sum?: NestedDecimalNullableFilter<$PrismaModel>
-    _min?: NestedDecimalNullableFilter<$PrismaModel>
-    _max?: NestedDecimalNullableFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -17411,6 +21129,49 @@ export namespace Prisma {
     gt?: number | FloatFieldRefInput<$PrismaModel>
     gte?: number | FloatFieldRefInput<$PrismaModel>
     not?: NestedFloatNullableFilter<$PrismaModel> | number | null
+  }
+
+  export type NestedBigIntNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: bigint | number | BigIntFieldRefInput<$PrismaModel> | null
+    in?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    notIn?: bigint[] | number[] | ListBigIntFieldRefInput<$PrismaModel> | null
+    lt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    lte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gt?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    gte?: bigint | number | BigIntFieldRefInput<$PrismaModel>
+    not?: NestedBigIntNullableWithAggregatesFilter<$PrismaModel> | bigint | number | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedFloatNullableFilter<$PrismaModel>
+    _sum?: NestedBigIntNullableFilter<$PrismaModel>
+    _min?: NestedBigIntNullableFilter<$PrismaModel>
+    _max?: NestedBigIntNullableFilter<$PrismaModel>
+  }
+
+  export type NestedDecimalNullableFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+  }
+
+  export type NestedDecimalNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel> | null
+    in?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    notIn?: Decimal[] | DecimalJsLike[] | number[] | string[] | ListDecimalFieldRefInput<$PrismaModel> | null
+    lt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    lte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gt?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    gte?: Decimal | DecimalJsLike | number | string | DecimalFieldRefInput<$PrismaModel>
+    not?: NestedDecimalNullableWithAggregatesFilter<$PrismaModel> | Decimal | DecimalJsLike | number | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _avg?: NestedDecimalNullableFilter<$PrismaModel>
+    _sum?: NestedDecimalNullableFilter<$PrismaModel>
+    _min?: NestedDecimalNullableFilter<$PrismaModel>
+    _max?: NestedDecimalNullableFilter<$PrismaModel>
   }
 
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
@@ -17574,11 +21335,14 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
@@ -17596,10 +21360,13 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -17621,11 +21388,14 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
@@ -17642,11 +21412,14 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -17669,11 +21442,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedDevicesInput
@@ -17683,6 +21459,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutFarmerInput = {
@@ -17693,12 +21470,15 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -17707,6 +21487,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutFarmerInput = {
@@ -17727,11 +21508,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -17741,6 +21525,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutCreatedByInput = {
@@ -17751,12 +21536,15 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     farmerId?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -17765,6 +21553,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutCreatedByInput = {
@@ -17774,6 +21563,48 @@ export namespace Prisma {
 
   export type DeviceCreateManyCreatedByInputEnvelope = {
     data: DeviceCreateManyCreatedByInput | DeviceCreateManyCreatedByInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type FirmwareCreateWithoutCreatedByInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    otaLogs?: OtaLogCreateNestedManyWithoutFirmwareInput
+  }
+
+  export type FirmwareUncheckedCreateWithoutCreatedByInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutFirmwareInput
+  }
+
+  export type FirmwareCreateOrConnectWithoutCreatedByInput = {
+    where: FirmwareWhereUniqueInput
+    create: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type FirmwareCreateManyCreatedByInputEnvelope = {
+    data: FirmwareCreateManyCreatedByInput | FirmwareCreateManyCreatedByInput[]
     skipDuplicates?: boolean
   }
 
@@ -17874,11 +21705,14 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
@@ -17896,10 +21730,13 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -17936,6 +21773,8 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"User"> | string | null
     activatedAt?: DateTimeNullableFilter<"User"> | Date | string | null
     lastLoginAt?: DateTimeNullableFilter<"User"> | Date | string | null
+    fcmToken?: StringNullableFilter<"User"> | string | null
+    lastFcmTokenAt?: DateTimeNullableFilter<"User"> | Date | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
   }
@@ -17967,6 +21806,7 @@ export namespace Prisma {
     model?: StringFilter<"Device"> | string
     hardwareVersion?: StringNullableFilter<"Device"> | string | null
     firmwareVersion?: StringNullableFilter<"Device"> | string | null
+    macAddress?: StringNullableFilter<"Device"> | string | null
     status?: EnumDeviceStatusFilter<"Device"> | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFilter<"Device"> | $Enums.OwnershipType
     controlMode?: EnumControlModeFilter<"Device"> | $Enums.ControlMode
@@ -17974,6 +21814,8 @@ export namespace Prisma {
     createdById?: StringNullableFilter<"Device"> | string | null
     activatedAt?: DateTimeNullableFilter<"Device"> | Date | string | null
     lastSeenAt?: DateTimeNullableFilter<"Device"> | Date | string | null
+    rssiDbm?: IntNullableFilter<"Device"> | number | null
+    uptimeMs?: BigIntNullableFilter<"Device"> | bigint | number | null
     createdAt?: DateTimeFilter<"Device"> | Date | string
     updatedAt?: DateTimeFilter<"Device"> | Date | string
   }
@@ -17992,6 +21834,41 @@ export namespace Prisma {
   export type DeviceUpdateManyWithWhereWithoutCreatedByInput = {
     where: DeviceScalarWhereInput
     data: XOR<DeviceUpdateManyMutationInput, DeviceUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type FirmwareUpsertWithWhereUniqueWithoutCreatedByInput = {
+    where: FirmwareWhereUniqueInput
+    update: XOR<FirmwareUpdateWithoutCreatedByInput, FirmwareUncheckedUpdateWithoutCreatedByInput>
+    create: XOR<FirmwareCreateWithoutCreatedByInput, FirmwareUncheckedCreateWithoutCreatedByInput>
+  }
+
+  export type FirmwareUpdateWithWhereUniqueWithoutCreatedByInput = {
+    where: FirmwareWhereUniqueInput
+    data: XOR<FirmwareUpdateWithoutCreatedByInput, FirmwareUncheckedUpdateWithoutCreatedByInput>
+  }
+
+  export type FirmwareUpdateManyWithWhereWithoutCreatedByInput = {
+    where: FirmwareScalarWhereInput
+    data: XOR<FirmwareUpdateManyMutationInput, FirmwareUncheckedUpdateManyWithoutCreatedByInput>
+  }
+
+  export type FirmwareScalarWhereInput = {
+    AND?: FirmwareScalarWhereInput | FirmwareScalarWhereInput[]
+    OR?: FirmwareScalarWhereInput[]
+    NOT?: FirmwareScalarWhereInput | FirmwareScalarWhereInput[]
+    id?: StringFilter<"Firmware"> | string
+    version?: StringFilter<"Firmware"> | string
+    filename?: StringFilter<"Firmware"> | string
+    originalName?: StringFilter<"Firmware"> | string
+    filePath?: StringFilter<"Firmware"> | string
+    fileSize?: IntFilter<"Firmware"> | number
+    checksumSha256?: StringFilter<"Firmware"> | string
+    hardwareVersion?: StringFilter<"Firmware"> | string
+    changelog?: StringNullableFilter<"Firmware"> | string | null
+    isLatest?: BoolFilter<"Firmware"> | boolean
+    createdById?: StringNullableFilter<"Firmware"> | string | null
+    createdAt?: DateTimeFilter<"Firmware"> | Date | string
+    updatedAt?: DateTimeFilter<"Firmware"> | Date | string
   }
 
   export type ControlLogUpsertWithWhereUniqueWithoutUserInput = {
@@ -18073,11 +21950,14 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
@@ -18095,10 +21975,13 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -18120,11 +22003,14 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
@@ -18142,10 +22028,13 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
@@ -18362,6 +22251,44 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type OtaLogCreateWithoutDeviceInput = {
+    id?: string
+    deviceSerialNumber?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    firmware?: FirmwareCreateNestedOneWithoutOtaLogsInput
+  }
+
+  export type OtaLogUncheckedCreateWithoutDeviceInput = {
+    id?: string
+    deviceSerialNumber?: string | null
+    firmwareId?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type OtaLogCreateOrConnectWithoutDeviceInput = {
+    where: OtaLogWhereUniqueInput
+    create: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput>
+  }
+
+  export type OtaLogCreateManyDeviceInputEnvelope = {
+    data: OtaLogCreateManyDeviceInput | OtaLogCreateManyDeviceInput[]
+    skipDuplicates?: boolean
+  }
+
   export type UserUpsertWithoutDevicesInput = {
     update: XOR<UserUpdateWithoutDevicesInput, UserUncheckedUpdateWithoutDevicesInput>
     create: XOR<UserCreateWithoutDevicesInput, UserUncheckedCreateWithoutDevicesInput>
@@ -18385,11 +22312,14 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
@@ -18407,10 +22337,13 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -18438,11 +22371,14 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
@@ -18460,10 +22396,13 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -18629,6 +22568,40 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"CultivationCycle"> | Date | string
   }
 
+  export type OtaLogUpsertWithWhereUniqueWithoutDeviceInput = {
+    where: OtaLogWhereUniqueInput
+    update: XOR<OtaLogUpdateWithoutDeviceInput, OtaLogUncheckedUpdateWithoutDeviceInput>
+    create: XOR<OtaLogCreateWithoutDeviceInput, OtaLogUncheckedCreateWithoutDeviceInput>
+  }
+
+  export type OtaLogUpdateWithWhereUniqueWithoutDeviceInput = {
+    where: OtaLogWhereUniqueInput
+    data: XOR<OtaLogUpdateWithoutDeviceInput, OtaLogUncheckedUpdateWithoutDeviceInput>
+  }
+
+  export type OtaLogUpdateManyWithWhereWithoutDeviceInput = {
+    where: OtaLogScalarWhereInput
+    data: XOR<OtaLogUpdateManyMutationInput, OtaLogUncheckedUpdateManyWithoutDeviceInput>
+  }
+
+  export type OtaLogScalarWhereInput = {
+    AND?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+    OR?: OtaLogScalarWhereInput[]
+    NOT?: OtaLogScalarWhereInput | OtaLogScalarWhereInput[]
+    id?: StringFilter<"OtaLog"> | string
+    deviceId?: StringNullableFilter<"OtaLog"> | string | null
+    deviceSerialNumber?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareId?: StringNullableFilter<"OtaLog"> | string | null
+    firmwareVersion?: StringFilter<"OtaLog"> | string
+    firmwareUrl?: StringFilter<"OtaLog"> | string
+    checksumSha256?: StringNullableFilter<"OtaLog"> | string | null
+    isBroadcast?: BoolFilter<"OtaLog"> | boolean
+    status?: StringFilter<"OtaLog"> | string
+    triggeredById?: StringNullableFilter<"OtaLog"> | string | null
+    notes?: StringNullableFilter<"OtaLog"> | string | null
+    createdAt?: DateTimeFilter<"OtaLog"> | Date | string
+  }
+
   export type DeviceCreateWithoutSettingInput = {
     id?: string
     serialNumber: string
@@ -18637,11 +22610,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -18651,6 +22627,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutSettingInput = {
@@ -18661,6 +22638,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -18668,6 +22646,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     sensorReadings?: SensorReadingUncheckedCreateNestedManyWithoutDeviceInput
@@ -18675,6 +22655,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutSettingInput = {
@@ -18701,11 +22682,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -18715,6 +22699,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutSettingInput = {
@@ -18725,6 +22710,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -18732,6 +22718,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     sensorReadings?: SensorReadingUncheckedUpdateManyWithoutDeviceNestedInput
@@ -18739,6 +22727,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceCreateWithoutSensorReadingsInput = {
@@ -18749,11 +22738,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -18763,6 +22755,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutSensorReadingsInput = {
@@ -18773,6 +22766,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -18780,6 +22774,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -18787,6 +22783,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutSensorReadingsInput = {
@@ -18813,11 +22810,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -18827,6 +22827,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutSensorReadingsInput = {
@@ -18837,6 +22838,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -18844,6 +22846,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -18851,6 +22855,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceCreateWithoutActuatorsInput = {
@@ -18861,11 +22866,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -18875,6 +22883,7 @@ export namespace Prisma {
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutActuatorsInput = {
@@ -18885,6 +22894,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -18892,6 +22902,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -18899,6 +22911,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutActuatorsInput = {
@@ -18999,11 +23012,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -19013,6 +23029,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutActuatorsInput = {
@@ -19023,6 +23040,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -19030,6 +23048,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -19037,6 +23057,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type ControlLogUpsertWithWhereUniqueWithoutActuatorInput = {
@@ -19079,11 +23100,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -19093,6 +23117,7 @@ export namespace Prisma {
     actuators?: ActuatorCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutControlLogsInput = {
@@ -19103,6 +23128,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -19110,6 +23136,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -19117,6 +23145,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutControlLogsInput = {
@@ -19169,12 +23198,15 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
   }
 
@@ -19191,11 +23223,14 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
   }
 
@@ -19223,11 +23258,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -19237,6 +23275,7 @@ export namespace Prisma {
     actuators?: ActuatorUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutControlLogsInput = {
@@ -19247,6 +23286,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -19254,6 +23294,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -19261,6 +23303,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type ActuatorUpsertWithoutControlLogsInput = {
@@ -19325,12 +23368,15 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -19347,11 +23393,14 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
 
@@ -19363,11 +23412,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -19377,6 +23429,7 @@ export namespace Prisma {
     actuators?: ActuatorCreateNestedManyWithoutDeviceInput
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutSchedulesInput = {
@@ -19387,6 +23440,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -19394,6 +23448,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -19401,6 +23457,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedCreateNestedManyWithoutDeviceInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutSchedulesInput = {
@@ -19453,12 +23510,15 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
     createdUsers?: UserCreateNestedManyWithoutCreatedByInput
     devices?: DeviceCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogCreateNestedManyWithoutUserInput
   }
 
@@ -19475,11 +23535,14 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
     devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
     createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    firmwares?: FirmwareUncheckedCreateNestedManyWithoutCreatedByInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
   }
 
@@ -19507,11 +23570,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -19521,6 +23587,7 @@ export namespace Prisma {
     actuators?: ActuatorUpdateManyWithoutDeviceNestedInput
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutSchedulesInput = {
@@ -19531,6 +23598,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -19538,6 +23606,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -19545,6 +23615,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedUpdateManyWithoutDeviceNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type ActuatorUpsertWithoutSchedulesInput = {
@@ -19609,12 +23680,15 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
   }
 
@@ -19631,11 +23705,14 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
   }
 
@@ -19647,11 +23724,14 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     farmer?: UserCreateNestedOneWithoutDevicesInput
@@ -19661,6 +23741,7 @@ export namespace Prisma {
     actuators?: ActuatorCreateNestedManyWithoutDeviceInput
     controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceUncheckedCreateWithoutCultivationCyclesInput = {
@@ -19671,6 +23752,7 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
@@ -19678,6 +23760,8 @@ export namespace Prisma {
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
     setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
@@ -19685,6 +23769,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedCreateNestedManyWithoutDeviceInput
     controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
     schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
+    otaLogs?: OtaLogUncheckedCreateNestedManyWithoutDeviceInput
   }
 
   export type DeviceCreateOrConnectWithoutCultivationCyclesInput = {
@@ -19743,11 +23828,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -19757,6 +23845,7 @@ export namespace Prisma {
     actuators?: ActuatorUpdateManyWithoutDeviceNestedInput
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutCultivationCyclesInput = {
@@ -19767,6 +23856,7 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
@@ -19774,6 +23864,8 @@ export namespace Prisma {
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -19781,6 +23873,7 @@ export namespace Prisma {
     actuators?: ActuatorUncheckedUpdateManyWithoutDeviceNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type HarvestRecordUpsertWithWhereUniqueWithoutCycleInput = {
@@ -19894,6 +23987,380 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type UserCreateWithoutFirmwaresInput = {
+    id?: string
+    fullName?: string | null
+    phoneNumber: string
+    email?: string | null
+    passwordHash?: string | null
+    role?: $Enums.UserRole
+    status?: $Enums.UserStatus
+    profileCompleted?: boolean
+    mustChangePassword?: boolean
+    activatedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutCreatedUsersInput
+    createdUsers?: UserCreateNestedManyWithoutCreatedByInput
+    devices?: DeviceCreateNestedManyWithoutFarmerInput
+    createdDevices?: DeviceCreateNestedManyWithoutCreatedByInput
+    controlLogs?: ControlLogCreateNestedManyWithoutUserInput
+    schedules?: ScheduleCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserUncheckedCreateWithoutFirmwaresInput = {
+    id?: string
+    fullName?: string | null
+    phoneNumber: string
+    email?: string | null
+    passwordHash?: string | null
+    role?: $Enums.UserRole
+    status?: $Enums.UserStatus
+    profileCompleted?: boolean
+    mustChangePassword?: boolean
+    createdById?: string | null
+    activatedAt?: Date | string | null
+    lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdUsers?: UserUncheckedCreateNestedManyWithoutCreatedByInput
+    devices?: DeviceUncheckedCreateNestedManyWithoutFarmerInput
+    createdDevices?: DeviceUncheckedCreateNestedManyWithoutCreatedByInput
+    controlLogs?: ControlLogUncheckedCreateNestedManyWithoutUserInput
+    schedules?: ScheduleUncheckedCreateNestedManyWithoutCreatedByInput
+  }
+
+  export type UserCreateOrConnectWithoutFirmwaresInput = {
+    where: UserWhereUniqueInput
+    create: XOR<UserCreateWithoutFirmwaresInput, UserUncheckedCreateWithoutFirmwaresInput>
+  }
+
+  export type OtaLogCreateWithoutFirmwareInput = {
+    id?: string
+    deviceSerialNumber?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+    device?: DeviceCreateNestedOneWithoutOtaLogsInput
+  }
+
+  export type OtaLogUncheckedCreateWithoutFirmwareInput = {
+    id?: string
+    deviceId?: string | null
+    deviceSerialNumber?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type OtaLogCreateOrConnectWithoutFirmwareInput = {
+    where: OtaLogWhereUniqueInput
+    create: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput>
+  }
+
+  export type OtaLogCreateManyFirmwareInputEnvelope = {
+    data: OtaLogCreateManyFirmwareInput | OtaLogCreateManyFirmwareInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type UserUpsertWithoutFirmwaresInput = {
+    update: XOR<UserUpdateWithoutFirmwaresInput, UserUncheckedUpdateWithoutFirmwaresInput>
+    create: XOR<UserCreateWithoutFirmwaresInput, UserUncheckedCreateWithoutFirmwaresInput>
+    where?: UserWhereInput
+  }
+
+  export type UserUpdateToOneWithWhereWithoutFirmwaresInput = {
+    where?: UserWhereInput
+    data: XOR<UserUpdateWithoutFirmwaresInput, UserUncheckedUpdateWithoutFirmwaresInput>
+  }
+
+  export type UserUpdateWithoutFirmwaresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    profileCompleted?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutCreatedUsersNestedInput
+    createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
+    devices?: DeviceUpdateManyWithoutFarmerNestedInput
+    createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
+    schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type UserUncheckedUpdateWithoutFirmwaresInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    fullName?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    passwordHash?: NullableStringFieldUpdateOperationsInput | string | null
+    role?: EnumUserRoleFieldUpdateOperationsInput | $Enums.UserRole
+    status?: EnumUserStatusFieldUpdateOperationsInput | $Enums.UserStatus
+    profileCompleted?: BoolFieldUpdateOperationsInput | boolean
+    mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
+    devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
+    createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
+    schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
+  }
+
+  export type OtaLogUpsertWithWhereUniqueWithoutFirmwareInput = {
+    where: OtaLogWhereUniqueInput
+    update: XOR<OtaLogUpdateWithoutFirmwareInput, OtaLogUncheckedUpdateWithoutFirmwareInput>
+    create: XOR<OtaLogCreateWithoutFirmwareInput, OtaLogUncheckedCreateWithoutFirmwareInput>
+  }
+
+  export type OtaLogUpdateWithWhereUniqueWithoutFirmwareInput = {
+    where: OtaLogWhereUniqueInput
+    data: XOR<OtaLogUpdateWithoutFirmwareInput, OtaLogUncheckedUpdateWithoutFirmwareInput>
+  }
+
+  export type OtaLogUpdateManyWithWhereWithoutFirmwareInput = {
+    where: OtaLogScalarWhereInput
+    data: XOR<OtaLogUpdateManyMutationInput, OtaLogUncheckedUpdateManyWithoutFirmwareInput>
+  }
+
+  export type DeviceCreateWithoutOtaLogsInput = {
+    id?: string
+    serialNumber: string
+    activationCode: string
+    name?: string | null
+    model: string
+    hardwareVersion?: string | null
+    firmwareVersion?: string | null
+    macAddress?: string | null
+    status?: $Enums.DeviceStatus
+    ownershipType?: $Enums.OwnershipType
+    controlMode?: $Enums.ControlMode
+    activatedAt?: Date | string | null
+    lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    farmer?: UserCreateNestedOneWithoutDevicesInput
+    createdBy?: UserCreateNestedOneWithoutCreatedDevicesInput
+    setting?: DeviceSettingCreateNestedOneWithoutDeviceInput
+    sensorReadings?: SensorReadingCreateNestedManyWithoutDeviceInput
+    actuators?: ActuatorCreateNestedManyWithoutDeviceInput
+    controlLogs?: ControlLogCreateNestedManyWithoutDeviceInput
+    schedules?: ScheduleCreateNestedManyWithoutDeviceInput
+    cultivationCycles?: CultivationCycleCreateNestedManyWithoutDeviceInput
+  }
+
+  export type DeviceUncheckedCreateWithoutOtaLogsInput = {
+    id?: string
+    serialNumber: string
+    activationCode: string
+    name?: string | null
+    model: string
+    hardwareVersion?: string | null
+    firmwareVersion?: string | null
+    macAddress?: string | null
+    status?: $Enums.DeviceStatus
+    ownershipType?: $Enums.OwnershipType
+    controlMode?: $Enums.ControlMode
+    farmerId?: string | null
+    createdById?: string | null
+    activatedAt?: Date | string | null
+    lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    setting?: DeviceSettingUncheckedCreateNestedOneWithoutDeviceInput
+    sensorReadings?: SensorReadingUncheckedCreateNestedManyWithoutDeviceInput
+    actuators?: ActuatorUncheckedCreateNestedManyWithoutDeviceInput
+    controlLogs?: ControlLogUncheckedCreateNestedManyWithoutDeviceInput
+    schedules?: ScheduleUncheckedCreateNestedManyWithoutDeviceInput
+    cultivationCycles?: CultivationCycleUncheckedCreateNestedManyWithoutDeviceInput
+  }
+
+  export type DeviceCreateOrConnectWithoutOtaLogsInput = {
+    where: DeviceWhereUniqueInput
+    create: XOR<DeviceCreateWithoutOtaLogsInput, DeviceUncheckedCreateWithoutOtaLogsInput>
+  }
+
+  export type FirmwareCreateWithoutOtaLogsInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    createdBy?: UserCreateNestedOneWithoutFirmwaresInput
+  }
+
+  export type FirmwareUncheckedCreateWithoutOtaLogsInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
+    createdById?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FirmwareCreateOrConnectWithoutOtaLogsInput = {
+    where: FirmwareWhereUniqueInput
+    create: XOR<FirmwareCreateWithoutOtaLogsInput, FirmwareUncheckedCreateWithoutOtaLogsInput>
+  }
+
+  export type DeviceUpsertWithoutOtaLogsInput = {
+    update: XOR<DeviceUpdateWithoutOtaLogsInput, DeviceUncheckedUpdateWithoutOtaLogsInput>
+    create: XOR<DeviceCreateWithoutOtaLogsInput, DeviceUncheckedCreateWithoutOtaLogsInput>
+    where?: DeviceWhereInput
+  }
+
+  export type DeviceUpdateToOneWithWhereWithoutOtaLogsInput = {
+    where?: DeviceWhereInput
+    data: XOR<DeviceUpdateWithoutOtaLogsInput, DeviceUncheckedUpdateWithoutOtaLogsInput>
+  }
+
+  export type DeviceUpdateWithoutOtaLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serialNumber?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
+    ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
+    controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
+    activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    farmer?: UserUpdateOneWithoutDevicesNestedInput
+    createdBy?: UserUpdateOneWithoutCreatedDevicesNestedInput
+    setting?: DeviceSettingUpdateOneWithoutDeviceNestedInput
+    sensorReadings?: SensorReadingUpdateManyWithoutDeviceNestedInput
+    actuators?: ActuatorUpdateManyWithoutDeviceNestedInput
+    controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
+    schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
+    cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+  }
+
+  export type DeviceUncheckedUpdateWithoutOtaLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    serialNumber?: StringFieldUpdateOperationsInput | string
+    activationCode?: StringFieldUpdateOperationsInput | string
+    name?: NullableStringFieldUpdateOperationsInput | string | null
+    model?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
+    ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
+    controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
+    farmerId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
+    sensorReadings?: SensorReadingUncheckedUpdateManyWithoutDeviceNestedInput
+    actuators?: ActuatorUncheckedUpdateManyWithoutDeviceNestedInput
+    controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
+    schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
+    cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+  }
+
+  export type FirmwareUpsertWithoutOtaLogsInput = {
+    update: XOR<FirmwareUpdateWithoutOtaLogsInput, FirmwareUncheckedUpdateWithoutOtaLogsInput>
+    create: XOR<FirmwareCreateWithoutOtaLogsInput, FirmwareUncheckedCreateWithoutOtaLogsInput>
+    where?: FirmwareWhereInput
+  }
+
+  export type FirmwareUpdateToOneWithWhereWithoutOtaLogsInput = {
+    where?: FirmwareWhereInput
+    data: XOR<FirmwareUpdateWithoutOtaLogsInput, FirmwareUncheckedUpdateWithoutOtaLogsInput>
+  }
+
+  export type FirmwareUpdateWithoutOtaLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: UserUpdateOneWithoutFirmwaresNestedInput
+  }
+
+  export type FirmwareUncheckedUpdateWithoutOtaLogsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdById?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type UserCreateManyCreatedByInput = {
     id?: string
     fullName?: string | null
@@ -19906,6 +24373,8 @@ export namespace Prisma {
     mustChangePassword?: boolean
     activatedAt?: Date | string | null
     lastLoginAt?: Date | string | null
+    fcmToken?: string | null
+    lastFcmTokenAt?: Date | string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19918,12 +24387,15 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     createdById?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19936,12 +24408,30 @@ export namespace Prisma {
     model: string
     hardwareVersion?: string | null
     firmwareVersion?: string | null
+    macAddress?: string | null
     status?: $Enums.DeviceStatus
     ownershipType?: $Enums.OwnershipType
     controlMode?: $Enums.ControlMode
     farmerId?: string | null
     activatedAt?: Date | string | null
     lastSeenAt?: Date | string | null
+    rssiDbm?: number | null
+    uptimeMs?: bigint | number | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type FirmwareCreateManyCreatedByInput = {
+    id?: string
+    version: string
+    filename: string
+    originalName: string
+    filePath: string
+    fileSize: number
+    checksumSha256: string
+    hardwareVersion?: string
+    changelog?: string | null
+    isLatest?: boolean
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -19985,11 +24475,14 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUpdateManyWithoutCreatedByNestedInput
   }
@@ -20006,11 +24499,14 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdUsers?: UserUncheckedUpdateManyWithoutCreatedByNestedInput
     devices?: DeviceUncheckedUpdateManyWithoutFarmerNestedInput
     createdDevices?: DeviceUncheckedUpdateManyWithoutCreatedByNestedInput
+    firmwares?: FirmwareUncheckedUpdateManyWithoutCreatedByNestedInput
     controlLogs?: ControlLogUncheckedUpdateManyWithoutUserNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutCreatedByNestedInput
   }
@@ -20027,6 +24523,8 @@ export namespace Prisma {
     mustChangePassword?: BoolFieldUpdateOperationsInput | boolean
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastLoginAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    fcmToken?: NullableStringFieldUpdateOperationsInput | string | null
+    lastFcmTokenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20039,11 +24537,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     createdBy?: UserUpdateOneWithoutCreatedDevicesNestedInput
@@ -20053,6 +24554,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutFarmerInput = {
@@ -20063,12 +24565,15 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -20077,6 +24582,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateManyWithoutFarmerInput = {
@@ -20087,12 +24593,15 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     createdById?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20105,11 +24614,14 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     farmer?: UserUpdateOneWithoutDevicesNestedInput
@@ -20119,6 +24631,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateWithoutCreatedByInput = {
@@ -20129,12 +24642,15 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     farmerId?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     setting?: DeviceSettingUncheckedUpdateOneWithoutDeviceNestedInput
@@ -20143,6 +24659,7 @@ export namespace Prisma {
     controlLogs?: ControlLogUncheckedUpdateManyWithoutDeviceNestedInput
     schedules?: ScheduleUncheckedUpdateManyWithoutDeviceNestedInput
     cultivationCycles?: CultivationCycleUncheckedUpdateManyWithoutDeviceNestedInput
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutDeviceNestedInput
   }
 
   export type DeviceUncheckedUpdateManyWithoutCreatedByInput = {
@@ -20153,12 +24670,62 @@ export namespace Prisma {
     model?: StringFieldUpdateOperationsInput | string
     hardwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
     firmwareVersion?: NullableStringFieldUpdateOperationsInput | string | null
+    macAddress?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumDeviceStatusFieldUpdateOperationsInput | $Enums.DeviceStatus
     ownershipType?: EnumOwnershipTypeFieldUpdateOperationsInput | $Enums.OwnershipType
     controlMode?: EnumControlModeFieldUpdateOperationsInput | $Enums.ControlMode
     farmerId?: NullableStringFieldUpdateOperationsInput | string | null
     activatedAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
     lastSeenAt?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    rssiDbm?: NullableIntFieldUpdateOperationsInput | number | null
+    uptimeMs?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type FirmwareUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    otaLogs?: OtaLogUpdateManyWithoutFirmwareNestedInput
+  }
+
+  export type FirmwareUncheckedUpdateWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    otaLogs?: OtaLogUncheckedUpdateManyWithoutFirmwareNestedInput
+  }
+
+  export type FirmwareUncheckedUpdateManyWithoutCreatedByInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    version?: StringFieldUpdateOperationsInput | string
+    filename?: StringFieldUpdateOperationsInput | string
+    originalName?: StringFieldUpdateOperationsInput | string
+    filePath?: StringFieldUpdateOperationsInput | string
+    fileSize?: IntFieldUpdateOperationsInput | number
+    checksumSha256?: StringFieldUpdateOperationsInput | string
+    hardwareVersion?: StringFieldUpdateOperationsInput | string
+    changelog?: NullableStringFieldUpdateOperationsInput | string | null
+    isLatest?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -20303,6 +24870,20 @@ export namespace Prisma {
     notes?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
+  }
+
+  export type OtaLogCreateManyDeviceInput = {
+    id?: string
+    deviceSerialNumber?: string | null
+    firmwareId?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
   }
 
   export type SensorReadingUpdateWithoutDeviceInput = {
@@ -20494,6 +25075,48 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
+  export type OtaLogUpdateWithoutDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    firmware?: FirmwareUpdateOneWithoutOtaLogsNestedInput
+  }
+
+  export type OtaLogUncheckedUpdateWithoutDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareId?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogUncheckedUpdateManyWithoutDeviceInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareId?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
   export type ControlLogCreateManyActuatorInput = {
     id?: bigint | number
     deviceId: string
@@ -20644,6 +25267,62 @@ export namespace Prisma {
     notes?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogCreateManyFirmwareInput = {
+    id?: string
+    deviceId?: string | null
+    deviceSerialNumber?: string | null
+    firmwareVersion: string
+    firmwareUrl: string
+    checksumSha256?: string | null
+    isBroadcast?: boolean
+    status?: string
+    triggeredById?: string | null
+    notes?: string | null
+    createdAt?: Date | string
+  }
+
+  export type OtaLogUpdateWithoutFirmwareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    device?: DeviceUpdateOneWithoutOtaLogsNestedInput
+  }
+
+  export type OtaLogUncheckedUpdateWithoutFirmwareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type OtaLogUncheckedUpdateManyWithoutFirmwareInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    deviceId?: NullableStringFieldUpdateOperationsInput | string | null
+    deviceSerialNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    firmwareVersion?: StringFieldUpdateOperationsInput | string
+    firmwareUrl?: StringFieldUpdateOperationsInput | string
+    checksumSha256?: NullableStringFieldUpdateOperationsInput | string | null
+    isBroadcast?: BoolFieldUpdateOperationsInput | boolean
+    status?: StringFieldUpdateOperationsInput | string
+    triggeredById?: NullableStringFieldUpdateOperationsInput | string | null
+    notes?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

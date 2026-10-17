@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { z } from 'zod';
 import { prisma } from '../../bin/prismaConfig';
+import { mqttService } from '../../services/mqtt.service';
 import { ApiResponse } from '../../utils/api-response';
 import {
   ConflictError,
@@ -9,21 +10,40 @@ import {
   UnauthorizedError,
 } from '../../utils/errors';
 import { DeviceStatus, UserStatus } from '../../src/generated/prisma/client';
-import { passwordSchema } from '../../utils/validation';
 
 const createFarmerSchema = z.object({
   fullName: z.string().min(2, 'Nama lengkap petani wajib diisi'),
   phoneNumber: z.string().min(8, 'Nomor HP tidak valid'),
-  email: z.string().email('Format email tidak valid').optional(),
-  defaultPassword: passwordSchema.default('PetaniJamur123!'),
-});
-
-const updateFarmerSchema = z.object({
-  fullName: z.string().optional(),
-  email: z.string().email('Format email tidak valid').optional(),
+  email: z
+    .string()
+    .email('Format email tidak valid')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  password: z.string().min(6, 'Kata sandi minimal 6 karakter').optional(),
+  defaultPassword: z.string().min(6).optional(),
   status: z
     .enum(['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'] as const)
     .optional(),
+  farmName: z.string().optional().nullable().or(z.literal('')),
+  farmAddress: z.string().optional().nullable().or(z.literal('')),
+});
+
+const updateFarmerSchema = z.object({
+  fullName: z.string().min(2, 'Nama lengkap tidak valid').optional(),
+  phoneNumber: z.string().min(8, 'Nomor HP tidak valid').optional(),
+  email: z
+    .string()
+    .email('Format email tidak valid')
+    .optional()
+    .nullable()
+    .or(z.literal('')),
+  status: z
+    .enum(['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'] as const)
+    .optional(),
+  password: z.string().min(6, 'Kata sandi minimal 6 karakter').optional(),
+  farmName: z.string().optional().nullable().or(z.literal('')),
+  farmAddress: z.string().optional().nullable().or(z.literal('')),
 });
 
 const assignDeviceSchema = z.object({
@@ -103,36 +123,41 @@ export const AdminController = {
     }
 
     const parsed = createFarmerSchema.parse(req.body);
+    const phoneNumber = parsed.phoneNumber.trim();
+    const cleanEmail = parsed.email?.trim() ? parsed.email.trim() : null;
+    const rawPassword = parsed.password || parsed.defaultPassword || 'PasswordDefault123!';
 
     const existingPhone = await prisma.user.findUnique({
-      where: { phoneNumber: parsed.phoneNumber },
+      where: { phoneNumber },
     });
     if (existingPhone) {
       throw new ConflictError('Nomor HP sudah terdaftar pada akun lain');
     }
 
-    if (parsed.email) {
+    if (cleanEmail) {
       const existingEmail = await prisma.user.findUnique({
-        where: { email: parsed.email },
+        where: { email: cleanEmail },
       });
       if (existingEmail) {
         throw new ConflictError('Email sudah terdaftar pada akun lain');
       }
     }
 
-    const passwordHash = await bcrypt.hash(parsed.defaultPassword, 12);
+    const passwordHash = await bcrypt.hash(rawPassword, 12);
+    const initialStatus = (parsed.status as UserStatus) || 'ACTIVE';
 
     const newFarmer = await prisma.user.create({
       data: {
-        fullName: parsed.fullName,
-        phoneNumber: parsed.phoneNumber,
-        email: parsed.email ?? null,
+        fullName: parsed.fullName.trim(),
+        phoneNumber,
+        email: cleanEmail,
         passwordHash,
         role: 'FARMER',
-        status: 'INVITED',
-        profileCompleted: false,
-        mustChangePassword: true,
+        status: initialStatus,
+        profileCompleted: true,
+        mustChangePassword: false,
         createdById: req.user.id,
+        activatedAt: new Date(),
       },
       select: {
         id: true,
@@ -150,10 +175,10 @@ export const AdminController = {
     ApiResponse.success(
       res,
       {
-        farmer: newFarmer,
-        temporaryPassword: parsed.defaultPassword,
+        ...newFarmer,
+        temporaryPassword: rawPassword,
       },
-      'Akun Petani berhasil dibuat dengan status INVITED. Berikan password default ke petani.',
+      'Akun Petani berhasil didaftarkan.',
       201,
     );
   },
@@ -237,21 +262,44 @@ export const AdminController = {
       throw new NotFoundError('Data petani tidak ditemukan');
     }
 
-    if (parsed.email && parsed.email !== farmer.email) {
+    const cleanEmail =
+      parsed.email !== undefined
+        ? parsed.email?.trim()
+          ? parsed.email.trim()
+          : null
+        : undefined;
+
+    if (cleanEmail && cleanEmail !== farmer.email) {
       const emailExists = await prisma.user.findUnique({
-        where: { email: parsed.email },
+        where: { email: cleanEmail },
       });
       if (emailExists) {
         throw new ConflictError('Email sudah terdaftar pada akun lain');
       }
     }
 
+    if (parsed.phoneNumber && parsed.phoneNumber.trim() !== farmer.phoneNumber) {
+      const phoneExists = await prisma.user.findUnique({
+        where: { phoneNumber: parsed.phoneNumber.trim() },
+      });
+      if (phoneExists) {
+        throw new ConflictError('Nomor HP sudah terdaftar pada akun lain');
+      }
+    }
+
+    let passwordHash: string | undefined;
+    if (parsed.password && parsed.password.trim().length >= 6) {
+      passwordHash = await bcrypt.hash(parsed.password.trim(), 12);
+    }
+
     const updated = await prisma.user.update({
       where: { id },
       data: {
-        fullName: parsed.fullName ?? farmer.fullName,
-        email: parsed.email ?? farmer.email,
-        status: (parsed.status as UserStatus) ?? farmer.status,
+        ...(parsed.fullName !== undefined && { fullName: parsed.fullName.trim() }),
+        ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber.trim() }),
+        ...(cleanEmail !== undefined && { email: cleanEmail }),
+        ...(parsed.status !== undefined && { status: parsed.status as UserStatus }),
+        ...(passwordHash !== undefined && { passwordHash }),
       },
       select: {
         id: true,
@@ -259,10 +307,66 @@ export const AdminController = {
         phoneNumber: true,
         email: true,
         status: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
       },
     });
 
     ApiResponse.success(res, updated, 'Data petani berhasil diperbarui');
+  },
+
+  deleteFarmer: async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+
+    const farmer = await prisma.user.findFirst({
+      where: { id, role: 'FARMER' },
+    });
+
+    if (!farmer) {
+      throw new NotFoundError('Data petani tidak ditemukan');
+    }
+
+    // 1. Ambil daftar perangkat milik petani ini sebelum dilepas tautannya
+    const farmerDevices = await prisma.device.findMany({
+      where: { farmerId: id },
+      select: { serialNumber: true },
+    });
+
+    // Lepaskan tautan seluruh perangkat milik petani ini kembali ke status READY
+    await prisma.device.updateMany({
+      where: { farmerId: id },
+      data: {
+        farmerId: null,
+        status: DeviceStatus.READY,
+      },
+    });
+
+    // Kirim sinyal nonaktif ke setiap fisik perangkat via MQTT
+    for (const d of farmerDevices) {
+      mqttService.publishActivationStatus(
+        d.serialNumber,
+        false,
+        '',
+        'Akun petani pemilik dihapus',
+      );
+    }
+
+    // 2. Hapus jadwal yang dibuat oleh petani ini jika ada
+    await prisma.schedule.deleteMany({
+      where: { createdById: id },
+    });
+
+    // 3. Hapus akun pengguna petani
+    await prisma.user.delete({
+      where: { id },
+    });
+
+    ApiResponse.success(
+      res,
+      null,
+      `Akun petani ${farmer.fullName || farmer.phoneNumber} berhasil dihapus beserta pelepasan unit perangkatnya`,
+    );
   },
 
   // ==========================================
@@ -291,8 +395,10 @@ export const AdminController = {
   assignDevice: async (req: Request, res: Response): Promise<void> => {
     const parsed = assignDeviceSchema.parse(req.body);
 
-    const device = await prisma.device.findUnique({
-      where: { id: parsed.deviceId },
+    const device = await prisma.device.findFirst({
+      where: {
+        OR: [{ id: parsed.deviceId }, { serialNumber: parsed.deviceId }],
+      },
     });
 
     if (!device) {
@@ -308,7 +414,7 @@ export const AdminController = {
     }
 
     const updatedDevice = await prisma.device.update({
-      where: { id: parsed.deviceId },
+      where: { id: device.id },
       data: {
         farmerId: parsed.farmerId,
         status: DeviceStatus.ACTIVE,
@@ -321,6 +427,14 @@ export const AdminController = {
       },
     });
 
+    // Kirim sinyal aktivasi langsung ke fisik perangkat via MQTT
+    mqttService.publishActivationStatus(
+      device.serialNumber,
+      true,
+      farmer.fullName || farmer.phoneNumber || 'Petani',
+      `Perangkat ${device.serialNumber} berhasil ditugaskan ke petani ${farmer.fullName}`,
+    );
+
     ApiResponse.success(
       res,
       updatedDevice,
@@ -331,8 +445,10 @@ export const AdminController = {
   unassignDevice: async (req: Request, res: Response): Promise<void> => {
     const { deviceId } = req.params;
 
-    const device = await prisma.device.findUnique({
-      where: { id: deviceId },
+    const device = await prisma.device.findFirst({
+      where: {
+        OR: [{ id: deviceId }, { serialNumber: deviceId }],
+      },
     });
 
     if (!device) {
@@ -340,12 +456,20 @@ export const AdminController = {
     }
 
     const updated = await prisma.device.update({
-      where: { id: deviceId },
+      where: { id: device.id },
       data: {
         farmerId: null,
         status: DeviceStatus.READY,
       },
     });
+
+    // Kirim sinyal pelepasan aktivasi ke fisik perangkat via MQTT
+    mqttService.publishActivationStatus(
+      device.serialNumber,
+      false,
+      '',
+      `Perangkat ${device.serialNumber} berhasil dilepas dari penugasan`,
+    );
 
     ApiResponse.success(
       res,

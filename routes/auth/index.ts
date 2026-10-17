@@ -21,5 +21,6 @@ router.post(
 );
 router.get('/me', authMiddleware, asyncHandler(AuthController.getMe));
 router.put('/profile', authMiddleware, asyncHandler(AuthController.updateProfile));
+router.post('/fcm-token', authMiddleware, asyncHandler(AuthController.updateFcmToken));
 
 export default router;

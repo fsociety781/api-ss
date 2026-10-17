@@ -26,8 +26,12 @@ router.post(
   asyncHandler(DeviceController.unpairDevice),
 );
 
+// Meaningful serial number recommendation
+router.get('/next-serial', optionalAuth, asyncHandler(DeviceController.getNextSerial));
+
 // Device detail (requires auth)
 router.get('/:deviceId', optionalAuth, asyncHandler(DeviceController.getDevice));
+router.get('/:deviceId/identity', optionalAuth, asyncHandler(DeviceController.getDeviceIdentity));
 
 // Device creation & deletion (requires auth — SECURITY FIX)
 router.post('/', authMiddleware, asyncHandler(DeviceController.createDevice));

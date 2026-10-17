@@ -212,6 +212,7 @@ exports.AuthController = {
         const updateProfileSchema = zod_1.z.object({
             fullName: zod_1.z.string().min(2, 'Nama lengkap minimal 2 karakter').optional(),
             email: zod_1.z.string().email('Format email tidak valid').optional(),
+            phoneNumber: zod_1.z.string().min(8, 'Nomor HP minimal 8 digit').optional(),
         });
         const parsed = updateProfileSchema.parse(req.body);
         if (parsed.email && parsed.email !== req.user.email) {
@@ -222,11 +223,20 @@ exports.AuthController = {
                 throw new errors_1.ConflictError('Email sudah terdaftar pada akun lain');
             }
         }
+        if (parsed.phoneNumber && parsed.phoneNumber !== req.user.phoneNumber) {
+            const phoneExists = await prismaConfig_1.prisma.user.findUnique({
+                where: { phoneNumber: parsed.phoneNumber },
+            });
+            if (phoneExists && phoneExists.id !== req.user.id) {
+                throw new errors_1.ConflictError('Nomor HP sudah terdaftar pada akun lain');
+            }
+        }
         const updated = await prismaConfig_1.prisma.user.update({
             where: { id: req.user.id },
             data: {
                 ...(parsed.fullName !== undefined && { fullName: parsed.fullName }),
                 ...(parsed.email !== undefined && { email: parsed.email }),
+                ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber }),
             },
             select: {
                 id: true,
@@ -239,6 +249,24 @@ exports.AuthController = {
             },
         });
         api_response_1.ApiResponse.success(res, updated, 'Profil berhasil diperbarui');
+    },
+    updateFcmToken: async (req, res) => {
+        if (!req.user) {
+            throw new errors_1.UnauthorizedError('Otentikasi diperlukan');
+        }
+        const { fcmToken, token } = req.body;
+        const finalToken = (fcmToken || token)?.trim();
+        if (!finalToken) {
+            throw new errors_1.BadRequestError('Token FCM wajib disertakan');
+        }
+        await prismaConfig_1.prisma.user.update({
+            where: { id: req.user.id },
+            data: {
+                fcmToken: finalToken,
+                lastFcmTokenAt: new Date(),
+            },
+        });
+        api_response_1.ApiResponse.success(res, { success: true }, 'FCM token berhasil didaftarkan');
     },
 };
 //# sourceMappingURL=index.js.map

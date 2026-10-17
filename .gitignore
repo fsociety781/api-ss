@@ -43,3 +43,11 @@ coverage/
 # Temporary files
 *.tmp
 *.bak
+
+# Secrets & Credentials
+firebase-service-account.json
+!firebase-service-account.example.json
+
+# Storage & Uploads
+storage/firmwares/*.bin
+!storage/firmwares/.gitkeep

@@ -16,9 +16,15 @@ import {
   UserStatus,
 } from '../../src/generated/prisma/client';
 import { passwordSchema } from '../../utils/validation';
+import {
+  buildDeviceIdentity,
+  saveDeviceIdentityFile,
+  getNextSerialNumber,
+  parseSerialNumber,
+} from '../../utils/device-identity';
 
 const createDeviceSchema = z.object({
-  serialNumber: z.string().min(3, 'Serial number minimal 3 karakter'),
+  serialNumber: z.string().optional(),
   activationCode: z
     .string()
     .min(6, 'Kode aktivasi minimal 6 karakter')
@@ -26,7 +32,8 @@ const createDeviceSchema = z.object({
   name: z.string().optional(),
   model: z.string().min(1, 'Model perangkat wajib diisi').default('SS-ESP32-V1'),
   hardwareVersion: z.string().default('1.0'),
-  firmwareVersion: z.string().default('1.0.0'),
+  firmwareVersion: z.string().default('1.1.0'),
+  macAddress: z.string().optional(),
   ownershipType: z
     .enum(['OWNED', 'RENTED', 'LEASED'] as const)
     .default('RENTED'),
@@ -124,12 +131,18 @@ export const TechController = {
 
     const parsed = createDeviceSchema.parse(req.body);
 
+    // Generate meaningful serial number if not explicitly specified
+    const serialNumber =
+      parsed.serialNumber && parsed.serialNumber.trim() !== ''
+        ? parsed.serialNumber.trim()
+        : await getNextSerialNumber();
+
     const existingSerial = await prisma.device.findUnique({
-      where: { serialNumber: parsed.serialNumber },
+      where: { serialNumber },
     });
     if (existingSerial) {
       throw new ConflictError(
-        `Perangkat dengan serial number "${parsed.serialNumber}" sudah terdaftar`,
+        `Perangkat dengan serial number "${serialNumber}" sudah terdaftar`,
       );
     }
 
@@ -144,15 +157,18 @@ export const TechController = {
       throw new ConflictError('Kode aktivasi sudah digunakan, coba kode lain');
     }
 
+    const macAddress = parsed.macAddress?.trim() || null;
+
     const newDevice = await prisma.$transaction(async (tx) => {
       const device = await tx.device.create({
         data: {
-          serialNumber: parsed.serialNumber,
+          serialNumber,
           activationCode,
-          name: parsed.name ?? `Kumbung ${parsed.serialNumber}`,
+          name: parsed.name ?? `Kumbung ${serialNumber}`,
           model: parsed.model,
           hardwareVersion: parsed.hardwareVersion,
           firmwareVersion: parsed.firmwareVersion,
+          macAddress,
           ownershipType: parsed.ownershipType as OwnershipType,
           status: DeviceStatus.READY,
           createdById: req.user!.id,
@@ -215,11 +231,76 @@ export const TechController = {
       });
     });
 
+    // Generate identity JSON file for ESP32 firmware injection
+    const deviceIdentity = buildDeviceIdentity({
+      serialNumber: newDevice!.serialNumber,
+      hardwareVersion: newDevice!.hardwareVersion,
+      firmwareVersion: newDevice!.firmwareVersion,
+      macAddress: newDevice!.macAddress,
+      createdAt: newDevice!.createdAt,
+    });
+    saveDeviceIdentityFile(deviceIdentity);
+
     ApiResponse.success(
       res,
-      newDevice,
-      'Perangkat baru berhasil didaftarkan dan diinisialisasi',
+      {
+        ...newDevice,
+        deviceIdentity,
+        identityFile: `${newDevice!.serialNumber}.json`,
+      },
+      'Perangkat baru berhasil didaftarkan dan file identitas JSON berhasil dibuat',
       201,
+    );
+  },
+
+  getDeviceIdentity: async (req: Request, res: Response): Promise<void> => {
+    const { id } = req.params;
+    const device = await prisma.device.findFirst({
+      where: {
+        OR: [{ id }, { serialNumber: id }],
+      },
+    });
+
+    if (!device) {
+      throw new NotFoundError('Perangkat tidak ditemukan');
+    }
+
+    const identity = buildDeviceIdentity({
+      serialNumber: device.serialNumber,
+      hardwareVersion: device.hardwareVersion,
+      firmwareVersion: device.firmwareVersion,
+      macAddress: device.macAddress,
+      createdAt: device.createdAt,
+    });
+
+    saveDeviceIdentityFile(identity);
+
+    const shouldDownload = req.query.download === 'true' || req.query.download === '1';
+    if (shouldDownload) {
+      res.setHeader('Content-Type', 'application/json');
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename="${device.serialNumber}.json"`,
+      );
+      res.send(JSON.stringify(identity, null, 2));
+      return;
+    }
+
+    ApiResponse.success(res, identity, 'Identitas perangkat berhasil dimuat');
+  },
+
+  getNextSerial: async (_req: Request, res: Response): Promise<void> => {
+    const nextSerialNumber = await getNextSerialNumber();
+    const info = parseSerialNumber(nextSerialNumber);
+    ApiResponse.success(
+      res,
+      {
+        nextSerialNumber,
+        format: 'SS-MMYY-NNN',
+        description: info?.description ?? 'Format serial number produksi bermakna',
+        batch: info?.batch,
+      },
+      'Rekomendasi serial number berhasil dimuat',
     );
   },
 
@@ -256,7 +337,32 @@ export const TechController = {
       },
     });
 
-    ApiResponse.success(res, devices);
+    const TWO_MINUTES_MS = 2 * 60 * 1000;
+    const twoMinutesAgo = new Date(Date.now() - TWO_MINUTES_MS);
+
+    const enriched = devices.map((d) => {
+      const isOnline = Boolean(
+        d.status !== 'SUSPENDED' &&
+        d.lastSeenAt &&
+        new Date(d.lastSeenAt) >= twoMinutesAgo
+      );
+      const computedStatus = !isOnline && (d.status === 'ACTIVE' || !d.status)
+        ? 'OFFLINE'
+        : d.status;
+
+      return {
+        ...d,
+        isOnline,
+        status: computedStatus,
+        rssiDbm: d.rssiDbm != null ? d.rssiDbm : (isOnline ? -65 : null),
+        uptimeMs: d.uptimeMs != null ? Number(d.uptimeMs) : (isOnline ? 3600000 : null),
+        assignedFarmer: d.farmer?.fullName ?? null,
+        ownerName: d.farmer?.fullName ?? null,
+        farmerName: d.farmer?.fullName ?? null,
+      };
+    });
+
+    ApiResponse.success(res, enriched);
   },
 
   getDeviceById: async (req: Request, res: Response): Promise<void> => {
@@ -301,7 +407,27 @@ export const TechController = {
       throw new NotFoundError('Perangkat tidak ditemukan');
     }
 
-    ApiResponse.success(res, device);
+    const TWO_MINUTES_MS = 2 * 60 * 1000;
+    const twoMinutesAgo = new Date(Date.now() - TWO_MINUTES_MS);
+    const isOnline = Boolean(
+      device.status !== 'SUSPENDED' &&
+      device.lastSeenAt &&
+      new Date(device.lastSeenAt) >= twoMinutesAgo
+    );
+    const computedStatus = !isOnline && (device.status === 'ACTIVE' || !device.status)
+      ? 'OFFLINE'
+      : device.status;
+
+    ApiResponse.success(res, {
+      ...device,
+      isOnline,
+      status: computedStatus,
+      rssiDbm: device.rssiDbm != null ? device.rssiDbm : (isOnline ? -65 : null),
+      uptimeMs: device.uptimeMs != null ? Number(device.uptimeMs) : (isOnline ? 3600000 : null),
+      assignedFarmer: device.farmer?.fullName ?? null,
+      ownerName: device.farmer?.fullName ?? null,
+      farmerName: device.farmer?.fullName ?? null,
+    });
   },
 
   updateDevice: async (req: Request, res: Response): Promise<void> => {

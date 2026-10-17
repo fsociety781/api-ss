@@ -51,7 +51,7 @@ const envSchema = zod_1.z.object({
         .number()
         .int()
         .positive()
-        .default(300),
+        .default(5000),
     // Log level
     LOG_LEVEL: zod_1.z
         .enum(['debug', 'info', 'warn', 'error'])

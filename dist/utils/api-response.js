@@ -5,6 +5,7 @@ class ApiResponse {
     static success(res, data = null, message = 'Success', statusCode = 200) {
         return res.status(statusCode).json({
             success: true,
+            status: 'success',
             message,
             data,
             timestamp: new Date().toISOString(),
@@ -26,6 +27,7 @@ class ApiResponse {
                                 : 'INTERNAL_SERVER_ERROR';
         return res.status(statusCode).json({
             success: false,
+            status: 'error',
             code: code ?? defaultCode,
             message,
             errors: errors ?? undefined,

@@ -25,6 +25,9 @@ const index_5 = __importDefault(require("./routes/device/index"));
 const control_routes_1 = __importDefault(require("./routes/control.routes"));
 const telemetry_routes_1 = __importDefault(require("./routes/telemetry.routes"));
 const cycle_routes_1 = __importDefault(require("./routes/cycle.routes"));
+const ota_routes_1 = __importDefault(require("./routes/ota.routes"));
+const FirmwareController_1 = require("./controller/FirmwareController");
+const async_handler_1 = require("./utils/async-handler");
 const app = (0, express_1.default)();
 // ── Security Headers ──────────────────────────
 app.use((0, helmet_1.default)({
@@ -82,6 +85,10 @@ app.use('/api/v1/devices', index_5.default);
 app.use('/api/v1/devices', control_routes_1.default);
 app.use('/api/v1/devices', telemetry_routes_1.default);
 app.use('/api/v1/devices', cycle_routes_1.default);
+// OTA Operations (Direct compatibility route)
+app.use('/api/v1/ota', ota_routes_1.default);
+// Firmware Binary Download endpoint for ESP32 and browser
+app.get('/api/v1/firmwares/download/:filename', (0, async_handler_1.asyncHandler)(FirmwareController_1.FirmwareController.downloadFirmware));
 // ── Catch 404 for undefined routes ────────────
 app.use((req, res) => {
     res.status(404).json({

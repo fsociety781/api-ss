@@ -29,12 +29,15 @@ model User {
 
   devices        Device[] @relation("FarmerDevices")
   createdDevices Device[] @relation("DeviceCreator")
+  firmwares      Firmware[] @relation("FirmwareCreator")
 
   controlLogs ControlLog[]
   schedules   Schedule[]
 
   activatedAt DateTime?
   lastLoginAt DateTime?
+  fcmToken    String?
+  lastFcmTokenAt DateTime?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -58,6 +61,7 @@ model Device {
   model           String
   hardwareVersion String?
   firmwareVersion String?
+  macAddress      String?
 
   status        DeviceStatus  @default(READY)
   ownershipType OwnershipType @default(RENTED)
@@ -75,9 +79,12 @@ model Device {
   controlLogs       ControlLog[]
   schedules         Schedule[]
   cultivationCycles CultivationCycle[]
+  otaLogs           OtaLog[]
 
   activatedAt DateTime?
   lastSeenAt  DateTime?
+  rssiDbm     Int?
+  uptimeMs    BigInt?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -274,6 +281,59 @@ model HarvestRecord {
 
   @@index([cycleId, harvestedAt])
   @@map("harvest_records")
+}
+
+// =====================================================
+// FIRMWARE MANAGEMENT
+// =====================================================
+
+model Firmware {
+  id              String   @id @default(cuid())
+  version         String   @unique
+  filename        String
+  originalName    String
+  filePath        String
+  fileSize        Int
+  checksumSha256  String
+  hardwareVersion String   @default("1.0")
+  changelog       String?
+  isLatest        Boolean  @default(false)
+  createdById     String?
+  createdBy       User?    @relation("FirmwareCreator", fields: [createdById], references: [id], onDelete: SetNull)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  otaLogs         OtaLog[]
+
+  @@index([version])
+  @@index([hardwareVersion])
+  @@map("firmwares")
+}
+
+// =====================================================
+// OTA DEPLOYMENT LOGS
+// =====================================================
+
+model OtaLog {
+  id                 String    @id @default(cuid())
+  deviceId           String?
+  deviceSerialNumber String?
+  device             Device?   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  firmwareId         String?
+  firmware           Firmware? @relation(fields: [firmwareId], references: [id], onDelete: SetNull)
+  firmwareVersion    String
+  firmwareUrl        String
+  checksumSha256     String?
+  isBroadcast        Boolean   @default(false)
+  status             String    @default("SENT") // PENDING, SENT, SUCCESS, FAILED
+  triggeredById      String?
+  notes              String?
+  createdAt          DateTime  @default(now())
+
+  @@index([deviceId])
+  @@index([firmwareId])
+  @@index([deviceSerialNumber])
+  @@map("ota_logs")
 }
 
 // =====================================================

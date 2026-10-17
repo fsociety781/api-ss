@@ -15,5 +15,6 @@ router.post('/complete-onboarding', authMiddleware_1.authMiddleware, (0, async_h
 router.post('/change-password', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(AuthController_1.AuthController.changePassword));
 router.get('/me', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(AuthController_1.AuthController.getMe));
 router.put('/profile', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(AuthController_1.AuthController.updateProfile));
+router.post('/fcm-token', authMiddleware_1.authMiddleware, (0, async_handler_1.asyncHandler)(AuthController_1.AuthController.updateFcmToken));
 exports.default = router;
 //# sourceMappingURL=index.js.map
