@@ -29,6 +29,7 @@ COPY types ./types/
 COPY utils ./utils/
 COPY public ./public/
 COPY views ./views/
+COPY src ./src/
 
 # Generate Prisma Client & Compile TypeScript
 RUN npx prisma generate
