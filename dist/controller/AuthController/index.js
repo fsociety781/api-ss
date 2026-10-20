@@ -68,7 +68,8 @@ exports.AuthController = {
             role: user.role,
             status: user.status,
         });
-        const mustSetupProfile = user.mustChangePassword || !user.profileCompleted;
+        const isFarmer = user.role === 'FARMER';
+        const mustSetupProfile = isFarmer && (user.mustChangePassword || !user.profileCompleted);
         const nextStep = mustSetupProfile ? 'complete_profile' : 'dashboard';
         api_response_1.ApiResponse.success(res, {
             token,
@@ -79,11 +80,12 @@ exports.AuthController = {
                 email: user.email,
                 role: user.role,
                 status: user.status,
-                profileCompleted: user.profileCompleted,
-                mustChangePassword: user.mustChangePassword,
+                profileCompleted: isFarmer ? user.profileCompleted : true,
+                mustChangePassword: isFarmer ? user.mustChangePassword : false,
             },
-            mustChangePassword: user.mustChangePassword,
-            profileCompleted: user.profileCompleted,
+            mustChangePassword: isFarmer ? user.mustChangePassword : false,
+            profileCompleted: isFarmer ? user.profileCompleted : true,
+            mustSetupProfile,
             nextStep,
         }, mustSetupProfile
             ? 'Login berhasil. Silakan lengkapi data dan ubah password awal Anda.'
@@ -203,7 +205,15 @@ exports.AuthController = {
         if (!user) {
             throw new errors_1.NotFoundError('Pengguna tidak ditemukan');
         }
-        api_response_1.ApiResponse.success(res, user);
+        const isFarmer = user.role === 'FARMER';
+        const mustSetupProfile = isFarmer && (user.mustChangePassword || !user.profileCompleted);
+        api_response_1.ApiResponse.success(res, {
+            ...user,
+            profileCompleted: isFarmer ? user.profileCompleted : true,
+            mustChangePassword: isFarmer ? user.mustChangePassword : false,
+            mustSetupProfile,
+            nextStep: mustSetupProfile ? 'complete_profile' : 'dashboard',
+        });
     },
     updateProfile: async (req, res) => {
         if (!req.user) {

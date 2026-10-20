@@ -423,8 +423,8 @@ exports.TechController = {
                 passwordHash,
                 role: 'ADMIN',
                 status: 'ACTIVE',
-                profileCompleted: false,
-                mustChangePassword: true,
+                profileCompleted: true,
+                mustChangePassword: false,
                 createdById: req.user.id,
             },
             select: {

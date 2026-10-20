@@ -85,7 +85,8 @@ export const AuthController = {
       status: user.status,
     });
 
-    const mustSetupProfile = user.mustChangePassword || !user.profileCompleted;
+    const isFarmer = user.role === 'FARMER';
+    const mustSetupProfile = isFarmer && (user.mustChangePassword || !user.profileCompleted);
     const nextStep = mustSetupProfile ? 'complete_profile' : 'dashboard';
 
     ApiResponse.success(
@@ -99,11 +100,12 @@ export const AuthController = {
           email: user.email,
           role: user.role,
           status: user.status,
-          profileCompleted: user.profileCompleted,
-          mustChangePassword: user.mustChangePassword,
+          profileCompleted: isFarmer ? user.profileCompleted : true,
+          mustChangePassword: isFarmer ? user.mustChangePassword : false,
         },
-        mustChangePassword: user.mustChangePassword,
-        profileCompleted: user.profileCompleted,
+        mustChangePassword: isFarmer ? user.mustChangePassword : false,
+        profileCompleted: isFarmer ? user.profileCompleted : true,
+        mustSetupProfile,
         nextStep,
       },
       mustSetupProfile
@@ -259,7 +261,16 @@ export const AuthController = {
       throw new NotFoundError('Pengguna tidak ditemukan');
     }
 
-    ApiResponse.success(res, user);
+    const isFarmer = user.role === 'FARMER';
+    const mustSetupProfile = isFarmer && (user.mustChangePassword || !user.profileCompleted);
+
+    ApiResponse.success(res, {
+      ...user,
+      profileCompleted: isFarmer ? user.profileCompleted : true,
+      mustChangePassword: isFarmer ? user.mustChangePassword : false,
+      mustSetupProfile,
+      nextStep: mustSetupProfile ? 'complete_profile' : 'dashboard',
+    });
   },
 
   updateProfile: async (req: Request, res: Response): Promise<void> => {
