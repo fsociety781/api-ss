@@ -48,7 +48,7 @@ export const AuthController = {
       where: {
         OR: [
           { phoneNumber: parsed.identifier },
-          { email: parsed.identifier },
+          { email: { equals: parsed.identifier, mode: 'insensitive' } },
         ],
       },
     });

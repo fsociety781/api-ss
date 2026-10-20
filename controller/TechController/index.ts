@@ -15,7 +15,6 @@ import {
   OwnershipType,
   UserStatus,
 } from '../../src/generated/prisma/client';
-import { passwordSchema } from '../../utils/validation';
 import {
   buildDeviceIdentity,
   saveDeviceIdentityFile,
@@ -58,8 +57,9 @@ const updateDeviceSchema = z.object({
 const createAdminSchema = z.object({
   fullName: z.string().min(2, 'Nama lengkap admin wajib diisi'),
   phoneNumber: z.string().min(8, 'Nomor HP tidak valid'),
-  email: z.string().email('Format email tidak valid').optional(),
-  defaultPassword: passwordSchema.default('AdminShroomSync123!'),
+  email: z.string().email('Format email tidak valid').optional().or(z.literal('')),
+  password: z.string().min(6, 'Password minimal 6 karakter').optional(),
+  defaultPassword: z.string().min(6, 'Password minimal 6 karakter').optional(),
 });
 
 const updateAdminStatusSchema = z.object({
@@ -490,6 +490,8 @@ export const TechController = {
 
     const parsed = createAdminSchema.parse(req.body);
 
+    const email = parsed.email && parsed.email.trim() !== '' ? parsed.email.trim().toLowerCase() : null;
+
     const existingPhone = await prisma.user.findUnique({
       where: { phoneNumber: parsed.phoneNumber },
     });
@@ -497,22 +499,23 @@ export const TechController = {
       throw new ConflictError('Nomor HP sudah terdaftar pada akun lain');
     }
 
-    if (parsed.email) {
-      const existingEmail = await prisma.user.findUnique({
-        where: { email: parsed.email },
+    if (email) {
+      const existingEmail = await prisma.user.findFirst({
+        where: { email: { equals: email, mode: 'insensitive' } },
       });
       if (existingEmail) {
         throw new ConflictError('Email sudah terdaftar pada akun lain');
       }
     }
 
-    const passwordHash = await bcrypt.hash(parsed.defaultPassword, 12);
+    const passwordToUse = parsed.password || parsed.defaultPassword || 'AdminShroomSync123!';
+    const passwordHash = await bcrypt.hash(passwordToUse, 12);
 
     const newAdmin = await prisma.user.create({
       data: {
         fullName: parsed.fullName,
         phoneNumber: parsed.phoneNumber,
-        email: parsed.email ?? null,
+        email,
         passwordHash,
         role: 'ADMIN',
         status: 'ACTIVE',
@@ -536,7 +539,7 @@ export const TechController = {
       res,
       {
         admin: newAdmin,
-        temporaryPassword: parsed.defaultPassword,
+        temporaryPassword: passwordToUse,
       },
       'Akun Admin berhasil dibuat. Berikan password sementara kepada Admin.',
       201,
