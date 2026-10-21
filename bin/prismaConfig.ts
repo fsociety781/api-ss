@@ -1,7 +1,25 @@
 import 'dotenv/config';
+import path from 'node:path';
 import { Pool } from 'pg';
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '../src/generated/prisma/client';
+import type { PrismaClient as PrismaClientType } from '@prisma/client';
+
+type PrismaClientCtor = new (options?: Record<string, unknown>) => PrismaClientType;
+
+let PrismaClientCtor: PrismaClientCtor;
+
+try {
+  const generatedClientPath = path.resolve(
+    __dirname,
+    process.env.NODE_ENV === 'production'
+      ? '../../src/generated/prisma/client'
+      : '../src/generated/prisma/client',
+  );
+
+  PrismaClientCtor = require(generatedClientPath).PrismaClient;
+} catch {
+  PrismaClientCtor = require('@prisma/client').PrismaClient;
+}
 
 const connectionString = `${process.env.DATABASE_URL}`;
 
@@ -13,6 +31,6 @@ const pool = new Pool({
 });
 
 const adapter = new PrismaPg(pool);
-const prisma = new PrismaClient({ adapter });
+const prisma = new PrismaClientCtor({ adapter });
 
 export { prisma, pool };
