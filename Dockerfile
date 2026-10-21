@@ -62,6 +62,7 @@ COPY --from=builder --chown=nodejs:nodejs /app/prisma.config.ts ./prisma.config.
 COPY --from=builder --chown=nodejs:nodejs /app/public ./public
 COPY --from=builder --chown=nodejs:nodejs /app/views ./views
 COPY --from=builder --chown=nodejs:nodejs /app/src ./src
+COPY --from=builder --chown=nodejs:nodejs /app/src/generated ./src/generated
 
 # Create storage directory for firmware uploads and ensure permissions
 RUN mkdir -p /app/storage/firmwares && chown -R nodejs:nodejs /app/storage
@@ -76,8 +77,7 @@ EXPOSE 3000
 
 # Health check probe
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \
-  CMD curl -f http://localhost:3000/api/health || exit 1
+  CMD curl -fsS http://localhost:3000/api/health || exit 1
 
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["node", "dist/bin/www.js"]
-
