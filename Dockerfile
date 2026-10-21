@@ -64,6 +64,11 @@ COPY --from=builder --chown=nodejs:nodejs /app/views ./views
 COPY --from=builder --chown=nodejs:nodejs /app/src ./src
 COPY --from=builder --chown=nodejs:nodejs /app/src/generated ./src/generated
 
+# Ensure generated prisma client is in dist for production runtime
+RUN mkdir -p /app/dist/src/generated && \
+    cp -a /app/src/generated/prisma /app/dist/src/generated/prisma && \
+    chown -R nodejs:nodejs /app/dist/src/generated
+
 # Create storage directory for firmware uploads and ensure permissions
 RUN mkdir -p /app/storage/firmwares && chown -R nodejs:nodejs /app/storage
 

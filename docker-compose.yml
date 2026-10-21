@@ -10,55 +10,42 @@ services:
       POSTGRES_USER: ${POSTGRES_USER:-postgres}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
       POSTGRES_DB: ${POSTGRES_DB:-shroomsync_db}
-    ports:
-      - '5432:5432'
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-shroomsync_db}']
+      test: ['CMD-SHELL', 'pg_isready -U "${POSTGRES_USER:-postgres}" -d "${POSTGRES_DB:-shroomsync_db}"']
       interval: 10s
       timeout: 5s
-      retries: 5
-
-  # ---------------------------------------------
-  # MQTT Broker (EMQX v5)
-  # Dashboard: http://localhost:18083 (user: admin, pass: public)
-  # ---------------------------------------------
-  emqx:
-    image: emqx/emqx:5.8
-    container_name: shroomsync_emqx
-    restart: unless-stopped
-    ports:
-      - '1883:1883'     # MQTT TCP
-      - '8083:8083'     # MQTT WebSocket
-      - '18083:18083'   # EMQX Web Dashboard
-    volumes:
-      - emqx_data:/opt/emqx/data
-      - emqx_log:/opt/emqx/log
+      retries: 10
+    networks:
+      - backend_internal
 
   # ---------------------------------------------
   # ShroomSync IoT Backend API
   # ---------------------------------------------
   api:
     image: ${SHROOMSYNC_API_IMAGE:-ghcr.io/fsociety781/shroomsync-api:main}
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: shroomsync_api
     restart: unless-stopped
     depends_on:
       postgres:
         condition: service_healthy
-      emqx:
-        condition: service_started
     ports:
-      - '3000:3000'
+      - "127.0.0.1:3000:3000"
     environment:
       NODE_ENV: production
       PORT: 3000
       PUBLIC_API_URL: ${PUBLIC_API_URL:-http://localhost:3000}
       DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@postgres:5432/${POSTGRES_DB:-shroomsync_db}?schema=public
       JWT_SECRET: ${JWT_SECRET:-shroomsync-production-jwt-super-secret-key-2026}
-      JWT_EXPIRES_IN: 7d
-      MQTT_BROKER_URL: ${MQTT_BROKER_URL:-mqtt://emqx:1883}
+      JWT_EXPIRES_IN: ${JWT_EXPIRES_IN:-7d}
+      MQTT_BROKER_URL: ${MQTT_BROKER_URL:-mqtt://shroomsync_emqx:1883}
       MQTT_CLIENT_ID: shroomsync-api-cluster-01
+      MQTT_USERNAME: ${MQTT_USERNAME:-}
+      MQTT_PASSWORD: ${MQTT_PASSWORD:-}
       CORS_ORIGIN: '${CORS_ORIGIN:-*}'
       RATE_LIMIT_MAX_REQUESTS: 5000
       LOG_LEVEL: ${LOG_LEVEL:-info}
@@ -66,9 +53,17 @@ services:
       DEFAULT_TECHNICIAN_PASSWORD: ${DEFAULT_TECHNICIAN_PASSWORD:-ShroomSyncDev123!}
     volumes:
       - api_storage:/app/storage
+    networks:
+      - backend_internal
+      - emqx_network
 
 volumes:
   postgres_data:
-  emqx_data:
-  emqx_log:
   api_storage:
+
+networks:
+  backend_internal:
+    driver: bridge
+  emqx_network:
+    external: true
+    name: emqx_default
