@@ -30,6 +30,9 @@ import { asyncHandler } from './utils/async-handler';
 
 const app: Express = express();
 
+// Trust reverse proxy (Nginx) headers for accurate client IP in rate limiting
+app.set('trust proxy', 1);
+
 // ── Security Headers ──────────────────────────
 app.use(
   helmet({
