@@ -114,7 +114,8 @@ app.use('/api/v1/devices', cycleRouter);
 // OTA Operations (Direct compatibility route)
 app.use('/api/v1/ota', otaRouter);
 
-// Firmware Binary Download endpoint for ESP32 and browser
+// Firmware Binary Download & Latest Check endpoints for ESP32, Mobile, and Web
+app.get('/api/v1/firmwares/latest', asyncHandler(FirmwareController.getLatestFirmware));
 app.get('/api/v1/firmwares/download/:filename', asyncHandler(FirmwareController.downloadFirmware));
 
 // ── Catch 404 for undefined routes ────────────

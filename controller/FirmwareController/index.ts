@@ -202,6 +202,56 @@ export const FirmwareController = {
   },
 
   /**
+   * GET /api/v1/firmwares/latest
+   * Mengambil metadata firmware terbaru beserta link unduhannya (diakses oleh ESP32 / App)
+   */
+  getLatestFirmware: async (req: Request, res: Response): Promise<void> => {
+    const hardwareVersion = (req.query.hardwareVersion as string) || '1.0';
+
+    // Cari firmware yang ditandai isLatest: true untuk hardwareVersion ini
+    let firmware = await prisma.firmware.findFirst({
+      where: {
+        hardwareVersion,
+        isLatest: true,
+      },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    // Fallback: Jika belum ada flag isLatest, ambil yang diupload paling baru
+    if (!firmware) {
+      firmware = await prisma.firmware.findFirst({
+        where: { hardwareVersion },
+        orderBy: { createdAt: 'desc' },
+      });
+    }
+
+    if (!firmware) {
+      throw new NotFoundError(`Belum ada firmware yang diunggah untuk hardware versi ${hardwareVersion}`);
+    }
+
+    const baseUrl = resolveServerBaseUrl(req);
+    const downloadUrl = `${baseUrl}/api/v1/firmwares/download/${firmware.filename}`;
+
+    ApiResponse.success(
+      res,
+      {
+        id: firmware.id,
+        version: firmware.version,
+        hardwareVersion: firmware.hardwareVersion,
+        filename: firmware.filename,
+        originalName: firmware.originalName,
+        fileSize: firmware.fileSize,
+        checksumSha256: firmware.checksumSha256,
+        changelog: firmware.changelog,
+        isLatest: firmware.isLatest,
+        downloadUrl,
+        createdAt: firmware.createdAt,
+      },
+      'Firmware terbaru berhasil ditemukan',
+    );
+  },
+
+  /**
    * GET /api/v1/firmwares/download/:filename
    * Unduh file .bin firmware (Diakses oleh browser atau ESP32 HTTPUpdate)
    */
