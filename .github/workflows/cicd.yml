@@ -92,34 +92,43 @@ jobs:
 
             echo "Menunggu health check..."
             HEALTHY=0
+            
             for i in $(seq 1 30); do
-              if curl --fail --silent \
-                http://127.0.0.1:3000/ >/dev/null 2>&1; then
+              if curl --fail --silent --show-error \
+                http://127.0.0.1:3000/api/health >/dev/null 2>&1; then
                 HEALTHY=1
                 break
               fi
               sleep 2
             done
-
+            
             if [ "$HEALTHY" -eq 1 ]; then
               echo "Deploy berhasil."
               docker inspect shroomsync_api \
                 --format 'Image={{.Config.Image}} Status={{.State.Status}}'
               exit 0
             fi
-
-            echo "Health check gagal. Rollback ke image sebelumnya..."
+            
+            echo "Health check gagal. Mengambil log image baru..."
+            docker logs --tail 200 shroomsync_api 2>&1 || true
+            
+            echo "Status container:"
+            docker inspect shroomsync_api \
+              --format 'Status={{.State.Status}} ExitCode={{.State.ExitCode}} OOMKilled={{.State.OOMKilled}}' \
+              || true
+            
+            echo "Rollback ke image sebelumnya..."
             SHROOMSYNC_API_IMAGE="$OLD_IMAGE" docker compose up -d --no-deps api
-
+            
             for i in $(seq 1 15); do
               if curl --fail --silent \
-                http://127.0.0.1:3000/ >/dev/null 2>&1; then
+                http://127.0.0.1:3000/api/health >/dev/null 2>&1; then
                 echo "Rollback berhasil."
                 exit 1
               fi
               sleep 2
             done
-
+            
             echo "PERINGATAN: API belum pulih setelah rollback."
-            docker logs --tail 100 shroomsync_api
+            docker logs --tail 100 shroomsync_api 2>&1 || true
             exit 1
