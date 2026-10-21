@@ -82,8 +82,8 @@ jobs:
             echo "Validasi konfigurasi Compose..."
             SHROOMSYNC_API_IMAGE="$IMAGE" docker compose config --quiet
 
-            OLD_IMAGE="$(docker inspect shroomsync_api --format '{{.Config.Image}}')"
-
+            OLD_IMAGE="shroomsync-api:rollback-before-cicd"
+           
             echo "Pull image baru..."
             docker pull "$IMAGE"
 
