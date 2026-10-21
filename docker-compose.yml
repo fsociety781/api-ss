@@ -40,6 +40,7 @@ services:
   # ShroomSync IoT Backend API
   # ---------------------------------------------
   api:
+    image: ${SHROOMSYNC_API_IMAGE:-shroomsync-api:local}
     build:
       context: .
       dockerfile: Dockerfile
