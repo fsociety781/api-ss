@@ -58,3 +58,68 @@ jobs:
           tags: |
             ghcr.io/fsociety781/shroomsync-api:${{ github.sha }}
             ghcr.io/fsociety781/shroomsync-api:main
+
+  deploy-production:
+    needs: test-build-push
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Deploy API to VPS
+        uses: appleboy/ssh-action@v1.2.2
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          port: ${{ secrets.VPS_PORT || 22 }}
+          command_timeout: 5m
+          script: |
+            set -eu
+            cd /opt/shroomsync/api-ss
+
+            IMAGE="ghcr.io/fsociety781/shroomsync-api:${{ github.sha }}"
+
+            echo "Validasi konfigurasi Compose..."
+            SHROOMSYNC_API_IMAGE="$IMAGE" docker compose config --quiet
+
+            OLD_IMAGE="$(docker inspect shroomsync_api --format '{{.Config.Image}}')"
+
+            echo "Pull image baru..."
+            docker pull "$IMAGE"
+
+            echo "Deploy API..."
+            SHROOMSYNC_API_IMAGE="$IMAGE" docker compose up -d --no-deps api
+
+            echo "Menunggu health check..."
+            HEALTHY=0
+            for i in $(seq 1 30); do
+              if curl --fail --silent \
+                http://127.0.0.1:3000/ >/dev/null 2>&1; then
+                HEALTHY=1
+                break
+              fi
+              sleep 2
+            done
+
+            if [ "$HEALTHY" -eq 1 ]; then
+              echo "Deploy berhasil."
+              docker inspect shroomsync_api \
+                --format 'Image={{.Config.Image}} Status={{.State.Status}}'
+              exit 0
+            fi
+
+            echo "Health check gagal. Rollback ke image sebelumnya..."
+            SHROOMSYNC_API_IMAGE="$OLD_IMAGE" docker compose up -d --no-deps api
+
+            for i in $(seq 1 15); do
+              if curl --fail --silent \
+                http://127.0.0.1:3000/ >/dev/null 2>&1; then
+                echo "Rollback berhasil."
+                exit 1
+              fi
+              sleep 2
+            done
+
+            echo "PERINGATAN: API belum pulih setelah rollback."
+            docker logs --tail 100 shroomsync_api
+            exit 1
