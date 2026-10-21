@@ -61,7 +61,7 @@ model Device {
   model           String
   hardwareVersion String?
   firmwareVersion String?
-  macAddress      String?
+ macAddress       String?
 
   status        DeviceStatus  @default(READY)
   ownershipType OwnershipType @default(RENTED)

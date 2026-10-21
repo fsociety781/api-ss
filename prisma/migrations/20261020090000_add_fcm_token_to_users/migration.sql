@@ -1,0 +1,3 @@
+ALTER TABLE "users"
+ADD COLUMN "fcmToken" TEXT,
+ADD COLUMN "lastFcmTokenAt" TIMESTAMP(3);
