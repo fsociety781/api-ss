@@ -40,10 +40,7 @@ services:
   # ShroomSync IoT Backend API
   # ---------------------------------------------
   api:
-    image: ${SHROOMSYNC_API_IMAGE:-shroomsync-api:local}
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: ${SHROOMSYNC_API_IMAGE:-ghcr.io/fsociety781/shroomsync-api:main}
     container_name: shroomsync_api
     restart: unless-stopped
     depends_on:
@@ -62,7 +59,7 @@ services:
       JWT_EXPIRES_IN: 7d
       MQTT_BROKER_URL: ${MQTT_BROKER_URL:-mqtt://emqx:1883}
       MQTT_CLIENT_ID: shroomsync-api-cluster-01
-      CORS_ORIGIN: '*'
+      CORS_ORIGIN: '${CORS_ORIGIN:-*}'
       RATE_LIMIT_MAX_REQUESTS: 5000
       LOG_LEVEL: ${LOG_LEVEL:-info}
       DEFAULT_TECHNICIAN_EMAIL: ${DEFAULT_TECHNICIAN_EMAIL:-teknisi@shroomsync.local}

@@ -1,6 +1,7 @@
 import "dotenv/config";
 interface DataSource {
     url: string | undefined;
+    shadowDatabaseUrl: string | undefined;
 }
 interface Migrations {
     path: string;

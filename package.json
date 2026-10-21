@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon --exec tsx ./bin/www.ts",
-    "build": "tsc",
+    "build": "tsc && node -e \"require('fs').cpSync('src/generated', 'dist/src/generated', {recursive: true})\"",
     "dev": "tsx watch ./bin/www.ts",
     "prod": "node ./dist/bin/www.js",
     "test": "tsx --test tests/**/*.test.ts",
