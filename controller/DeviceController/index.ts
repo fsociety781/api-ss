@@ -32,6 +32,7 @@ const activateDeviceSchema = z.object({
   deviceId: z.string().min(1, 'Device ID / Serial Number wajib diisi'),
   name: z.string().optional(),
   activationCode: z.string().optional(),
+  macAddress: z.string().optional(),
 });
 
 const createDeviceSchema = z.object({
@@ -321,6 +322,8 @@ export const DeviceController = {
     }
 
     // 5. Update data perangkat dan hubungkan ke petani
+    const inputMac = (parsed.macAddress || req.body.mac_address || req.body.macAddress || '')?.trim() || null;
+
     const updated = await prisma.device.update({
       where: { id: device.id },
       data: {
@@ -328,6 +331,7 @@ export const DeviceController = {
         status: DeviceStatus.ACTIVE,
         name: parsed.name ?? device.name,
         activatedAt: device.activatedAt ?? new Date(),
+        ...(inputMac && (!device.macAddress || device.macAddress !== inputMac) ? { macAddress: inputMac } : {}),
       },
       include: {
         farmer: {
@@ -716,6 +720,7 @@ export const DeviceController = {
 
     const fw = req.body.firmwareVersion ?? req.body.firmware_version;
     const hw = req.body.hardwareVersion ?? req.body.hardware_version;
+    const mac = (req.body.macAddress ?? req.body.mac_address)?.trim() || null;
 
     const nextStatus =
       (device.status === DeviceStatus.OFFLINE || device.status === DeviceStatus.READY) && device.farmerId
@@ -727,6 +732,7 @@ export const DeviceController = {
       data: {
         lastSeenAt: now,
         status: nextStatus,
+        ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
         ...(rssi != null ? { rssiDbm: rssi } : {}),
         ...(uptime != null ? { uptimeMs: uptime } : {}),
         ...(fw ? { firmwareVersion: String(fw) } : {}),

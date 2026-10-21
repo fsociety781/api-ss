@@ -288,6 +288,11 @@ class MqttService {
             ? BigInt(Math.round(Number(rawUptime)))
             : null;
 
+        const mac = (dataObj.mac_address ||
+          envelopeObj.mac_address ||
+          dataObj.macAddress ||
+          envelopeObj.macAddress) as string | undefined;
+
         await prisma.device.update({
           where: { id: device.id },
           data: {
@@ -296,6 +301,7 @@ class MqttService {
               device.status === DeviceStatus.OFFLINE && device.farmerId
                 ? DeviceStatus.ACTIVE
                 : device.status,
+            ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
             ...(rssi != null ? { rssiDbm: rssi } : {}),
             ...(uptime != null ? { uptimeMs: uptime } : {}),
           },
@@ -310,6 +316,10 @@ class MqttService {
         const hw = (dataObj.hardware_version ||
           envelopeObj.hardware_version ||
           dataObj.hardwareVersion) as string | undefined;
+        const mac = (dataObj.mac_address ||
+          envelopeObj.mac_address ||
+          dataObj.macAddress ||
+          envelopeObj.macAddress) as string | undefined;
 
         const rawRssi =
           dataObj.rssi ??
@@ -343,6 +353,7 @@ class MqttService {
               device.status === DeviceStatus.OFFLINE && device.farmerId
                 ? DeviceStatus.ACTIVE
                 : device.status,
+            ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
             ...(fw && { firmwareVersion: fw }),
             ...(hw && { hardwareVersion: hw }),
             ...(rssi != null ? { rssiDbm: rssi } : {}),
