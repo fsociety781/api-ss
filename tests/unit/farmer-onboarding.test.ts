@@ -14,7 +14,7 @@ describe('🍄 Farmer Onboarding & Technician RBAC Tests', () => {
 
   before(async () => {
     try {
-      await prisma.$connect();
+      await prisma.$queryRaw`SELECT 1`;
       dbAvailable = true;
     } catch (err) {
       console.warn('⚠️ [Test] PostgreSQL not reachable, skipping live DB tests in this environment:', (err as Error).message);
