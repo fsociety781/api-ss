@@ -230,6 +230,10 @@ class MqttService {
                 const uptime = rawUptime != null && !isNaN(Number(rawUptime))
                     ? BigInt(Math.round(Number(rawUptime)))
                     : null;
+                const mac = (dataObj.mac_address ||
+                    envelopeObj.mac_address ||
+                    dataObj.macAddress ||
+                    envelopeObj.macAddress);
                 await prismaConfig_1.prisma.device.update({
                     where: { id: device.id },
                     data: {
@@ -237,6 +241,7 @@ class MqttService {
                         status: device.status === client_1.DeviceStatus.OFFLINE && device.farmerId
                             ? client_1.DeviceStatus.ACTIVE
                             : device.status,
+                        ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
                         ...(rssi != null ? { rssiDbm: rssi } : {}),
                         ...(uptime != null ? { uptimeMs: uptime } : {}),
                     },
@@ -250,6 +255,10 @@ class MqttService {
                 const hw = (dataObj.hardware_version ||
                     envelopeObj.hardware_version ||
                     dataObj.hardwareVersion);
+                const mac = (dataObj.mac_address ||
+                    envelopeObj.mac_address ||
+                    dataObj.macAddress ||
+                    envelopeObj.macAddress);
                 const rawRssi = dataObj.rssi ??
                     dataObj.rssi_dbm ??
                     dataObj.rssiDbm ??
@@ -275,6 +284,7 @@ class MqttService {
                         status: device.status === client_1.DeviceStatus.OFFLINE && device.farmerId
                             ? client_1.DeviceStatus.ACTIVE
                             : device.status,
+                        ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
                         ...(fw && { firmwareVersion: fw }),
                         ...(hw && { hardwareVersion: hw }),
                         ...(rssi != null ? { rssiDbm: rssi } : {}),

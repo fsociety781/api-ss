@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const TechController_1 = require("../../controller/TechController");
+const AdminController_1 = require("../../controller/AdminController");
 const authMiddleware_1 = require("../../middleware/authMiddleware");
 const technicMiddleware_1 = require("../../middleware/technicMiddleware");
 const async_handler_1 = require("../../utils/async-handler");
@@ -29,6 +30,12 @@ router.delete('/devices/:id', (0, async_handler_1.asyncHandler)(TechController_1
 router.post('/admins', (0, async_handler_1.asyncHandler)(TechController_1.TechController.createAdmin));
 router.get('/admins', (0, async_handler_1.asyncHandler)(TechController_1.TechController.listAdmins));
 router.put('/admins/:id/status', (0, async_handler_1.asyncHandler)(TechController_1.TechController.updateAdminStatus));
+// Farmer management (Teknisi dapat mengelola akun Petani)
+router.post('/farmers', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.createFarmer));
+router.get('/farmers', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.listFarmers));
+router.get('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.getFarmerById));
+router.put('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.updateFarmer));
+router.delete('/farmers/:id', (0, async_handler_1.asyncHandler)(AdminController_1.AdminController.deleteFarmer));
 // Firmware Binary Management (.bin)
 router.post('/firmwares', firmwareUpload_1.firmwareUpload.single('firmware'), (0, async_handler_1.asyncHandler)(FirmwareController_1.FirmwareController.uploadFirmware));
 router.get('/firmwares', (0, async_handler_1.asyncHandler)(FirmwareController_1.FirmwareController.listFirmwares));

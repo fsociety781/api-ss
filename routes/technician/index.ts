@@ -1,5 +1,6 @@
 import express, { Router } from 'express';
 import { TechController } from '../../controller/TechController';
+import { AdminController } from '../../controller/AdminController';
 import { authMiddleware } from '../../middleware/authMiddleware';
 import { technicMiddleware } from '../../middleware/technicMiddleware';
 import { asyncHandler } from '../../utils/async-handler';
@@ -30,6 +31,13 @@ router.delete('/devices/:id', asyncHandler(TechController.deleteDevice));
 router.post('/admins', asyncHandler(TechController.createAdmin));
 router.get('/admins', asyncHandler(TechController.listAdmins));
 router.put('/admins/:id/status', asyncHandler(TechController.updateAdminStatus));
+
+// Farmer management (Teknisi dapat mengelola akun Petani)
+router.post('/farmers', asyncHandler(AdminController.createFarmer));
+router.get('/farmers', asyncHandler(AdminController.listFarmers));
+router.get('/farmers/:id', asyncHandler(AdminController.getFarmerById));
+router.put('/farmers/:id', asyncHandler(AdminController.updateFarmer));
+router.delete('/farmers/:id', asyncHandler(AdminController.deleteFarmer));
 
 // Firmware Binary Management (.bin)
 router.post('/firmwares', firmwareUpload.single('firmware'), asyncHandler(FirmwareController.uploadFirmware));

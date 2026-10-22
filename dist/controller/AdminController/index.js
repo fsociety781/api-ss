@@ -12,7 +12,7 @@ const api_response_1 = require("../../utils/api-response");
 const errors_1 = require("../../utils/errors");
 const client_1 = require("../../src/generated/prisma/client");
 const createFarmerSchema = zod_1.z.object({
-    fullName: zod_1.z.string().min(2, 'Nama lengkap petani wajib diisi'),
+    fullName: zod_1.z.string().min(2, 'Nama lengkap petani minimal 2 karakter').optional().or(zod_1.z.literal('')),
     phoneNumber: zod_1.z.string().min(8, 'Nomor HP tidak valid'),
     email: zod_1.z
         .string()
@@ -123,19 +123,21 @@ exports.AdminController = {
             }
         }
         const passwordHash = await bcrypt_1.default.hash(rawPassword, 12);
-        const initialStatus = parsed.status || 'ACTIVE';
+        const initialStatus = parsed.status || 'INVITED';
         const newFarmer = await prismaConfig_1.prisma.user.create({
             data: {
-                fullName: parsed.fullName.trim(),
+                fullName: parsed.fullName?.trim() || 'Petani Mitra',
                 phoneNumber,
                 email: cleanEmail,
                 passwordHash,
                 role: 'FARMER',
                 status: initialStatus,
-                profileCompleted: true,
-                mustChangePassword: false,
+                profileCompleted: false,
+                mustChangePassword: true,
+                farmName: parsed.farmName?.trim() || null,
+                farmAddress: parsed.farmAddress?.trim() || null,
                 createdById: req.user.id,
-                activatedAt: new Date(),
+                activatedAt: null,
             },
             select: {
                 id: true,
@@ -144,6 +146,8 @@ exports.AdminController = {
                 email: true,
                 role: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 mustChangePassword: true,
                 profileCompleted: true,
                 createdAt: true,
@@ -164,6 +168,8 @@ exports.AdminController = {
                 phoneNumber: true,
                 email: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 profileCompleted: true,
                 mustChangePassword: true,
                 activatedAt: true,
@@ -197,6 +203,8 @@ exports.AdminController = {
                 phoneNumber: true,
                 email: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 profileCompleted: true,
                 mustChangePassword: true,
                 activatedAt: true,
@@ -256,6 +264,8 @@ exports.AdminController = {
                 ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber.trim() }),
                 ...(cleanEmail !== undefined && { email: cleanEmail }),
                 ...(parsed.status !== undefined && { status: parsed.status }),
+                ...(parsed.farmName !== undefined && { farmName: parsed.farmName?.trim() ? parsed.farmName.trim() : null }),
+                ...(parsed.farmAddress !== undefined && { farmAddress: parsed.farmAddress?.trim() ? parsed.farmAddress.trim() : null }),
                 ...(passwordHash !== undefined && { passwordHash }),
             },
             select: {
@@ -264,6 +274,8 @@ exports.AdminController = {
                 phoneNumber: true,
                 email: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 role: true,
                 createdAt: true,
                 updatedAt: true,

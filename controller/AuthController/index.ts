@@ -20,8 +20,11 @@ const loginSchema = z.object({
 const onboardingSchema = z.object({
   currentPassword: z.string().min(1, 'Password lama/default wajib diisi'),
   newPassword: passwordSchema,
-  fullName: z.string().min(2, 'Nama lengkap wajib diisi').optional(),
-  email: z.string().email('Format email tidak valid').optional(),
+  fullName: z.string().min(2, 'Nama lengkap wajib diisi').optional().or(z.literal('')),
+  phoneNumber: z.string().min(8, 'Nomor HP minimal 8 digit').optional().or(z.literal('')),
+  email: z.string().email('Format email tidak valid').optional().nullable().or(z.literal('')),
+  farmName: z.string().min(2, 'Nama usaha / kumbung wajib diisi').optional().or(z.literal('')),
+  farmAddress: z.string().min(3, 'Alamat kumbung wajib diisi').optional().or(z.literal('')),
 });
 
 const changePasswordSchema = z.object({
@@ -100,6 +103,8 @@ export const AuthController = {
           email: user.email,
           role: user.role,
           status: user.status,
+          farmName: user.farmName,
+          farmAddress: user.farmAddress,
           profileCompleted: isFarmer ? user.profileCompleted : true,
           mustChangePassword: isFarmer ? user.mustChangePassword : false,
         },
@@ -153,8 +158,11 @@ export const AuthController = {
       where: { id: user.id },
       data: {
         passwordHash: newPasswordHash,
-        fullName: parsed.fullName ?? user.fullName,
-        email: parsed.email ?? user.email,
+        fullName: parsed.fullName?.trim() || user.fullName,
+        email: parsed.email?.trim() ? parsed.email.trim() : user.email,
+        ...(parsed.phoneNumber?.trim() ? { phoneNumber: parsed.phoneNumber.trim() } : {}),
+        farmName: parsed.farmName?.trim() ? parsed.farmName.trim() : user.farmName,
+        farmAddress: parsed.farmAddress?.trim() ? parsed.farmAddress.trim() : user.farmAddress,
         mustChangePassword: false,
         profileCompleted: true,
         status: user.status === 'INVITED' ? 'ACTIVE' : user.status,
@@ -167,6 +175,8 @@ export const AuthController = {
         email: true,
         role: true,
         status: true,
+        farmName: true,
+        farmAddress: true,
         profileCompleted: true,
         mustChangePassword: true,
       },
@@ -242,6 +252,8 @@ export const AuthController = {
         email: true,
         role: true,
         status: true,
+        farmName: true,
+        farmAddress: true,
         profileCompleted: true,
         mustChangePassword: true,
         activatedAt: true,
@@ -282,6 +294,8 @@ export const AuthController = {
       fullName: z.string().min(2, 'Nama lengkap minimal 2 karakter').optional(),
       email: z.string().email('Format email tidak valid').optional(),
       phoneNumber: z.string().min(8, 'Nomor HP minimal 8 digit').optional(),
+      farmName: z.string().optional().nullable(),
+      farmAddress: z.string().optional().nullable(),
     });
 
     const parsed = updateProfileSchema.parse(req.body);
@@ -310,6 +324,8 @@ export const AuthController = {
         ...(parsed.fullName !== undefined && { fullName: parsed.fullName }),
         ...(parsed.email !== undefined && { email: parsed.email }),
         ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber }),
+        ...(parsed.farmName !== undefined && { farmName: parsed.farmName }),
+        ...(parsed.farmAddress !== undefined && { farmAddress: parsed.farmAddress }),
       },
       select: {
         id: true,
@@ -318,6 +334,8 @@ export const AuthController = {
         email: true,
         role: true,
         status: true,
+        farmName: true,
+        farmAddress: true,
         profileCompleted: true,
       },
     });

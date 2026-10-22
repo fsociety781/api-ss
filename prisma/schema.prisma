@@ -17,6 +17,8 @@ model User {
   phoneNumber  String  @unique
   email        String? @unique
   passwordHash String?
+  farmName     String?
+  farmAddress  String?
 
   role               UserRole   @default(FARMER)
   status             UserStatus @default(INVITED)

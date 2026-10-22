@@ -12,6 +12,7 @@ const activateDeviceSchema = zod_1.z.object({
     deviceId: zod_1.z.string().min(1, 'Device ID / Serial Number wajib diisi'),
     name: zod_1.z.string().optional(),
     activationCode: zod_1.z.string().optional(),
+    macAddress: zod_1.z.string().optional(),
 });
 const createDeviceSchema = zod_1.z.object({
     deviceId: zod_1.z.string().optional(),
@@ -241,6 +242,7 @@ exports.DeviceController = {
             }
         }
         // 5. Update data perangkat dan hubungkan ke petani
+        const inputMac = (parsed.macAddress || req.body.mac_address || req.body.macAddress || '')?.trim() || null;
         const updated = await prismaConfig_1.prisma.device.update({
             where: { id: device.id },
             data: {
@@ -248,6 +250,7 @@ exports.DeviceController = {
                 status: client_1.DeviceStatus.ACTIVE,
                 name: parsed.name ?? device.name,
                 activatedAt: device.activatedAt ?? new Date(),
+                ...(inputMac && (!device.macAddress || device.macAddress !== inputMac) ? { macAddress: inputMac } : {}),
             },
             include: {
                 farmer: {
@@ -536,6 +539,7 @@ exports.DeviceController = {
         const uptime = rawUptime != null && !isNaN(Number(rawUptime)) ? BigInt(Math.round(Number(rawUptime))) : null;
         const fw = req.body.firmwareVersion ?? req.body.firmware_version;
         const hw = req.body.hardwareVersion ?? req.body.hardware_version;
+        const mac = (req.body.macAddress ?? req.body.mac_address)?.trim() || null;
         const nextStatus = (device.status === client_1.DeviceStatus.OFFLINE || device.status === client_1.DeviceStatus.READY) && device.farmerId
             ? client_1.DeviceStatus.ACTIVE
             : device.status;
@@ -544,6 +548,7 @@ exports.DeviceController = {
             data: {
                 lastSeenAt: now,
                 status: nextStatus,
+                ...(mac && (!device.macAddress || device.macAddress !== mac) ? { macAddress: mac } : {}),
                 ...(rssi != null ? { rssiDbm: rssi } : {}),
                 ...(uptime != null ? { uptimeMs: uptime } : {}),
                 ...(fw ? { firmwareVersion: String(fw) } : {}),

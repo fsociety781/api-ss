@@ -43,6 +43,8 @@ coverage/
 # Temporary files
 *.tmp
 *.bak
+*.sql
+*.dump
 
 # Secrets & Credentials
 firebase-service-account.json

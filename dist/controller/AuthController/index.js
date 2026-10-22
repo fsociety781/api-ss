@@ -18,8 +18,11 @@ const loginSchema = zod_1.z.object({
 const onboardingSchema = zod_1.z.object({
     currentPassword: zod_1.z.string().min(1, 'Password lama/default wajib diisi'),
     newPassword: validation_1.passwordSchema,
-    fullName: zod_1.z.string().min(2, 'Nama lengkap wajib diisi').optional(),
-    email: zod_1.z.string().email('Format email tidak valid').optional(),
+    fullName: zod_1.z.string().min(2, 'Nama lengkap wajib diisi').optional().or(zod_1.z.literal('')),
+    phoneNumber: zod_1.z.string().min(8, 'Nomor HP minimal 8 digit').optional().or(zod_1.z.literal('')),
+    email: zod_1.z.string().email('Format email tidak valid').optional().nullable().or(zod_1.z.literal('')),
+    farmName: zod_1.z.string().min(2, 'Nama usaha / kumbung wajib diisi').optional().or(zod_1.z.literal('')),
+    farmAddress: zod_1.z.string().min(3, 'Alamat kumbung wajib diisi').optional().or(zod_1.z.literal('')),
 });
 const changePasswordSchema = zod_1.z.object({
     oldPassword: zod_1.z.string().min(1, 'Password lama wajib diisi'),
@@ -80,6 +83,8 @@ exports.AuthController = {
                 email: user.email,
                 role: user.role,
                 status: user.status,
+                farmName: user.farmName,
+                farmAddress: user.farmAddress,
                 profileCompleted: isFarmer ? user.profileCompleted : true,
                 mustChangePassword: isFarmer ? user.mustChangePassword : false,
             },
@@ -119,8 +124,11 @@ exports.AuthController = {
             where: { id: user.id },
             data: {
                 passwordHash: newPasswordHash,
-                fullName: parsed.fullName ?? user.fullName,
-                email: parsed.email ?? user.email,
+                fullName: parsed.fullName?.trim() || user.fullName,
+                email: parsed.email?.trim() ? parsed.email.trim() : user.email,
+                ...(parsed.phoneNumber?.trim() ? { phoneNumber: parsed.phoneNumber.trim() } : {}),
+                farmName: parsed.farmName?.trim() ? parsed.farmName.trim() : user.farmName,
+                farmAddress: parsed.farmAddress?.trim() ? parsed.farmAddress.trim() : user.farmAddress,
                 mustChangePassword: false,
                 profileCompleted: true,
                 status: user.status === 'INVITED' ? 'ACTIVE' : user.status,
@@ -133,6 +141,8 @@ exports.AuthController = {
                 email: true,
                 role: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 profileCompleted: true,
                 mustChangePassword: true,
             },
@@ -188,6 +198,8 @@ exports.AuthController = {
                 email: true,
                 role: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 profileCompleted: true,
                 mustChangePassword: true,
                 activatedAt: true,
@@ -223,6 +235,8 @@ exports.AuthController = {
             fullName: zod_1.z.string().min(2, 'Nama lengkap minimal 2 karakter').optional(),
             email: zod_1.z.string().email('Format email tidak valid').optional(),
             phoneNumber: zod_1.z.string().min(8, 'Nomor HP minimal 8 digit').optional(),
+            farmName: zod_1.z.string().optional().nullable(),
+            farmAddress: zod_1.z.string().optional().nullable(),
         });
         const parsed = updateProfileSchema.parse(req.body);
         if (parsed.email && parsed.email !== req.user.email) {
@@ -247,6 +261,8 @@ exports.AuthController = {
                 ...(parsed.fullName !== undefined && { fullName: parsed.fullName }),
                 ...(parsed.email !== undefined && { email: parsed.email }),
                 ...(parsed.phoneNumber !== undefined && { phoneNumber: parsed.phoneNumber }),
+                ...(parsed.farmName !== undefined && { farmName: parsed.farmName }),
+                ...(parsed.farmAddress !== undefined && { farmAddress: parsed.farmAddress }),
             },
             select: {
                 id: true,
@@ -255,6 +271,8 @@ exports.AuthController = {
                 email: true,
                 role: true,
                 status: true,
+                farmName: true,
+                farmAddress: true,
                 profileCompleted: true,
             },
         });

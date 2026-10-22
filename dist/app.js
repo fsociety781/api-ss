@@ -29,6 +29,8 @@ const ota_routes_1 = __importDefault(require("./routes/ota.routes"));
 const FirmwareController_1 = require("./controller/FirmwareController");
 const async_handler_1 = require("./utils/async-handler");
 const app = (0, express_1.default)();
+// Trust reverse proxy (Nginx) headers for accurate client IP in rate limiting
+app.set('trust proxy', 1);
 // ── Security Headers ──────────────────────────
 app.use((0, helmet_1.default)({
     contentSecurityPolicy: false, // Allows Swagger UI to render inline styles/scripts
@@ -87,7 +89,8 @@ app.use('/api/v1/devices', telemetry_routes_1.default);
 app.use('/api/v1/devices', cycle_routes_1.default);
 // OTA Operations (Direct compatibility route)
 app.use('/api/v1/ota', ota_routes_1.default);
-// Firmware Binary Download endpoint for ESP32 and browser
+// Firmware Binary Download & Latest Check endpoints for ESP32, Mobile, and Web
+app.get('/api/v1/firmwares/latest', (0, async_handler_1.asyncHandler)(FirmwareController_1.FirmwareController.getLatestFirmware));
 app.get('/api/v1/firmwares/download/:filename', (0, async_handler_1.asyncHandler)(FirmwareController_1.FirmwareController.downloadFirmware));
 // ── Catch 404 for undefined routes ────────────
 app.use((req, res) => {
