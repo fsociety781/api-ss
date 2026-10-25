@@ -473,18 +473,68 @@ Mendukung multi-role (*FARMER, TECHNICIAN, ADMIN*), kontrol aktuator terotomatis
             'application/json': {
               schema: {
                 type: 'object',
-                required: ['fullName', 'phoneNumber', 'password'],
+                required: ['fullName', 'phoneNumber'],
                 properties: {
                   fullName: { type: 'string', example: 'Pak Supriadi' },
                   phoneNumber: { type: 'string', example: '081234567899' },
                   email: { type: 'string', example: 'supriadi@shroomsync.id' },
                   password: { type: 'string', example: 'PetaniAman123!' },
+                  farmName: { type: 'string', example: 'Kumbung Berkah Mandiri' },
+                  farmAddress: { type: 'string', example: 'Desa Cisarua, Lembang' },
+                  status: { type: 'string', enum: ['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'], example: 'ACTIVE' },
                 },
               },
             },
           },
         },
         responses: { 201: { description: 'Akun petani berhasil dibuat' } },
+      },
+    },
+    '/admin/farmers/{id}': {
+      get: {
+        tags: ['Fitur Admin'],
+        summary: 'Detail data akun petani spesifik beserta perangkatnya',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+        ],
+        responses: { 200: { description: 'Detail petani ditemukan' }, 404: { description: 'Petani tidak ditemukan' } },
+      },
+      put: {
+        tags: ['Fitur Admin'],
+        summary: 'Perbarui profil atau kata sandi petani',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+        ],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  fullName: { type: 'string', example: 'Pak Supriadi Edit' },
+                  phoneNumber: { type: 'string', example: '081234567899' },
+                  email: { type: 'string', example: 'supriadi@shroomsync.id' },
+                  password: { type: 'string', example: 'PasswordBaru123!' },
+                  farmName: { type: 'string', example: 'Kumbung Makmur Jaya' },
+                  farmAddress: { type: 'string', example: 'Jl. Kolonel Masturi No. 12' },
+                  status: { type: 'string', enum: ['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'] },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Data petani berhasil diperbarui' } },
+      },
+      delete: {
+        tags: ['Fitur Admin'],
+        summary: 'Hapus akun petani dan lepaskan seluruh kepemilikan perangkatnya',
+        security: [{ BearerAuth: [] }],
+        parameters: [
+          { name: 'id', in: 'path', required: true, schema: { type: 'string' } },
+        ],
+        responses: { 200: { description: 'Akun petani berhasil dihapus' } },
       },
     },
     '/admin/devices/assign': {
@@ -550,6 +600,62 @@ Mendukung multi-role (*FARMER, TECHNICIAN, ADMIN*), kontrol aktuator terotomatis
         responses: { 201: { description: 'Hardware baru berhasil didaftarkan' } },
       },
     },
+    '/technician/next-serial': {
+      get: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Rekomendasi serial number terstruktur berikutnya (SS-MMYY-NNN)',
+        security: [{ BearerAuth: [] }],
+        responses: { 200: { description: 'Rekomendasi serial number berhasil dibuat' } },
+      },
+    },
+    '/technician/devices/{id}': {
+      get: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Detail data hardware spesifik beserta status telemetri',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Detail hardware' }, 404: { description: 'Perangkat tidak ditemukan' } },
+      },
+      put: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Perbarui informasi hardware atau versi firmware',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  name: { type: 'string' },
+                  status: { type: 'string', enum: ['READY', 'ACTIVE', 'OFFLINE', 'SUSPENDED', 'MAINTENANCE'] },
+                  hardwareVersion: { type: 'string' },
+                  firmwareVersion: { type: 'string' },
+                  ownershipType: { type: 'string', enum: ['OWNED', 'RENTED', 'LEASED'] },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Perangkat berhasil diperbarui' } },
+      },
+      delete: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Hapus / dekomisi perangkat dari sistem',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Perangkat berhasil dihapus' } },
+      },
+    },
+    '/technician/devices/{id}/identity': {
+      get: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Unduh berkas JSON identitas perangkat (device_info.json) untuk flash LittleFS ESP32',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Konten JSON identitas perangkat' } },
+      },
+    },
     '/technician/admins': {
       get: {
         tags: ['Fitur Teknisi'],
@@ -579,6 +685,219 @@ Mendukung multi-role (*FARMER, TECHNICIAN, ADMIN*), kontrol aktuator terotomatis
           },
         },
         responses: { 201: { description: 'Akun admin berhasil dibuat' } },
+      },
+    },
+    '/technician/admins/{id}/status': {
+      put: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Ubah status aktif / nonaktif akun Administrator',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['status'],
+                properties: {
+                  status: { type: 'string', enum: ['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'], example: 'ACTIVE' },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Status admin berhasil diubah' } },
+      },
+    },
+    '/technician/farmers': {
+      get: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Daftar seluruh petani binaan sistem (Akses Teknisi)',
+        security: [{ BearerAuth: [] }],
+        responses: { 200: { description: 'Daftar petani' } },
+      },
+      post: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Registrasi petani baru langsung oleh Teknisi',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['fullName', 'phoneNumber'],
+                properties: {
+                  fullName: { type: 'string', example: 'Budi Santoso' },
+                  phoneNumber: { type: 'string', example: '081234567890' },
+                  email: { type: 'string', example: 'budi@gmail.com' },
+                  password: { type: 'string', example: 'PetaniAman123!' },
+                  farmName: { type: 'string', example: 'Kumbung Berkah Mandiri' },
+                  farmAddress: { type: 'string', example: 'Desa Lembang, Bandung Barat' },
+                },
+              },
+            },
+          },
+        },
+        responses: { 201: { description: 'Akun petani berhasil dibuat' } },
+      },
+    },
+    '/technician/farmers/{id}': {
+      get: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Detail data akun petani (Akses Teknisi)',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Detail petani' } },
+      },
+      put: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Perbarui profil akun petani (Akses Teknisi)',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  fullName: { type: 'string' },
+                  phoneNumber: { type: 'string' },
+                  email: { type: 'string' },
+                  password: { type: 'string' },
+                  farmName: { type: 'string' },
+                  farmAddress: { type: 'string' },
+                  status: { type: 'string', enum: ['INVITED', 'ACTIVE', 'SUSPENDED', 'INACTIVE'] },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Data petani berhasil diperbarui' } },
+      },
+      delete: {
+        tags: ['Fitur Teknisi'],
+        summary: 'Hapus akun petani dan unassign unit (Akses Teknisi)',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Akun petani berhasil dihapus' } },
+      },
+    },
+    '/technician/firmwares': {
+      get: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Daftar seluruh berkas biner firmware (.bin) yang tersimpan',
+        security: [{ BearerAuth: [] }],
+        responses: { 200: { description: 'Daftar firmware' } },
+      },
+      post: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Upload berkas biner firmware baru (.bin)',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'multipart/form-data': {
+              schema: {
+                type: 'object',
+                required: ['firmware', 'version', 'hardwareVersion'],
+                properties: {
+                  firmware: { type: 'string', format: 'binary', description: 'File firmware.bin' },
+                  version: { type: 'string', example: '1.2.0' },
+                  hardwareVersion: { type: 'string', example: '1.0' },
+                  changelog: { type: 'string', example: 'Perbaikan stabilitas reconnect MQTT & OTA' },
+                  isLatest: { type: 'boolean', example: true },
+                },
+              },
+            },
+          },
+        },
+        responses: { 201: { description: 'Firmware berhasil diunggah' } },
+      },
+    },
+    '/technician/firmwares/{id}': {
+      get: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Detail berkas firmware tertentu',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Detail firmware' } },
+      },
+      delete: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Hapus berkas biner firmware dari server',
+        security: [{ BearerAuth: [] }],
+        parameters: [{ name: 'id', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Firmware berhasil dihapus' } },
+      },
+    },
+    '/firmwares/latest': {
+      get: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Cek versi firmware terbaru (Endpoint Publik untuk ESP32/Aplikasi)',
+        responses: { 200: { description: 'Informasi rilis firmware terbaru' } },
+      },
+    },
+    '/firmwares/download/{filename}': {
+      get: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Unduh file biner firmware (.bin) via HTTP (Endpoint Publik untuk ESP32 OTA)',
+        parameters: [{ name: 'filename', in: 'path', required: true, schema: { type: 'string' } }],
+        responses: { 200: { description: 'Binary stream firmware.bin' } },
+      },
+    },
+    '/technician/ota/trigger': {
+      post: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Trigger instruksi OTA manual ke perangkat via MQTT',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          required: true,
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                required: ['deviceSerial'],
+                properties: {
+                  deviceSerial: { type: 'string', example: 'SS-1026-001' },
+                  firmwareId: { type: 'string' },
+                  force: { type: 'boolean', example: false },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Instruksi OTA berhasil dikirim ke perangkat' } },
+      },
+    },
+    '/technician/ota/broadcast': {
+      post: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Kirim instruksi OTA massal (Broadcast) ke seluruh perangkat aktif',
+        security: [{ BearerAuth: [] }],
+        requestBody: {
+          content: {
+            'application/json': {
+              schema: {
+                type: 'object',
+                properties: {
+                  firmwareId: { type: 'string' },
+                  force: { type: 'boolean', example: false },
+                },
+              },
+            },
+          },
+        },
+        responses: { 200: { description: 'Broadcast OTA berhasil dikirim' } },
+      },
+    },
+    '/technician/ota/logs': {
+      get: {
+        tags: ['Manajemen Firmware & OTA'],
+        summary: 'Daftar riwayat log eksekusi pembaruan OTA',
+        security: [{ BearerAuth: [] }],
+        responses: { 200: { description: 'Riwayat log OTA' } },
       },
     },
   },

@@ -76,10 +76,11 @@ Stack: **Node.js + Express 5 + TypeScript + Prisma 7 (PostgreSQL Adapter) + MQTT
     "data": [
       {
         "id": "uuid-device",
-        "deviceId": "SS-0426-001",
+        "deviceId": "SS-1026-001",
         "name": "Kumbung Barat - Tiram Putih",
         "hardwareVersion": "1.0",
-        "firmwareVersion": "2.1.0",
+        "firmwareVersion": "1.1.0",
+        "macAddress": "DB:4E:B5:80:12:34", // Otomatis tersinkronisasi saat hardware terhubung
         "isOnline": true,
         "rssiDbm": -65,
         "signalStrength": "Good",
@@ -289,10 +290,25 @@ Semua rute admin berada di bawah prefix `/api/v1/admin/*` dan membutuhkan header
     "fullName": "Supriadi",
     "phoneNumber": "081234567899",
     "email": "supriadi@shroomsync.id",
-    "password": "PasswordAman123!"
+    "password": "PasswordAman123!",
+    "farmName": "Kumbung Berkah Mandiri",
+    "farmAddress": "Desa Cisarua, Lembang, Kab. Bandung Barat",
+    "status": "ACTIVE"
   }
   ```
 - **Update Petani:** `PUT /api/v1/admin/farmers/:id`
+  ```json
+  {
+    "fullName": "Supriadi Update",
+    "phoneNumber": "081234567899",
+    "email": "supriadi.baru@shroomsync.id",
+    "farmName": "Kumbung Makmur Jaya",
+    "farmAddress": "Jl. Kolonel Masturi No. 12",
+    "status": "ACTIVE"
+  }
+  ```
+- **Hapus Akun Petani:** `DELETE /api/v1/admin/farmers/:id`
+  - *Catatan:* Secara otomatis melepaskan (*unassign*) seluruh perangkat unit milik petani kembali ke status `READY`, menghapus jadwal panen/kontrol terkait, dan mem-publish sinyal nonaktif ke perangkat fisik via MQTT.
 
 ### 3. Penugasan & Pelepasan Perangkat (Device Assignment)
 - **Daftar Seluruh Perangkat:** `GET /api/v1/admin/devices`
@@ -313,25 +329,50 @@ Semua rute teknisi berada di bawah prefix `/api/v1/technician/*` dan membutuhkan
 
 ### 1. Dashboard Diagnostik Hardware & IoT
 - **Method & Route:** `GET /api/v1/technician/dashboard`
-- **Response (200):** Metrik kesehatan mikrokontroler ESP32, tingkat uptime perangkat, diagnostik sinyal WiFi/RSSI, dan log error sistem.
+- **Response (200):** Metrik kesehatan mikrokontroler ESP32, tingkat uptime perangkat, diagnostik sinyal WiFi/RSSI, dan sebaran versi firmware.
 
-### 2. Provisioning & Manajemen Perangkat Keras ESP32
-- **Daftar Inventaris Alat:** `GET /api/v1/technician/devices`
+### 2. Rekomendasi Serial Number Otomatis
+- **Method & Route:** `GET /api/v1/technician/next-serial`
+- **Response (200):**
+  ```json
+  {
+    "status": "success",
+    "data": {
+      "nextSerial": "SS-1026-002",
+      "prefix": "SS",
+      "monthYear": "1026",
+      "sequence": 2
+    }
+  }
+  ```
+
+### 3. Provisioning & Manajemen Perangkat Keras ESP32
+- **Daftar Inventaris Alat:** `GET /api/v1/technician/devices?page=1&limit=50&status=ALL`
 - **Registrasi Perangkat Baru (Generate Serial & Kode Aktivasi):** `POST /api/v1/technician/devices`
   ```json
   {
-    "serialNumber": "SS-0526-002",
+    "serialNumber": "SS-1026-002",
     "name": "Kumbung C - Shiitake",
-    "model": "ShroomSync Smart Node v2",
-    "hardwareVersion": "2.0",
-    "firmwareVersion": "2.1.0"
+    "model": "SS-ESP32-V1",
+    "hardwareVersion": "1.0",
+    "firmwareVersion": "1.1.0",
+    "ownershipType": "RENTED"
   }
   ```
 - **Detail Hardware:** `GET /api/v1/technician/devices/:id`
-- **Update Hardware / Firmware Version:** `PUT /api/v1/technician/devices/:id`
+- **Unduh File Identitas Hardware (`device_info.json`):** `GET /api/v1/technician/devices/:id/identity`
+  - Digunakan teknisi untuk flashing langsung ke partisi LittleFS ESP32 sebelum pengiriman ke petani.
+- **Update Hardware / Status:** `PUT /api/v1/technician/devices/:id`
 - **Hapus Perangkat Fisik:** `DELETE /api/v1/technician/devices/:id`
 
-### 3. Manajemen Akun Administrator Sistem
+### 4. Manajemen Akun Petani oleh Teknisi
+- **Daftar Seluruh Petani:** `GET /api/v1/technician/farmers`
+- **Pendaftaran Petani Baru:** `POST /api/v1/technician/farmers`
+- **Detail Petani:** `GET /api/v1/technician/farmers/:id`
+- **Update Petani:** `PUT /api/v1/technician/farmers/:id`
+- **Hapus Petani:** `DELETE /api/v1/technician/farmers/:id`
+
+### 5. Manajemen Akun Administrator Sistem
 - **Daftar Seluruh Admin:** `GET /api/v1/technician/admins`
 - **Pembuatan Akun Admin Baru:** `POST /api/v1/technician/admins`
   ```json
@@ -343,4 +384,62 @@ Semua rute teknisi berada di bawah prefix `/api/v1/technician/*` dan membutuhkan
   }
   ```
 - **Ubah Status Admin (Aktif / Nonaktif):** `PUT /api/v1/technician/admins/:id/status`
+  ```json
+  {
+    "status": "ACTIVE"
+  }
+  ```
+
+---
+
+## 📦 Manajemen Firmware Binary & Pembaruan OTA (Over-The-Air)
+
+### 1. Upload Berkas Binary Firmware Baru
+- **Method & Route:** `POST /api/v1/technician/firmwares`
+- **Headers:** `Authorization: Bearer <token>`, `Content-Type: multipart/form-data`
+- **Form Data:**
+  - `firmware`: Berkas file biner `.bin` (hasil build PlatformIO)
+  - `version`: String versi firmware (contoh: `"1.2.0"`)
+  - `hardwareVersion`: String kompatibilitas hardware (contoh: `"1.0"`)
+  - `changelog`: Catatan rilis pembaruan
+  - `isLatest`: Boolean (`true` jika dijadikan target rilis default)
+- **Response (201):** Menyimpan berkas, menghitung SHA-256 checksum otomatis, dan mencatat rilis di database.
+
+### 2. Daftar & Detail Firmware
+- **List Firmware:** `GET /api/v1/technician/firmwares`
+- **Detail Firmware:** `GET /api/v1/technician/firmwares/:id`
+- **Hapus Firmware:** `DELETE /api/v1/technician/firmwares/:id`
+
+### 3. Endpoint Publik untuk ESP32 & Mobile App
+- **Cek Versi Firmware Terbaru:** `GET /api/v1/firmwares/latest`
+  - Mengembalikan versi terbaru, URL download OTA, ukuran berkas, dan checksum SHA-256.
+- **Download File Biner OTA:** `GET /api/v1/firmwares/download/:filename`
+  - Melayani stream biner HTTP langsung untuk modul OTA Update ESP32.
+
+### 4. Operasi Deployment OTA
+- **Trigger OTA Spesifik:** `POST /api/v1/technician/ota/trigger`
+  ```json
+  {
+    "deviceSerial": "SS-1026-001",
+    "firmwareId": "uuid-firmware-opsional",
+    "force": false
+  }
+  ```
+- **Trigger OTA via Path:** `POST /api/v1/technician/ota/trigger/:deviceId`
+- **Broadcast OTA Massal:** `POST /api/v1/technician/ota/broadcast`
+  ```json
+  {
+    "firmwareId": "uuid-firmware-opsional",
+    "force": false
+  }
+  ```
+- **Riwayat Log Audit OTA:** `GET /api/v1/technician/ota/logs?limit=50&page=1`
+- **Log OTA Perangkat Tertentu:** `GET /api/v1/technician/ota/logs/:deviceId`
+
+---
+
+## 📖 Dokumentasi Interaktif Swagger / OpenAPI
+Dokumentasi interaktif Swagger UI siap pakai dan dapat dicoba langsung melalui browser:
+- **Swagger UI:** `https://api.shroomsync.web.id/api/docs`
+- **Swagger UI (v1):** `https://api.shroomsync.web.id/api/v1/docs`
 
