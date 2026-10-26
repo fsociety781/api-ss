@@ -116,6 +116,10 @@ export const OtaController = {
       throw new BadRequestError('URL dan versi firmware wajib diisi atau pilih dari daftar firmware');
     }
 
+    // Mikrokontroler ESP32 wajib menggunakan HTTP port 80 untuk download biner firmware
+    // (WiFiClient tidak mendukung TLS/SSL port 443; port 80 di Nginx sudah dikonfigurasi khusus tanpa HTTPS redirect)
+    finalFirmwareUrl = finalFirmwareUrl.replace(/^https:\/\//i, 'http://');
+
     // Bandingkan versi hardware saat ini vs versi target
     const currentVersion = device.firmwareVersion || '';
     let operationType: 'UPGRADE' | 'DOWNGRADE' | 'REFLASH' = 'UPGRADE';
@@ -248,6 +252,10 @@ export const OtaController = {
     if (!finalFirmwareUrl || !finalVersion) {
       throw new BadRequestError('URL dan versi firmware wajib diisi atau pilih dari daftar firmware');
     }
+
+    // Mikrokontroler ESP32 wajib menggunakan HTTP port 80 untuk download biner firmware
+    // (WiFiClient tidak mendukung TLS/SSL port 443; port 80 di Nginx sudah dikonfigurasi khusus tanpa HTTPS redirect)
+    finalFirmwareUrl = finalFirmwareUrl.replace(/^https:\/\//i, 'http://');
 
     const isDowngradeOrForce = Boolean(parsed.force || parsed.actionType === 'DOWNGRADE');
     const operationType = parsed.actionType !== 'AUTO' ? parsed.actionType : (isDowngradeOrForce ? 'DOWNGRADE' : 'UPDATE');

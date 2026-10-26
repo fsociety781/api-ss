@@ -91,7 +91,7 @@ export const FirmwareController = {
       },
     });
 
-    const baseUrl = resolveServerBaseUrl(req);
+    const baseUrl = resolveServerBaseUrl(req).replace(/^https:\/\//i, 'http://');
     const downloadUrl = `${baseUrl}/api/v1/firmwares/download/${firmware.filename}`;
 
     ApiResponse.success(
@@ -130,7 +130,7 @@ export const FirmwareController = {
       },
     });
 
-    const baseUrl = resolveServerBaseUrl(req);
+    const baseUrl = resolveServerBaseUrl(req).replace(/^https:\/\//i, 'http://');
     const enriched = firmwares.map((f) => ({
       ...f,
       downloadUrl: `${baseUrl}/api/v1/firmwares/download/${f.filename}`,
@@ -164,7 +164,7 @@ export const FirmwareController = {
       throw new NotFoundError('Firmware tidak ditemukan');
     }
 
-    const baseUrl = resolveServerBaseUrl(req);
+    const baseUrl = resolveServerBaseUrl(req).replace(/^https:\/\//i, 'http://');
     ApiResponse.success(res, {
       ...firmware,
       downloadUrl: `${baseUrl}/api/v1/firmwares/download/${firmware.filename}`,
@@ -229,7 +229,7 @@ export const FirmwareController = {
       throw new NotFoundError(`Belum ada firmware yang diunggah untuk hardware versi ${hardwareVersion}`);
     }
 
-    const baseUrl = resolveServerBaseUrl(req);
+    const baseUrl = resolveServerBaseUrl(req).replace(/^https:\/\//i, 'http://');
     const downloadUrl = `${baseUrl}/api/v1/firmwares/download/${firmware.filename}`;
 
     ApiResponse.success(
