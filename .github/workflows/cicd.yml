@@ -86,7 +86,8 @@ jobs:
             cd /opt/shroomsync/api-ss
 
             echo "📥 Mengambil commit terbaru dari GitHub..."
-            git pull origin main
+            git fetch origin main
+            git reset --hard origin/main
 
             echo "🔨 Membangun kontainer API..."
             docker compose build api
